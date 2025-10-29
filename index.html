@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +30,7 @@
             color: var(--text-color);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; 
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
@@ -62,9 +63,10 @@
         }
         /* --- END OF MOVING LINES (Background) --- */
 
+        /* --- NARROW FORM WIDTH --- */
         form {
             width: 100%;
-            max-width: 500px;
+            max-width: 400px; /* Narrow Width (400px) */
             margin: 20px;
             background-color: var(--form-bg);
             border-radius: 12px;
@@ -74,23 +76,38 @@
             position: relative;
             z-index: 1;           
             overflow: hidden;
+            height: 500px; /* Fixed form height */
         }
         
         fieldset {
             box-sizing: border-box; 
             border: none;
-            padding: 30px;
+            padding: 30px; 
             margin: 0;
             transition: transform 0.5s ease-in-out, 
                         opacity 0.4s ease-in-out;
             scrollbar-width: thin;
             scrollbar-color: var(--glow-color) var(--input-bg);
+            height: 100%; /* Fill the form height */
+            overflow: hidden; /* Prevent overflow from fieldset itself */
         }
         
-        /* --- ONLY PAGE 2 SCROLLS --- */
+        /* --- SCROLLABLE PAGE 2 SETTINGS --- */
         #page2 {
-            max-height: 30vh; /* Short height to force scroll on phones */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .scrollable-content {
+            flex: 1;
             overflow-y: auto;
+            padding-bottom: 10px;
+        }
+        
+        .button-container {
+            flex-shrink: 0;
+            padding-top: 10px;
         }
 
         fieldset::-webkit-scrollbar { width: 8px; }
@@ -133,6 +150,7 @@
             border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 700;
             font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px; text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            margin-bottom: 10px; /* Added spacing between stacked buttons */
         }
 
         .button:hover, input[type="submit"]:hover {
@@ -140,12 +158,51 @@
         }
         .button:active, input[type="submit"]:active { transform: scale(0.98); }
         
-        .button.secondary { background-color: var(--input-bg); border: 1px solid var(--border-color); margin-top: 10px; }
+        .button.secondary { background-color: var(--input-bg); border: 1px solid var(--border-color); }
         .button.secondary:hover { background-color: var(--border-color); box-shadow: none; }
 
         .footer-text {
             margin-top: 25px; font-size: 0.9em; color: var(--footer-text-color); text-align: center;
             position: relative; z-index: 1;
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 480px) {
+            form {
+                margin: 10px;
+                max-width: calc(100% - 20px); /* Full width minus margins */
+                height: 450px; /* Slightly shorter on mobile */
+            }
+            
+            fieldset {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+            
+            input[type="text"], input[type="email"], input[type="password"], select, textarea {
+                padding: 10px;
+                font-size: 16px; /* Keep 16px to prevent zoom on iOS */
+            }
+            
+            .button, input[type="submit"] {
+                padding: 12px 15px; /* Keep consistent padding */
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            fieldset {
+                padding: 15px;
+            }
+            
+            form {
+                height: 400px; /* Even shorter on very small screens */
+            }
         }
     </style>
 </head>
@@ -168,25 +225,28 @@
         
         <fieldset id="page2">
             <h2>Attendance</h2>
-            <div>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter full name" required>
+            <div class="scrollable-content">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                </div>
+                <div>
+                    <label for="position">Position:</label>
+                    <select id="position" name="position" required>
+                        <option value="">-- Select Position --</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Management">Management</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="remarks">What are your take aways?:</label>
+                    <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
+                </div>
             </div>
-            <div>
-                <label for="position">Position:</label>
-                <select id="position" name="position" required>
-                    <option value="">-- Select Position --</option>
-                    <option value="Teacher">Teacher</option>
-                    <option value="Management">Management</option>
-                </select>
+            <div class="button-container">
+                <input type="submit" value="Submit Attendance">
+                <button type="button" id="backButton" class="button secondary">Back</button>
             </div>
-            
-            <div>
-                <label for="remarks">What are your take aways?:</label>
-                <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
-            </div>
-            <input type="submit" value="Submit Attendance">
-            <button type="button" id="backButton" class="button secondary">Back</button>
         </fieldset>
         
         <fieldset id="page3">
@@ -203,7 +263,6 @@
         const form = document.getElementById('multiPageForm');
         const nextButton = document.getElementById('nextButton');
         const backButton = document.getElementById('backButton');
-        // resetButton removed
         
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
@@ -290,8 +349,6 @@
                 submitButton.disabled = false;
             });
         });
-
-        // resetButton listener removed
 
         // Reset scroll position when form loads
         window.addEventListener('load', () => {
