@@ -10,164 +10,296 @@
     <style>
         :root {
             /* Define our colors */
-            --dark-bg: #1a1a2e;       /* Deep purple-blue background */
-            --form-bg: #0f0f1c;       /* Slightly darker form background */
-            --border-color: #3f3f6e;  /* Muted border */
-            --glow-color: #007bff;    /* Bright tech blue */
-            --text-color: #e0e0e0;    /* Light gray text */
-            --input-bg: #22223a;    /* Darker input background */
-            --placeholder-color: #7a7a9a; /* Muted placeholder */
-            --footer-text-color: #5f5f7f; /* Muted color for footer */
+            --dark-bg: #1a1a2e;        
+            --form-bg: #0f0f1c;        
+            --border-color: #3f3f6e;   
+            --glow-color: #007bff;     
+            --text-color: #e0e0e0;     
+            --input-bg: #22223a;       
+            --placeholder-color: #7a7a9a;
+            --footer-text-color: #5f5f7f;
+            --scanline-color: rgba(0, 123, 255, 0.07); 
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif; /* Use the tech font */
+            font-family: 'Space Grotesk', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--dark-bg);
             color: var(--text-color);
-            
             display: flex;
-            flex-direction: column; /* Stack items vertically */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative; 
         }
+
+        /* --- MOVING LED LINES (Background) --- */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                transparent 3px,
+                var(--scanline-color) 3px,
+                var(--scanline-color) 4px
+            );
+            background-size: 100% 4px;
+            animation: scanlines 0.4s linear infinite;
+        }
+
+        @keyframes scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 -4px; }
+        }
+        /* --- END OF MOVING LINES (Background) --- */
 
         form {
             width: 100%;
             max-width: 500px;
             margin: 20px;
-            padding: 30px;
             background-color: var(--form-bg);
             border-radius: 12px;
-            
-            /* --- This is the "glowing line" effect --- */
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3),  /* Outer glow */
-                        inset 0 0 10px rgba(0, 123, 255, 0.2); /* Inner glow */
-        }
-
-        h2 {
-            text-align: center;
-            color: #fff; /* White title */
-            margin-top: 0;
-            margin-bottom: 25px;
-            letter-spacing: 1px; /* Add some spacing */
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3),
+                        inset 0 0 10px rgba(0, 123, 255, 0.2);
+            position: relative;
+            z-index: 1;           
+            overflow: hidden;
         }
         
-        div {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500; /* Medium weight */
-            color: var(--text-color);
-        }
-
-        input[type="text"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            font-family: 'Space Grotesk', sans-serif; /* Font for inputs too */
-            
-            box-sizing: border-box; 
-            
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            border-radius: 8px;
-            
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        input[type="text"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--glow-color);
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        }
-        
-        ::placeholder {
-            color: var(--placeholder-color);
-            opacity: 1; 
-        }
-
-        textarea {
-            height: 120px;
-            resize: vertical; 
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            background-color: var(--glow-color);
-            color: #ffffff;
-            padding: 12px 15px;
+        /* --- UPDATED FIELDSET RULE --- */
+        fieldset {
+            box-sizing: border-box; /* Ensures padding is included in height */
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.5px;
-            
+            padding: 30px;
+            margin: 0;
+            transition: transform 0.5s ease-in-out, 
+                        opacity 0.4s ease-in-out;
+            max-height: 45vh; /* REDUCED AGAIN: Makes the form box even shorter */
+            overflow-y: auto; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--glow-color) var(--input-bg);
+        }
+        
+        fieldset::-webkit-scrollbar { width: 8px; }
+        fieldset::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
+        fieldset::-webkit-scrollbar-thumb { background-color: var(--glow-color); border-radius: 4px; border: 2px solid var(--input-bg); }
+
+        #page2, #page3 {
+            position: absolute;
+            top: 0; left: 100%; width: 100%; box-sizing: border-box; opacity: 0;
+        }
+
+        /* --- Slide Transition --- */
+        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
+        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
+        
+        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
+        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
+        /* --- End of Transition --- */
+        
+        h2 { text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; letter-spacing: 1px; }
+        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
+        div { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-color); }
+
+        input[type="text"], input[type="email"], input[type="password"], select, textarea {
+            width: 100%; padding: 12px; font-size: 16px; font-family: 'Space Grotesk', sans-serif;
+            box-sizing: border-box; background-color: var(--input-bg); border: 1px solid var(--border-color);
+            color: var(--text-color); border-radius: 8px; transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--glow-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        ::placeholder { color: var(--placeholder-color); opacity: 1; }
+        textarea { height: 120px; resize: vertical; }
+        
+        .button, input[type="submit"] {
+            width: 100%; background-color: var(--glow-color); color: #ffffff; padding: 12px 15px;
+            border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px; text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
         }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3; 
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+        .button:hover, input[type="submit"]:hover {
+            background-color: #0056b3; box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
         }
+        .button:active, input[type="submit"]:active { transform: scale(0.98); }
         
-        input[type="submit"]:active {
-            transform: scale(0.98); 
-        }
+        .button.secondary { background-color: var(--input-bg); border: 1px solid var(--border-color); margin-top: 10px; }
+        .button.secondary:hover { background-color: var(--border-color); box-shadow: none; }
 
         .footer-text {
-            margin-top: 25px;
-            font-size: 0.9em;
-            color: var(--footer-text-color);
-            text-align: center;
+            margin-top: 25px; font-size: 0.9em; color: var(--footer-text-color); text-align: center;
+            position: relative; z-index: 1;
         }
     </style>
 </head>
 <body>
 
-    <form action="https://calixtojohnn.app.n8n.cloud/webhook-test/76782ad0-383c-4e7d-bdab-5f54472340a2/webhook" method="POST">
+    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook-test/76782ad0-383c-4e7d-bdab-5f54472340a2/webhook" method="POST">
     
-        <h2>Attendance</h2>
-
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" placeholder="Enter full name" required>
-        </div>
-
-        <div>
-            <label for="position">Position:</label>
-            <select id="position" name="position" required>
-                <option value="">-- Select Position --</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Management">Management</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="remarks">Remarks:</label>
-            <textarea id="remarks" name="remarks" placeholder="Enter any relevant remarks..."></textarea>
-        </div>
-
-        <div>
-            <input type="submit" value="Submit Attendance">
+        <fieldset id="page1">
+            <h2>Login</h2>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="button" id="nextButton" class="button">Submit</button>
+        </fieldset>
         
+        <fieldset id="page2">
+            <h2>Attendance</h2>
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter full name" required>
+            </div>
+            <div>
+                <label for="position">Position:</label>
+                <select id="position" name="position" required>
+                    <option value="">-- Select Position --</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Management">Management</option>
+                </select>
+            </div>
+            <div>
+                <label for="remarks">Remarks:</label>
+                <textarea id="remarks" name="remarks" placeholder="Enter any relevant remarks..."></textarea>
+            </div>
+            
+            <input type="submit" value="Submit Attendance">
+            <button type="button" id="backButton" class="button secondary">Back</button>
+        </fieldset>
+        
+        <fieldset id="page3">
+            <h2>Thank You!</h2>
+            <p class="thank-you-text">Your attendance has been successfully submitted.</p>
+            <button type="button" id="resetButton" class="button">Submit Another</button>
+        </fieldset>
         
     </form>
 
     <p class="footer-text">Powered by CJ_Works</p>
+
+    <script>
+        // Get all the elements we need
+        const form = document.getElementById('multiPageForm');
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const resetButton = document.getElementById('resetButton'); 
+        
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const page3 = document.getElementById('page3');
+        
+        nextButton.addEventListener('click', () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            if (!emailInput.value || !passwordInput.value) {
+                alert('Please fill in both email and password.');
+                return;
+            }
+
+            form.classList.add('show-page-2');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            page2.scrollTop = 0;
+        });
+        
+        backButton.addEventListener('click', () => {
+            form.classList.remove('show-page-2');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            page1.scrollTop = 0;
+        });
+
+        // Handle the final form submission with JavaScript
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Stop the form from submitting normally
+
+            // --- VALIDATION FOR PAGE 2 ---
+            const nameInput = document.getElementById('name');
+            const positionInput = document.getElementById('position');
+
+            if (!nameInput.value || !positionInput.value) {
+                alert('Please fill in your Name and Position.');
+                return; // Stop the submission if fields are empty
+            }
+            // --- END OF VALIDATION ---
+
+            // Get the submit button and show loading text
+            const submitButton = form.querySelector('input[type="submit"]');
+            submitButton.value = 'Submitting...';
+            submitButton.disabled = true;
+
+            // Collect the form data
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Send the data to the webhook
+            fetch(form.action, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                // Success! Show Page 3
+                console.log('Success:', result);
+                form.classList.add('show-page-3');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                page3.scrollTop = 0;
+            })
+            .catch(error => {
+                // Failure!
+                console.error('Error:', error);
+                alert('Submission failed. Please check your connection and try again.');
+            })
+            .finally(() => {
+                // Reset the submit button
+                submitButton.value = 'Submit Attendance';
+                submitButton.disabled = false;
+            });
+        });
+
+        // Handle the "Submit Another" button
+        resetButton.addEventListener('click', () => {
+            form.reset(); // Clear all form fields
+            form.classList.remove('show-page-2');
+            form.classList.remove('show-page-3');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            page1.scrollTop = 0;
+        });
+
+        // Reset scroll position when form loads
+        window.addEventListener('load', () => {
+            page1.scrollTop = 0;
+            page2.scrollTop = 0;
+            page3.scrollTop = 0;
+        });
+    </script>
 
 </body>
 </html>
