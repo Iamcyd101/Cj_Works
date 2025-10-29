@@ -76,20 +76,23 @@
             overflow: hidden;
         }
         
-        /* --- UPDATED FIELDSET RULE --- */
         fieldset {
-            box-sizing: border-box; /* Ensures padding is included in height */
+            box-sizing: border-box; 
             border: none;
             padding: 30px;
             margin: 0;
             transition: transform 0.5s ease-in-out, 
                         opacity 0.4s ease-in-out;
-            max-height: 45vh; /* REDUCED AGAIN: Makes the form box even shorter */
-            overflow-y: auto; 
             scrollbar-width: thin;
             scrollbar-color: var(--glow-color) var(--input-bg);
         }
         
+        /* --- UPDATED: ONLY PAGE 2 SCROLLS --- */
+        #page2 {
+            max-height: 40vh; /* Shorter height to force scroll at 100% zoom */
+            overflow-y: auto;
+        }
+
         fieldset::-webkit-scrollbar { width: 8px; }
         fieldset::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
         fieldset::-webkit-scrollbar-thumb { background-color: var(--glow-color); border-radius: 4px; border: 2px solid var(--input-bg); }
@@ -148,7 +151,7 @@
 </head>
 <body>
 
-    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook-test/76782ad0-383c-4e7d-bdab-5f54472340a2/webhook" method="POST">
+    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook-test/c95fd2a4-e5ad-4570-b08c-963728fc9945" method="POST">
     
         <fieldset id="page1">
             <h2>Login</h2>
@@ -303,4 +306,3 @@
 
 </body>
 </html>
-``
