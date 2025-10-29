@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Define our colors */
+            --dark-bg: #1a1a2e;       /* Deep purple-blue background */
+            --form-bg: #0f0f1c;       /* Slightly darker form background */
+            --border-color: #3f3f6e;  /* Muted border */
+            --glow-color: #007bff;    /* Bright tech blue */
+            --text-color: #e0e0e0;    /* Light gray text */
+            --input-bg: #22223a;    /* Darker input background */
+            --placeholder-color: #7a7a9a; /* Muted placeholder */
+            --footer-text-color: #5f5f7f; /* Muted color for footer */
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif; /* Use the tech font */
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        form {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+            padding: 30px;
+            background-color: var(--form-bg);
+            border-radius: 12px;
+            
+            /* --- This is the "glowing line" effect --- */
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3),  /* Outer glow */
+                        inset 0 0 10px rgba(0, 123, 255, 0.2); /* Inner glow */
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff; /* White title */
+            margin-top: 0;
+            margin-bottom: 25px;
+            letter-spacing: 1px; /* Add some spacing */
+        }
+        
+        div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500; /* Medium weight */
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif; /* Font for inputs too */
+            
+            box-sizing: border-box; 
+            
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--glow-color);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        ::placeholder {
+            color: var(--placeholder-color);
+            opacity: 1; 
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical; 
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: var(--glow-color);
+            color: #ffffff;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.5px;
+            
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3; 
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+        }
+        
+        input[type="submit"]:active {
+            transform: scale(0.98); 
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: var(--footer-text-color);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="https://calixtojohnn.app.n8n.cloud/webhook-test/76782ad0-383c-4e7d-bdab-5f54472340a2/webhook" method="POST">
+    
+        <h2>Attendance</h2>
+
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter full name" required>
+        </div>
+
+        <div>
+            <label for="position">Position:</label>
+            <select id="position" name="position" required>
+                <option value="">-- Select Position --</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Management">Management</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="remarks">Remarks:</label>
+            <textarea id="remarks" name="remarks" placeholder="Enter any relevant remarks..."></textarea>
+        </div>
+
+        <div>
+            <input type="submit" value="Submit Attendance">
+        
+        
+    </form>
+
+    <p class="footer-text">Powered by CJ_Works</p>
+
+</body>
+</html>
