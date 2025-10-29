@@ -89,7 +89,7 @@
         
         /* --- ONLY PAGE 2 SCROLLS --- */
         #page2 {
-            max-height: 40vh; /* Shorter height to force scroll at 100% zoom */
+            max-height: 30vh; /* Short height to force scroll on phones */
             overflow-y: auto;
         }
 
@@ -180,11 +180,11 @@
                     <option value="Management">Management</option>
                 </select>
             </div>
-            <div>
-                <label for="What are your take aways?">What are your take aways?:</label>
-                <textarea id="What are your take aways?" name="What are your take aways?" placeholder="Enter any relevant What are your take aways?..."></textarea>
-            </div>
             
+            <div>
+                <label for="remarks">What are your take aways?:</label>
+                <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
+            </div>
             <input type="submit" value="Submit Attendance">
             <button type="button" id="backButton" class="button secondary">Back</button>
         </fieldset>
@@ -192,7 +192,7 @@
         <fieldset id="page3">
             <h2>Thank You!</h2>
             <p class="thank-you-text">Thank you for your hard work teacher!</p>
-            </fieldset>
+        </fieldset>
         
     </form>
 
@@ -203,7 +203,7 @@
         const form = document.getElementById('multiPageForm');
         const nextButton = document.getElementById('nextButton');
         const backButton = document.getElementById('backButton');
-        // REMOVED resetButton
+        // resetButton removed
         
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
@@ -265,12 +265,11 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                // Check if response is JSON, otherwise it fails on n8n's "workflow activated" response
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     return response.json();
                 } else {
-                    return response.text(); // Just get text if not JSON
+                    return response.text();
                 }
             })
             .then(result => {
@@ -292,7 +291,7 @@
             });
         });
 
-        // REMOVED resetButton Event Listener
+        // resetButton listener removed
 
         // Reset scroll position when form loads
         window.addEventListener('load', () => {
@@ -304,6 +303,3 @@
 
 </body>
 </html>
-
-
-
