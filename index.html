@@ -239,6 +239,33 @@
                     </select>
                 </div>
                 <div>
+                    <label for="specificJobTitle">Specific Job Title:</label>
+                    <select id="specificJobTitle" name="specificJobTitle" required>
+                        <option value="">-- Select Job Title --</option>
+                        <option value="School Director">School Director</option>
+                        <option value="Vice Principal">Vice Principal</option>
+                        <option value="Operation Supervisor">Operation Supervisor</option>
+                        <option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
+                        <option value="Lead Teacher">Lead Teacher</option>
+                        <option value="Costumer Service Manager">Costumer Service Manager</option>
+                        <option value="Marketing Department">Marketing Department</option>
+                        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="International Program Supervisor">International Program Supervisor</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Admin Assistant">Admin Assistant</option>
+                        <option value="Admin Supervisor">Admin Supervisor</option>
+                        <option value="Chinese Coordinator">Chinese Coordinator</option>
+                        <option value="Khmer Coordinator">Khmer Coordinator</option>
+                        <option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
+                        <option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
+                        <option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
+                        <option value="English Teacher">English Teacher</option>
+                        <option value="Khmer Teacher">Khmer Teacher</option>
+                        <option value="Teacher Assistant">Teacher Assistant</option>
+                    </select>
+                </div>
+                <div>
                     <label for="remarks">Remarks:</label>
                     <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
                 </div>
@@ -295,9 +322,10 @@
             // --- VALIDATION FOR PAGE 2 ---
             const nameInput = document.getElementById('name');
             const positionInput = document.getElementById('position');
+            const specificJobTitleInput = document.getElementById('specificJobTitle');
 
-            if (!nameInput.value || !positionInput.value) {
-                alert('Please fill in your Name and Position.');
+            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
+                alert('Please fill in your Name, Position, and Specific Job Title.');
                 return; // Stop the submission if fields are empty
             }
             // --- END OF VALIDATION ---
