@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Attendance</title>
+    <title>Attendance System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Employee attendance tracking system">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +16,8 @@
             --form-bg: #0f0f1c;        
             --border-color: #3f3f6e;   
             --glow-color: #007bff;     
+            --success-color: #28a745;
+            --error-color: #dc3545;
             --text-color: #e0e0e0;     
             --input-bg: #22223a;       
             --placeholder-color: #7a7a9a;
@@ -66,7 +69,7 @@
         /* --- NARROW FORM WIDTH --- */
         form {
             width: 100%;
-            max-width: 400px; /* Narrow Width (400px) */
+            max-width: 400px;
             margin: 20px;
             background-color: var(--form-bg);
             border-radius: 12px;
@@ -76,7 +79,7 @@
             position: relative;
             z-index: 1;           
             overflow: hidden;
-            height: 500px; /* Fixed form height */
+            height: 500px;
         }
         
         fieldset {
@@ -88,8 +91,8 @@
                         opacity 0.4s ease-in-out;
             scrollbar-width: thin;
             scrollbar-color: var(--glow-color) var(--input-bg);
-            height: 100%; /* Fill the form height */
-            overflow: hidden; /* Prevent overflow from fieldset itself */
+            height: 100%;
+            overflow: hidden;
         }
         
         /* --- SCROLLABLE PAGE 2 SETTINGS --- */
@@ -125,7 +128,44 @@
         
         form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
         form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
-        /* --- End of Transition --- */
+        
+        /* --- Loading Spinner --- */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Error/Success Messages --- */
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .success-message {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
         
         h2 { text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; letter-spacing: 1px; }
         p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
@@ -150,7 +190,10 @@
             border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 700;
             font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px; text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 10px; /* Added spacing between stacked buttons */
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .button:hover, input[type="submit"]:hover {
@@ -161,6 +204,12 @@
         .button.secondary { background-color: var(--input-bg); border: 1px solid var(--border-color); }
         .button.secondary:hover { background-color: var(--border-color); box-shadow: none; }
 
+        .button:disabled, input[type="submit"]:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
         .footer-text {
             margin-top: 25px; font-size: 0.9em; color: var(--footer-text-color); text-align: center;
             position: relative; z-index: 1;
@@ -170,8 +219,8 @@
         @media (max-width: 480px) {
             form {
                 margin: 10px;
-                max-width: calc(100% - 20px); /* Full width minus margins */
-                height: 450px; /* Slightly shorter on mobile */
+                max-width: calc(100% - 20px);
+                height: 450px;
             }
             
             fieldset {
@@ -185,12 +234,12 @@
             
             input[type="text"], input[type="email"], input[type="password"], select, textarea {
                 padding: 10px;
-                font-size: 16px; /* Keep 16px to prevent zoom on iOS */
+                font-size: 16px;
             }
             
             .button, input[type="submit"] {
-                padding: 12px 15px; /* Keep consistent padding */
-                font-size: 16px; /* Prevent zoom on iOS */
+                padding: 12px 15px;
+                font-size: 16px;
             }
         }
         
@@ -201,7 +250,7 @@
             }
             
             form {
-                height: 400px; /* Even shorter on very small screens */
+                height: 400px;
             }
         }
     </style>
@@ -212,6 +261,7 @@
     
         <fieldset id="page1">
             <h2>Login</h2>
+            <div id="page1-message"></div>
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -225,6 +275,7 @@
         
         <fieldset id="page2">
             <h2>Attendance</h2>
+            <div id="page2-message"></div>
             <div class="scrollable-content">
                 <div>
                     <label for="name">Name:</label>
@@ -279,6 +330,9 @@
         <fieldset id="page3">
             <h2>Thank You!</h2>
             <p class="thank-you-text">Thank you for your hard work teacher!</p>
+            <div class="button-container">
+                <button type="button" id="newEntryButton" class="button">Submit New Entry</button>
+            </div>
         </fieldset>
         
     </form>
@@ -290,23 +344,62 @@
         const form = document.getElementById('multiPageForm');
         const nextButton = document.getElementById('nextButton');
         const backButton = document.getElementById('backButton');
+        const newEntryButton = document.getElementById('newEntryButton');
         
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const page3 = document.getElementById('page3');
         
+        const page1Message = document.getElementById('page1-message');
+        const page2Message = document.getElementById('page2-message');
+
+        // Show message function
+        function showMessage(element, message, type) {
+            element.innerHTML = `<div class="message ${type}-message">${message}</div>`;
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+
+        // Reset form function
+        function resetForm() {
+            form.reset();
+            form.classList.remove('show-page-2', 'show-page-3');
+            page1.scrollTop = 0;
+            page2.scrollTop = 0;
+            page3.scrollTop = 0;
+        }
+
         nextButton.addEventListener('click', () => {
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            if (!emailInput.value || !emailInput.checkValidity() || !passwordInput.value) {
-                alert('Please fill in a valid email and password.');
+            if (!emailInput.value || !emailInput.checkValidity()) {
+                showMessage(page1Message, 'Please enter a valid email address.', 'error');
+                emailInput.focus();
                 return;
             }
 
-            form.classList.add('show-page-2');
-            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            page2.scrollTop = 0;
+            if (!passwordInput.value) {
+                showMessage(page1Message, 'Please enter your password.', 'error');
+                passwordInput.focus();
+                return;
+            }
+
+            // Disable button during transition
+            nextButton.disabled = true;
+            nextButton.innerHTML = '<span class="spinner"></span>Processing...';
+
+            // Simulate processing time
+            setTimeout(() => {
+                form.classList.add('show-page-2');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                page2.scrollTop = 0;
+                
+                // Re-enable button
+                nextButton.disabled = false;
+                nextButton.innerHTML = 'Submit';
+            }, 1000);
         });
         
         backButton.addEventListener('click', () => {
@@ -315,79 +408,135 @@
             page1.scrollTop = 0;
         });
 
+        newEntryButton.addEventListener('click', () => {
+            resetForm();
+        });
+
         // Handle the final form submission with JavaScript
         form.addEventListener('submit', (event) => {
-            event.preventDefault(); // Stop the form from submitting normally
+            event.preventDefault();
 
-            // --- VALIDATION FOR PAGE 2 ---
+            // Validation for Page 2
             const nameInput = document.getElementById('name');
             const positionInput = document.getElementById('position');
             const specificJobTitleInput = document.getElementById('specificJobTitle');
 
-            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
-                alert('Please fill in your Name, Position, and Specific Job Title.');
-                return; // Stop the submission if fields are empty
+            if (!nameInput.value) {
+                showMessage(page2Message, 'Please enter your name.', 'error');
+                nameInput.focus();
+                return;
             }
-            // --- END OF VALIDATION ---
 
-            // Get the submit button and show loading text
+            if (!positionInput.value) {
+                showMessage(page2Message, 'Please select your position.', 'error');
+                positionInput.focus();
+                return;
+            }
+
+            if (!specificJobTitleInput.value) {
+                showMessage(page2Message, 'Please select your job title.', 'error');
+                specificJobTitleInput.focus();
+                return;
+            }
+
+            // Get the submit button and show loading state
             const submitButton = form.querySelector('input[type="submit"]');
-            submitButton.value = 'Submitting...';
+            const originalText = submitButton.value;
+            submitButton.value = '';
+            submitButton.innerHTML = '<span class="spinner"></span>Submitting...';
             submitButton.disabled = true;
+            backButton.disabled = true;
 
             // Collect the form data
             const formData = new FormData(form);
-            const data = {};
+            const data = {
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+            
             formData.forEach((value, key) => {
                 data[key] = value;
             });
 
-            // Send the data to the webhook
+            // Send the data to the webhook with timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
             fetch(form.action, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data),
+                signal: controller.signal
             })
-            .then(response => {
+            .then(async response => {
+                clearTimeout(timeoutId);
+                
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
                 }
+
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                if (contentType && contentType.includes("application/json")) {
                     return response.json();
                 } else {
                     return response.text();
                 }
             })
             .then(result => {
-                // Success! Show Page 3
                 console.log('Success:', result);
                 form.classList.add('show-page-3');
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 page3.scrollTop = 0;
+                
+                // Auto-reset after 30 seconds on success page
+                setTimeout(() => {
+                    if (form.classList.contains('show-page-3')) {
+                        resetForm();
+                    }
+                }, 30000);
             })
             .catch(error => {
-                // Failure!
                 console.error('Error:', error);
-                alert('Submission failed. Please check your connection and try again.');
-            })
-            .finally(() => {
-                // Reset the submit button
-                submitButton.value = 'Submit Attendance';
+                
+                if (error.name === 'AbortError') {
+                    showMessage(page2Message, 'Submission timeout. Please check your connection and try again.', 'error');
+                } else {
+                    showMessage(page2Message, 'Submission failed. Please try again.', 'error');
+                }
+                
+                // Re-enable buttons
+                submitButton.value = originalText;
+                submitButton.innerHTML = originalText;
                 submitButton.disabled = false;
+                backButton.disabled = false;
             });
         });
 
-        // Reset scroll position when form loads
+        // Auto-focus on email input when page loads
         window.addEventListener('load', () => {
+            const emailInput = document.getElementById('email');
+            emailInput.focus();
+            
+            // Reset scroll positions
             page1.scrollTop = 0;
             page2.scrollTop = 0;
             page3.scrollTop = 0;
+        });
+
+        // Handle page visibility changes (tab switching)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                // Page became visible again - ensure smooth state
+                if (form.classList.contains('show-page-3')) {
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
         });
     </script>
 
 </body>
 </html>
-
-
-
