@@ -254,7 +254,7 @@
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                        title="Password must be 8+ characters and include uppercase, lowercase, a number, and a symbol.">
             </div>
 
@@ -354,23 +354,20 @@
         const page2 = document.getElementById('page2');
         const page3 = document.getElementById('page3');
         
-        // 
-        // UPDATED JAVASCRIPT FOR VALIDATION
-        //
         nextButton.addEventListener('click', () => {
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
             // Check Email
             if (!emailInput.checkValidity()) {
-                alert(emailInput.title); // Shows your new email error
+                alert(emailInput.title); 
                 emailInput.focus();
                 return;
             }
 
             // Check Password
             if (!passwordInput.checkValidity()) {
-                alert(passwordInput.title); // Shows your new password error
+                alert(passwordInput.title); 
                 passwordInput.focus();
                 return;
             }
@@ -469,7 +466,7 @@
             })
             .finally(() => {
                 submitButton.value = 'Submit Attendance';
-                submitButton.disabled = false; // Corrected this line
+                submitButton.disabled = false; 
             });
         });
 
