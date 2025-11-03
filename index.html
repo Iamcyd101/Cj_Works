@@ -160,12 +160,6 @@
             outline: none; border-color: var(--glow-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
         }
         
-        /* Show invalid inputs */
-        input:invalid {
-            border-color: #ff5555;
-            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
-        }
-
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
         textarea { height: 100px; resize: vertical; } /* Smaller textarea */
         
@@ -246,16 +240,12 @@
             
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required
-                       pattern=".*@gmail\.com$"
-                       title="Email must end with @gmail.com">
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Password must be 8+ characters and include uppercase, lowercase, a number, and a symbol.">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
 
             <button type="button" id="nextButton" class="button">Submit</button>
@@ -358,21 +348,12 @@
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            // Check Email
-            if (!emailInput.checkValidity()) {
-                alert(emailInput.title); 
-                emailInput.focus();
+            // Basic validation check
+            if (!emailInput.value || !emailInput.checkValidity() || !passwordInput.value) {
+                alert('Please fill in a valid email and password.');
                 return;
             }
 
-            // Check Password
-            if (!passwordInput.checkValidity()) {
-                alert(passwordInput.title); 
-                passwordInput.focus();
-                return;
-            }
-
-            // All good, move to next page
             form.classList.add('show-page-2');
             form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             page2.scrollTop = 0;
@@ -385,7 +366,10 @@
             page1.scrollTop = 0;
         });
 
-        // Google Sign-In handler
+        // 
+        // FIX: Google Sign-In handler now removes the password 'required' attribute 
+        // and hides the field, preventing autofill without touching the value.
+        //
         function handleGoogleSignIn(response) {
             console.log('Google Sign-In response:', response);
             
@@ -394,8 +378,20 @@
             const payload = JSON.parse(atob(credential.split('.')[1]));
             console.log('Google user info:', payload);
             
+            // 1. Auto-fill the email field
             document.getElementById('email').value = payload.email;
             
+            // 2. Remove 'required' and hide the password field
+            const passwordInput = document.getElementById('password');
+            passwordInput.removeAttribute('required');
+            passwordInput.style.display = 'none'; 
+            
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'none';
+            }
+            
+            // 3. Add hidden fields to pass auth data to n8n
             let googleFlag = document.createElement('input');
             googleFlag.type = 'hidden';
             googleFlag.name = 'google_sign_in';
@@ -408,8 +404,7 @@
             googleToken.value = credential;
             form.appendChild(googleToken);
             
-            document.getElementById('password').value = 'google_oauth_authenticated';
-            
+            // 4. Auto-advance to the next page
             setTimeout(() => {
                 form.classList.add('show-page-2');
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
