@@ -160,6 +160,12 @@
             outline: none; border-color: var(--glow-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
         }
         
+        /* Show invalid inputs */
+        input:invalid {
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+        }
+
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
         textarea { height: 100px; resize: vertical; } /* Smaller textarea */
         
@@ -209,61 +215,25 @@
             font-size: 0.85em; /* Smaller text */
         }
 
-        /* Custom Google button sizing */
         #g_id_signin {
             width: 100% !important;
             margin: 0 auto !important;
         }
 
-        /* Mobile adjustments */
         @media (max-width: 480px) {
-            form {
-                margin: 10px;
-                max-width: calc(100% - 20px);
-                height: 500px; /* Smaller on mobile */
-            }
-            
-            fieldset {
-                padding: 20px;
-            }
-            
-            h2 {
-                font-size: 1.3em;
-                margin-bottom: 15px;
-            }
-            
-            .form-group {
-                margin-bottom: 12px;
-            }
-            
-            input[type="text"], input[type="email"], input[type="password"], select, textarea {
-                padding: 8px;
-                font-size: 14px;
-            }
-            
-            .button, input[type="submit"] {
-                padding: 10px 12px;
-                font-size: 14px;
-            }
-            
-            .google-divider {
-                margin: 12px 0;
-                padding: 12px 0;
-            }
+            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
+            fieldset { padding: 20px; }
+            h2 { font-size: 1.3em; margin-bottom: 15px; }
+            .form-group { margin-bottom: 12px; }
+            input[type="text"], input[type="email"], input[type="password"], select, textarea { padding: 8px; font-size: 14px; }
+            .button, input[type="submit"] { padding: 10px 12px; font-size: 14px; }
+            .google-divider { margin: 12px 0; padding: 12px 0; }
         }
         
         @media (max-width: 360px) {
-            fieldset {
-                padding: 15px;
-            }
-            
-            form {
-                height: 480px;
-            }
-            
-            h2 {
-                font-size: 1.2em;
-            }
+            fieldset { padding: 15px; }
+            form { height: 480px; }
+            h2 { font-size: 1.2em; }
         }
     </style>
 </head>
@@ -273,14 +243,21 @@
     
         <fieldset id="page1">
             <h2>Login</h2>
+            
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required
+                       pattern=".*@gmail\.com$"
+                       title="Email must end with @gmail.com">
             </div>
+
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+                       title="Password must be 8+ characters and include uppercase, lowercase, a number, and a symbol.">
             </div>
+
             <button type="button" id="nextButton" class="button">Submit</button>
             
             <div class="google-divider">
@@ -301,7 +278,8 @@
                      data-text="signin_with"
                      data-size="large"
                      data-logo_alignment="left"
-                     data-width="350"> </div>
+                     data-width="350"> 
+                </div>
             </div>
         </fieldset>
         
@@ -368,7 +346,6 @@
     <p class="footer-text">Powered by G_Sign-in & CJ_Works</p>
 
     <script>
-        // Get all the elements we need
         const form = document.getElementById('multiPageForm');
         const nextButton = document.getElementById('nextButton');
         const backButton = document.getElementById('backButton');
@@ -377,19 +354,33 @@
         const page2 = document.getElementById('page2');
         const page3 = document.getElementById('page3');
         
+        // 
+        // UPDATED JAVASCRIPT FOR VALIDATION
+        //
         nextButton.addEventListener('click', () => {
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            if (!emailInput.value || !emailInput.checkValidity() || !passwordInput.value) {
-                alert('Please fill in a valid email and password.');
+            // Check Email
+            if (!emailInput.checkValidity()) {
+                alert(emailInput.title); // Shows your new email error
+                emailInput.focus();
                 return;
             }
 
+            // Check Password
+            if (!passwordInput.checkValidity()) {
+                alert(passwordInput.title); // Shows your new password error
+                passwordInput.focus();
+                return;
+            }
+
+            // All good, move to next page
             form.classList.add('show-page-2');
             form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             page2.scrollTop = 0;
         });
+
         
         backButton.addEventListener('click', () => {
             form.classList.remove('show-page-2');
@@ -403,31 +394,25 @@
             
             const credential = response.credential;
             
-            // Decode the JWT token to get user info
             const payload = JSON.parse(atob(credential.split('.')[1]));
             console.log('Google user info:', payload);
             
-            // Auto-fill the email field
             document.getElementById('email').value = payload.email;
             
-            // Add a hidden field to indicate Google Sign-In
             let googleFlag = document.createElement('input');
             googleFlag.type = 'hidden';
             googleFlag.name = 'google_sign_in';
             googleFlag.value = 'true';
             form.appendChild(googleFlag);
             
-            // Store the Google token for backend verification
             let googleToken = document.createElement('input');
             googleToken.type = 'hidden';
             googleToken.name = 'google_token';
             googleToken.value = credential;
             form.appendChild(googleToken);
             
-            // Set a placeholder for password (since Google auth doesn't use password)
             document.getElementById('password').value = 'google_oauth_authenticated';
             
-            // Automatically proceed to next page
             setTimeout(() => {
                 form.classList.add('show-page-2');
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -435,43 +420,36 @@
             }, 500);
         }
 
-        // Handle the final form submission with JavaScript
+        // Handle the final form submission
         form.addEventListener('submit', (event) => {
-            event.preventDefault(); // Stop the form from submitting normally
+            event.preventDefault(); 
 
-            // --- VALIDATION FOR PAGE 2 ---
             const nameInput = document.getElementById('name');
             const positionInput = document.getElementById('position');
             const specificJobTitleInput = document.getElementById('specificJobTitle');
 
             if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
                 alert('Please fill in your Name, Position, and Specific Job Title.');
-                return; // Stop the submission if fields are empty
+                return; 
             }
-            // --- END OF VALIDATION ---
 
-            // Get the submit button and show loading text
             const submitButton = form.querySelector('input[type="submit"]');
             submitButton.value = 'Submitting...';
             submitButton.disabled = true;
 
-            // Collect the form data
             const formData = new FormData(form);
             const data = {};
             formData.forEach((value, key) => {
                 data[key] = value;
             });
 
-            // Send the data to the webhook
             fetch(form.action, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) { throw new Error('Network response was not ok'); }
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     return response.json();
@@ -480,25 +458,21 @@
                 }
             })
             .then(result => {
-                // Success! Show Page 3
                 console.log('Success:', result);
                 form.classList.add('show-page-3');
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 page3.scrollTop = 0;
             })
             .catch(error => {
-                // Failure!
                 console.error('Error:', error);
                 alert('Submission failed. Please check your connection and try again.');
             })
             .finally(() => {
-                // Reset the submit button
                 submitButton.value = 'Submit Attendance';
-                submitButton.disabled.disabled = false;
+                submitButton.disabled = false; // Corrected this line
             });
         });
 
-        // Reset scroll position when form loads
         window.addEventListener('load', () => {
             page1.scrollTop = 0;
             page2.scrollTop = 0;
