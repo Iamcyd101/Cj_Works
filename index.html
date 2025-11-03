@@ -10,7 +10,6 @@
 
     <style>
         :root {
-            /* Define our colors */
             --dark-bg: #1a1a2e;        
             --form-bg: #0f0f1c;        
             --border-color: #3f3f6e;   
@@ -37,7 +36,6 @@
             position: relative; 
         }
 
-        /* --- MOVING LED LINES (Background) --- */
         body::before {
             content: '';
             position: absolute;
@@ -61,12 +59,10 @@
             from { background-position: 0 0; }
             to { background-position: 0 -4px; }
         }
-        /* --- END OF MOVING LINES (Background) --- */
 
-        /* --- NARROW FORM WIDTH --- */
         form {
             width: 100%;
-            max-width: 400px; /* Narrow Width (400px) */
+            max-width: 400px;
             margin: 20px;
             background-color: var(--form-bg);
             border-radius: 12px;
@@ -76,7 +72,7 @@
             position: relative;
             z-index: 1;           
             overflow: hidden;
-            height: 500px; /* Fixed form height */
+            height: 600px;
         }
         
         fieldset {
@@ -88,11 +84,10 @@
                         opacity 0.4s ease-in-out;
             scrollbar-width: thin;
             scrollbar-color: var(--glow-color) var(--input-bg);
-            height: 100%; /* Fill the form height */
-            overflow: hidden; /* Prevent overflow from fieldset itself */
+            height: 100%;
+            overflow: hidden;
         }
         
-        /* --- SCROLLABLE PAGE 2 SETTINGS --- */
         #page2 {
             display: flex;
             flex-direction: column;
@@ -119,13 +114,11 @@
             top: 0; left: 100%; width: 100%; box-sizing: border-box; opacity: 0;
         }
 
-        /* --- Slide Transition --- */
         form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
         form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
         
         form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
         form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
-        /* --- End of Transition --- */
         
         h2 { text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; letter-spacing: 1px; }
         p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
@@ -150,7 +143,7 @@
             border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 700;
             font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px; text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 10px; /* Added spacing between stacked buttons */
+            margin-bottom: 10px;
         }
 
         .button:hover, input[type="submit"]:hover {
@@ -166,12 +159,25 @@
             position: relative; z-index: 1;
         }
         
-        /* Mobile-specific adjustments */
+        .google-divider {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .google-divider-text {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 480px) {
             form {
                 margin: 10px;
-                max-width: calc(100% - 20px); /* Full width minus margins */
-                height: 450px; /* Slightly shorter on mobile */
+                max-width: calc(100% - 20px);
+                height: 550px;
             }
             
             fieldset {
@@ -185,23 +191,22 @@
             
             input[type="text"], input[type="email"], input[type="password"], select, textarea {
                 padding: 10px;
-                font-size: 16px; /* Keep 16px to prevent zoom on iOS */
+                font-size: 16px;
             }
             
             .button, input[type="submit"] {
-                padding: 12px 15px; /* Keep consistent padding */
-                font-size: 16px; /* Prevent zoom on iOS */
+                padding: 12px 15px;
+                font-size: 16px;
             }
         }
         
-        /* Extra small devices */
         @media (max-width: 360px) {
             fieldset {
                 padding: 15px;
             }
             
             form {
-                height: 400px; /* Even shorter on very small screens */
+                height: 500px;
             }
         }
     </style>
@@ -221,6 +226,29 @@
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <button type="button" id="nextButton" class="button">Submit</button>
+            
+            <!-- Google Sign-In Section -->
+            <div class="google-divider">
+                <div class="google-divider-text">Or continue with</div>
+                
+                <!-- Google Sign-In Button -->
+                <div id="g_id_onload"
+                     data-client_id="1095539984663-1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="400">
+                </div>
+            </div>
         </fieldset>
         
         <fieldset id="page2">
@@ -315,6 +343,44 @@
             page1.scrollTop = 0;
         });
 
+        // Google Sign-In handler
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In response:', response);
+            
+            const credential = response.credential;
+            
+            // Decode the JWT token to get user info
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+            console.log('Google user info:', payload);
+            
+            // Auto-fill the email field
+            document.getElementById('email').value = payload.email;
+            
+            // Add a hidden field to indicate Google Sign-In
+            let googleFlag = document.createElement('input');
+            googleFlag.type = 'hidden';
+            googleFlag.name = 'google_sign_in';
+            googleFlag.value = 'true';
+            form.appendChild(googleFlag);
+            
+            // Store the Google token for backend verification
+            let googleToken = document.createElement('input');
+            googleToken.type = 'hidden';
+            googleToken.name = 'google_token';
+            googleToken.value = credential;
+            form.appendChild(googleToken);
+            
+            // Set a placeholder for password (since Google auth doesn't use password)
+            document.getElementById('password').value = 'google_oauth_authenticated';
+            
+            // Automatically proceed to next page
+            setTimeout(() => {
+                form.classList.add('show-page-2');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                page2.scrollTop = 0;
+            }, 500);
+        }
+
         // Handle the final form submission with JavaScript
         form.addEventListener('submit', (event) => {
             event.preventDefault(); // Stop the form from submitting normally
@@ -386,7 +452,8 @@
         });
     </script>
 
+    <!-- Google Sign-In Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </body>
 </html>
-
-
