@@ -18,7 +18,7 @@
             --input-bg: #22223a;       
             --placeholder-color: #7a7a9a;
             --footer-text-color: #5f5f7f;
-            --scanline-color: rgba(0, 123, 255, 0.07); 
+            --scanline-color: rgba(0, 123, 255, 0.07);  
         }
 
         body {
@@ -283,18 +283,17 @@
             </div>
             <button type="button" id="nextButton" class="button">Submit</button>
             
-            <!-- Google Sign-In Section -->
             <div class="google-divider">
                 <div class="google-divider-text">Or continue with</div>
                 
-                <!-- Google Sign-In Button -->
                 <div id="g_id_onload"
-                     data-client_id="1095539984663-1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com.apps.googleusercontent.com"
+                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
                      data-context="signin"
                      data-ux_mode="popup"
                      data-callback="handleGoogleSignIn"
                      data-auto_prompt="false">
                 </div>
+
                 <div class="g_id_signin"
                      data-type="standard"
                      data-shape="rectangular"
@@ -302,8 +301,7 @@
                      data-text="signin_with"
                      data-size="large"
                      data-logo_alignment="left"
-                     data-width="350"> <!-- Fixed width -->
-                </div>
+                     data-width="350"> </div>
             </div>
         </fieldset>
         
@@ -496,7 +494,7 @@
             .finally(() => {
                 // Reset the submit button
                 submitButton.value = 'Submit Attendance';
-                submitButton.disabled = false;
+                submitButton.disabled.disabled = false;
             });
         });
 
@@ -508,7 +506,6 @@
         });
     </script>
 
-    <!-- Google Sign-In Script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </body>
