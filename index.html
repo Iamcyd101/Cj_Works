@@ -72,13 +72,13 @@
             position: relative;
             z-index: 1;           
             overflow: hidden;
-            height: 600px;
+            height: 550px; /* Adjusted height */
         }
         
         fieldset {
             box-sizing: border-box; 
             border: none;
-            padding: 30px; 
+            padding: 25px; /* Reduced padding */
             margin: 0;
             transition: transform 0.5s ease-in-out, 
                         opacity 0.4s ease-in-out;
@@ -120,15 +120,40 @@
         form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
         form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
         
-        h2 { text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; letter-spacing: 1px; }
+        h2 { 
+            text-align: center; 
+            color: #fff; 
+            margin-top: 0; 
+            margin-bottom: 20px; /* Reduced margin */
+            letter-spacing: 1px; 
+            font-size: 1.5em; /* Slightly smaller */
+        }
+        
         p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
-        div { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-color); }
+        
+        .form-group { 
+            margin-bottom: 15px; /* Reduced margin */
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 6px; /* Reduced margin */
+            font-weight: 500; 
+            color: var(--text-color); 
+            font-size: 0.9em; /* Smaller labels */
+        }
 
         input[type="text"], input[type="email"], input[type="password"], select, textarea {
-            width: 100%; padding: 12px; font-size: 16px; font-family: 'Space Grotesk', sans-serif;
-            box-sizing: border-box; background-color: var(--input-bg); border: 1px solid var(--border-color);
-            color: var(--text-color); border-radius: 8px; transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%; 
+            padding: 10px; /* Reduced padding */
+            font-size: 14px; /* Smaller font */
+            font-family: 'Space Grotesk', sans-serif;
+            box-sizing: border-box; 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-color); 
+            border-radius: 6px; /* Smaller radius */
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
         
         input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
@@ -136,14 +161,23 @@
         }
         
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
-        textarea { height: 120px; resize: vertical; }
+        textarea { height: 100px; resize: vertical; } /* Smaller textarea */
         
         .button, input[type="submit"] {
-            width: 100%; background-color: var(--glow-color); color: #ffffff; padding: 12px 15px;
-            border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px; text-align: center;
+            width: 100%; 
+            background-color: var(--glow-color); 
+            color: #ffffff; 
+            padding: 10px 15px; /* Reduced padding */
+            border: none; 
+            border-radius: 6px; /* Smaller radius */
+            cursor: pointer; 
+            font-size: 14px; /* Smaller font */
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif; 
+            letter-spacing: 0.5px; 
+            text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
         }
 
         .button:hover, input[type="submit"]:hover {
@@ -155,29 +189,38 @@
         .button.secondary:hover { background-color: var(--border-color); box-shadow: none; }
 
         .footer-text {
-            margin-top: 25px; font-size: 0.9em; color: var(--footer-text-color); text-align: center;
-            position: relative; z-index: 1;
+            margin-top: 20px; 
+            font-size: 0.8em; /* Smaller footer */
+            color: var(--footer-text-color); 
+            text-align: center;
+            position: relative; 
+            z-index: 1;
         }
         
         .google-divider {
             text-align: center;
-            margin: 20px 0;
-            padding: 20px 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+            margin: 15px 0; /* Reduced margin */
+            padding: 15px 0; /* Reduced padding */
         }
         
         .google-divider-text {
             color: var(--text-color);
-            margin-bottom: 15px;
-            font-size: 0.9em;
+            margin-bottom: 12px; /* Reduced margin */
+            font-size: 0.85em; /* Smaller text */
         }
 
+        /* Custom Google button sizing */
+        #g_id_signin {
+            width: 100% !important;
+            margin: 0 auto !important;
+        }
+
+        /* Mobile adjustments */
         @media (max-width: 480px) {
             form {
                 margin: 10px;
                 max-width: calc(100% - 20px);
-                height: 550px;
+                height: 500px; /* Smaller on mobile */
             }
             
             fieldset {
@@ -185,18 +228,27 @@
             }
             
             h2 {
-                font-size: 1.4em;
-                margin-bottom: 20px;
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
             }
             
             input[type="text"], input[type="email"], input[type="password"], select, textarea {
-                padding: 10px;
-                font-size: 16px;
+                padding: 8px;
+                font-size: 14px;
             }
             
             .button, input[type="submit"] {
-                padding: 12px 15px;
-                font-size: 16px;
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .google-divider {
+                margin: 12px 0;
+                padding: 12px 0;
             }
         }
         
@@ -206,7 +258,11 @@
             }
             
             form {
-                height: 500px;
+                height: 480px;
+            }
+            
+            h2 {
+                font-size: 1.2em;
             }
         }
     </style>
@@ -217,11 +273,11 @@
     
         <fieldset id="page1">
             <h2>Login</h2>
-            <div>
+            <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
-            <div>
+            <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
@@ -246,7 +302,7 @@
                      data-text="signin_with"
                      data-size="large"
                      data-logo_alignment="left"
-                     data-width="400">
+                     data-width="350"> <!-- Fixed width -->
                 </div>
             </div>
         </fieldset>
@@ -254,11 +310,11 @@
         <fieldset id="page2">
             <h2>Attendance</h2>
             <div class="scrollable-content">
-                <div>
+                <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter full name" required>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="position">Position:</label>
                     <select id="position" name="position" required>
                         <option value="">-- Select Position --</option>
@@ -266,7 +322,7 @@
                         <option value="Management">Management</option>
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="specificJobTitle">Specific Job Title:</label>
                     <select id="specificJobTitle" name="specificJobTitle" required>
                         <option value="">-- Select Job Title --</option>
@@ -293,7 +349,7 @@
                         <option value="Teacher Assistant">Teacher Assistant</option>
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="remarks">Remarks:</label>
                     <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
                 </div>
