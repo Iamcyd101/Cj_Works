@@ -1,496 +1,511 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Attendance</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --dark-bg: #1a1a2e;        
-            --form-bg: #0f0f1c;        
-            --border-color: #3f3f6e;   
-            --glow-color: #007bff;     
-            --text-color: #e0e0e0;     
-            --input-bg: #22223a;       
-            --placeholder-color: #7a7a9a;
-            --footer-text-color: #5f5f7f;
-            --scanline-color: rgba(0, 123, 255, 0.07);  
-        }
+    <style>
+        :root {
+            --dark-bg: #1a1a2e;        
+            --form-bg: #0f0f1c;        
+            --border-color: #3f3f6e;   
+            --glow-color: #007bff;     
+            --text-color: #e0e0e0;     
+            --input-bg: #22223a;       
+            --placeholder-color: #7a7a9a;
+            --footer-text-color: #5f5f7f;
+            --scanline-color: rgba(0, 123, 255, 0.07);  
+        }
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative; 
-        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative; 
+        }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent 0,
-                transparent 3px,
-                var(--scanline-color) 3px,
-                var(--scanline-color) 4px
-            );
-            background-size: 100% 4px;
-            animation: scanlines 0.4s linear infinite;
-        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                transparent 3px,
+                var(--scanline-color) 3px,
+                var(--scanline-color) 4px
+            );
+            background-size: 100% 4px;
+            animation: scanlines 0.4s linear infinite;
+        }
 
-        @keyframes scanlines {
-            from { background-position: 0 0; }
-            to { background-position: 0 -4px; }
-        }
+        @keyframes scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 -4px; }
+        }
 
-        form {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px;
-            background-color: var(--form-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3),
-                        inset 0 0 10px rgba(0, 123, 255, 0.2);
-            position: relative;
-            z-index: 1;           
-            overflow: hidden;
-            height: 550px; /* Adjusted height */
-        }
-        
-        fieldset {
-            box-sizing: border-box; 
-            border: none;
-            padding: 25px; /* Reduced padding */
-            margin: 0;
-            transition: transform 0.5s ease-in-out, 
-                        opacity 0.4s ease-in-out;
-            scrollbar-width: thin;
-            scrollbar-color: var(--glow-color) var(--input-bg);
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        #page2 {
-            display: flex;
-          .flex-direction: column;
-            height: 100%;
-        }
-        
-        .scrollable-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 10px;
-        }
-        
-        .button-container {
-            flex-shrink: 0;
-            padding-top: 10px;
-        }
+        form {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+            background-color: var(--form-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3),
+                        inset 0 0 10px rgba(0, 123, 255, 0.2);
+            position: relative;
+            z-index: 1;           
+            overflow: hidden;
+            height: 550px;
+        }
+        
+        fieldset {
+            box-sizing: border-box; 
+            border: none;
+            padding: 25px;
+            margin: 0;
+            transition: transform 0.5s ease-in-out, 
+                        opacity 0.4s ease-in-out;
+            scrollbar-width: thin;
+            scrollbar-color: var(--glow-color) var(--input-bg);
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #page2 {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+        
+        .button-container {
+            flex-shrink: 0;
+            padding-top: 10px;
+        }
 
-        fieldset::-webkit-scrollbar { width: 8px; }
-        fieldset::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
-        fieldset::-webkit-scrollbar-thumb { background-color: var(--glow-color); border-radius: 4px; border: 2px solid var(--input-bg); }
+        fieldset::-webkit-scrollbar { width: 8px; }
+        fieldset::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
+        fieldset::-webkit-scrollbar-thumb { background-color: var(--glow-color); border-radius: 4px; border: 2px solid var(--input-bg); }
 
-        #page2, #page3 {
-            position: absolute;
-            top: 0; left: 100%; width: 100%; box-sizing: border-box; opacity: 0;
-        }
+        #page2, #page3 {
+            position: absolute;
+            top: 0; 
+            left: 100%; 
+            width: 100%; 
+            box-sizing: border-box; 
+            opacity: 0;
+        }
 
-        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
-        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
-        
-        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
-        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
-        
-        h2 { 
-            text-align: center; 
-            color: #fff; 
-            margin-top: 0; 
-            margin-bottom: 20px; /* Reduced margin */
-            letter-spacing: 1px; 
-            font-size: 1.5em; /* Slightly smaller */
-        }
-        
-        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
-        
-        .form-group { 
-            margin-bottom: 15px; /* Reduced margin */
-        }
-        
-        label { 
-            display: block; 
-            margin-bottom: 6px; /* Reduced margin */
-            font-weight: 500; 
-            color: var(--text-color); 
-            font-size: 0.9em; /* Smaller labels */
-        }
+        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
+        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
+        
+        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
+        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
+        
+        h2 { 
+            text-align: center; 
+            color: #fff; 
+            margin-top: 0; 
+            margin-bottom: 20px;
+            letter-spacing: 1px; 
+            font-size: 1.5em;
+        }
+        
+        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
+        
+        .form-group { 
+            margin-bottom: 15px;
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 6px;
+            font-weight: 500; 
+            color: var(--text-color); 
+            font-size: 0.9em;
+        }
 
-        input[type="text"], input[type="email"], input[type="password"], select, textarea {
-            width: 100%; 
-            padding: 10px; /* Reduced padding */
-            font-size: 14px; /* Smaller font */
-            font-family: 'Space Grotesk', sans-serif;
-            box-sizing: border-box; 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border-color);
-            color: var(--text-color); 
-            border-radius: 6px; /* Smaller radius */
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
-            outline: none; border-color: var(--glow-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        }
-        
-s       /* Show invalid inputs */
-        input:invalid {
-            border-color: #ff5555;
-            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
-        }
+        input[type="text"], input[type="email"], input[type="password"], select, textarea {
+            width: 100%; 
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+            box-sizing: border-box; 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-color); 
+            border-radius: 6px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+            outline: none; 
+            border-color: var(--glow-color); 
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        /* Show invalid inputs */
+        input:invalid {
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+        }
 
-        ::placeholder { color: var(--placeholder-color); opacity: 1; }
-        textarea { height: 100px; resize: vertical; } /* Smaller textarea */
-        
-        .button, input[type="submit"] {
-            width: 100%; 
-            background-color: var(--glow-color); 
-            color: #ffffff; 
-            padding: 10px 15px; /* Reduced padding */
-            border: none; 
-            border-radius: 6px; /* Smaller radius */
-  s         cursor: pointer; 
-            font-size: 14px; /* Smaller font */
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif; 
-            letter-spacing: 0.5px; 
-s           text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 8px; /* Reduced margin */
-        }
+        ::placeholder { color: var(--placeholder-color); opacity: 1; }
+        textarea { height: 100px; resize: vertical; }
+        
+        .button, input[type="submit"] {
+            width: 100%; 
+            background-color: var(--glow-color); 
+            color: #ffffff; 
+            padding: 10px 15px;
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer; 
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif; 
+            letter-spacing: 0.5px; 
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            margin-bottom: 8px;
+        }
 
-        .button:hover, input[type="submit"]:hover {
-            background-color: #0056b3; box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
-        }
-        .button:active, input[type="submit"]:active { transform: scale(0.98); }
-        
-        .button.secondary { background-color: var(--input-bg); border: 1px solid var(--border-color); }
-        .button.secondary:hover { background-color: var(--border-color); box-shadow: none; }
+        .button:hover, input[type="submit"]:hover {
+            background-color: #0056b3; 
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+        }
+        .button:active, input[type="submit"]:active { transform: scale(0.98); }
+        
+        .button.secondary { 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color); 
+        }
+        .button.secondary:hover { 
+            background-color: var(--border-color); 
+            box-shadow: none; 
+        }
 
-        .footer-text {
-            margin-top: 20px; 
-            font-size: 0.8em; /* Smaller footer */
-            color: var(--footer-text-color); 
-            text-align: center;
-            position: relative; 
-            z-index: 1;
-s       }
-        
-        .google-divider {
-            text-align: center;
-            margin: 15px 0; /* Reduced margin */
-            padding: 15px 0; /* Reduced padding */
-        }
-        
-  s     .google-divider-text {
-            color: var(--text-color);
-            margin-bottom: 12px; /* Reduced margin */
-            font-size: 0.85em; /* Smaller text */
-        }
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: var(--footer-text-color); 
+            text-align: center;
+            position: relative; 
+            z-index: 1;
+        }
+        
+        .google-divider {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px 0;
+        }
+        
+        .google-divider-text {
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-size: 0.85em;
+        }
 
-        #g_id_signin {
-            width: 100% !important;
-            margin: 0 auto !important;
-s       }
+        #g_id_signin {
+            width: 100% !important;
+            margin: 0 auto !important;
+        }
 
-        @media (max-width: 480px) {
-            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
-            fieldset { padding: 20px; }
-            h2 { font-size: 1.3em; margin-bottom: 15px; }
-            .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { padding: 8px; font-size: 14px; }
-            .button, input[type="submit"] { padding: 10px 12px; font-size: 14px; }
-            .google-divider { margin: 12px 0; padding: 12px 0; }
-s   s   }
-        
-        @media (max-width: 360px) {
-            fieldset { padding: 15px; }
-            form { height: 480px; }
-            h2 { font-size: 1.2em; }
-        }
-    </style>
+        @media (max-width: 480px) {
+            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
+            fieldset { padding: 20px; }
+            h2 { font-size: 1.3em; margin-bottom: 15px; }
+            .form-group { margin-bottom: 12px; }
+            input[type="text"], input[type="email"], input[type="password"], select, textarea { padding: 8px; font-size: 14px; }
+            .button, input[type="submit"] { padding: 10px 12px; font-size: 14px; }
+            .google-divider { margin: 12px 0; padding: 12px 0; }
+        }
+        
+        @media (max-width: 360px) {
+            fieldset { padding: 15px; }
+            form { height: 480px; }
+            h2 { font-size: 1.2em; }
+        }
+    </style>
 </head>
 <body>
 
-    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b" method="POST">
-    
-        <fieldset id="page1">
-            <h2>Login</h2>
-            
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required
-                       pattern=".*@gmail\.com$"
-                       title="Email must end with @gmail.com">
-s         </div>
+    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b" method="POST">
+    
+        <fieldset id="page1">
+            <h2>Login</h2>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required
+                       pattern=".*@gmail\.com$"
+                       title="Email must end with @gmail.com">
+            </div>
 
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
-            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
+            </div>
 
-            <button type="button" id="nextButton" class="button">Submit</button>
-            
-            <div class="google-divider">
-                <div class="google-divider-text">Or continue with</div>
-                
-                                <div id="g_id_onload"
-                    s data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="redirect" s                    data-callback="handleGoogleSignIn"
-                     data-login_uri="https://calixto-works.com/"                      data-auto_prompt="false">
-                </div>
-                s               <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-          s          data-theme="outline"
-                     data-text="signin_with"
-              Two   data-size="large"
-                     data-logo_alignment="left"
-                     data-width="350"> 
-                </div>
-            </div>
-        </fieldset>
-        
-        <fieldset id="page2">
-            <h2>Attendance</h2>
-is         <div class="scrollable-content">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
-s               </div>
-                <div class="form-group">
-                    <label for="position">Position:</label>
-  s                 <select id="position" name="position" required>
-                        <option value="">-- Select Position --</option>
-                        <option value="Teacher">Teacher</option>
-s                     <option value="Management">Management</option>
-                    </select>
-                </div>
-                <div class="form-group">
-g                   <label for="specificJobTitle">Specific Job Title:</label>
-                    <select id="specificJobTitle" name="specificJobTitle" required>
-                        <option value="">-- Select Job Title --</option>
-s                     <option value="School Director">School Director</option>
-                      	<option value="Vice Principal">Vice Principal</option>
-                      	<option value="Operation Supervisor">Operation Supervisor</option>
-                      	<option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
-                      	<option value="Lead Teacher">Lead Teacher</option>
-is                   	<option value="Costumer Service Manager">Costumer Service Manager</option>
-s                   	<option value="Marketing Department">Marketing Department</option>
-                      	<option value="Digital Marketing Manager">Digital Marketing Manager</option>
-                      	<option value="Marketing">Marketing</option>
-                      	<option value="International Program Supervisor">International Program Supervisor</option>
-      s             	<option value="Admin">Admin</option>
-                      	<option value="Admin Assistant">Admin Assistant</option>
-                      	<option value="Admin Supervisor">Admin Supervisor</option>
-          s         	<option value="Chinese Coordinator">Chinese Coordinator</option>
-                      	<option value="Khmer Coordinator">Khmer Coordinator</option>
-s                   	<option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
-                      	<option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
-                      	<option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
-s                   	<option value="English Teacher">English Teacher</option>
-                      	<option value="Khmer Teacher">Khmer Teacher</option>
-                      	<option value="Teacher Assistant">Teacher Assistant</option>
-                    </select>
-              	</div>
-              	<div class="form-group">
-                  	<label for="remarks">Remarks:</label>
-  	<textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
-              	</div>
-          	</div>
-          	<div class="button-container">
-              	<input type="submit" value="Submit Attendance">
-              	<button type="button" id="backButton" class="button secondary">Back</button>
-s         </div>
-      	</fieldset>
-      	
-      	<fieldset id="page3">
-          	<h2>Thank You!</h2>
-    s     <p class="thank-you-text">Thank you for your hard work teacher!</p>
-      	</fieldset>
-      	
-  	</form>
+            <button type="button" id="nextButton" class="button">Submit</button>
+            
+            <div class="google-divider">
+                <div class="google-divider-text">Or continue with</div>
+                
+                <div id="g_id_onload"
+                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="350"> 
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset id="page2">
+            <h2>Attendance</h2>
+            <div class="scrollable-content">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <select id="position" name="position" required>
+                        <option value="">-- Select Position --</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Management">Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specificJobTitle">Specific Job Title:</label>
+                    <select id="specificJobTitle" name="specificJobTitle" required>
+                        <option value="">-- Select Job Title --</option>
+                        <option value="School Director">School Director</option>
+                        <option value="Vice Principal">Vice Principal</option>
+                        <option value="Operation Supervisor">Operation Supervisor</option>
+                        <option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
+                        <option value="Lead Teacher">Lead Teacher</option>
+                        <option value="Costumer Service Manager">Costumer Service Manager</option>
+                        <option value="Marketing Department">Marketing Department</option>
+                        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="International Program Supervisor">International Program Supervisor</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Admin Assistant">Admin Assistant</option>
+                        <option value="Admin Supervisor">Admin Supervisor</option>
+                        <option value="Chinese Coordinator">Chinese Coordinator</option>
+                        <option value="Khmer Coordinator">Khmer Coordinator</option>
+                        <option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
+                        <option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
+                        <option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
+                        <option value="English Teacher">English Teacher</option>
+                        <option value="Khmer Teacher">Khmer Teacher</option>
+                        <option value="Teacher Assistant">Teacher Assistant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="remarks">Remarks:</label>
+                    <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
+                </div>
+            </div>
+            <div class="button-container">
+                <input type="submit" value="Submit Attendance">
+                <button type="button" id="backButton" class="button secondary">Back</button>
+            </div>
+        </fieldset>
+        
+        <fieldset id="page3">
+            <h2>Thank You!</h2>
+            <p class="thank-you-text">Thank you for your hard work teacher!</p>
+        </fieldset>
+        
+    </form>
 
-  	<p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
+    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
 
-  	<script>
-      	const form = document.getElementById('multiPageForm');
-      	const nextButton = document.getElementById('nextButton');
-      	const backButton = document.getElementById('backButton');
-      	
-    s 	const page1 = document.getElementById('page1');
-      	const page2 = document.getElementById('page2');
-      	const page3 = document.getElementById('page3');
-      	
-      	nextButton.addEventListener('click', () => {
-          	const emailInput = document.getElementById('email');
-  	const passwordInput = document.getElementById('password');
+    <script>
+        const form = document.getElementById('multiPageForm');
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const page3 = document.getElementById('page3');
+        
+        nextButton.addEventListener('click', () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
 
-          	// Check Email
-          	if (!emailInput.checkValidity()) {
-              	alert(emailInput.title); 
-    s         	emailInput.focus();
-              	return;
-          	}
+            // Check Email
+            if (!emailInput.checkValidity()) {
+                alert(emailInput.title); 
+                emailInput.focus();
+                return;
+            }
 
-          	// Check Password
-          	if (!passwordInput.checkValidity()) {
-              	alert(passwordInput.title); 
-      s       	passwordInput.focus();
-              	return;
-          	}
+            // Check Password
+            if (!passwordInput.checkValidity()) {
+                alert(passwordInput.title); 
+                passwordInput.focus();
+                return;
+            }
 
-          	// All good, move to next page
-s         form.classList.add('show-page-2');
-          	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          	page2.scrollTop = 0;
-      	});
+            // All good, move to next page
+            form.classList.add('show-page-2');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            page2.scrollTop = 0;
+        });
 
-      	
-      	backButton.addEventListener('click', () => {
-          	form.classList.remove('show-page-2');
-          	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          	page1.scrollTop = 0;
+        
+        backButton.addEventListener('click', () => {
+            form.classList.remove('show-page-2');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            page1.scrollTop = 0;
 
-          	// Restore the password field if it was hidden by Google Sign-In
-s         	const passwordInput = document.getElementById('password');
-          	passwordInput.setAttribute('required', 'required');
-          	passwordInput.style.display = 'block'; 
+            // Restore the password field if it was hidden by Google Sign-In
+            const passwordInput = document.getElementById('password');
+            passwordInput.setAttribute('required', 'required');
+            passwordInput.style.display = 'block'; 
 
-          	const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-          	if (passwordLabel) {
-    s       		passwordLabel.style.display = 'block';
-          	}
-      	});
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'block';
+            }
+        });
 
-      	function handleGoogleSignIn(response) {
-s         	console.log('Google Sign-In response:', response);
-          	
-          	const credential = response.credential;
-          	
-          	const payload = JSON.parse(atob(credential.split('.')[1]));
-s         	console.log('Google user info:', payload);
-          	
-          	document.getElementById('email').value = payload.email;
-          	
-          	const passwordInput = document.getElementById('password');
-s         	passwordInput.removeAttribute('required');
-          	passwordInput.style.display = 'none'; 
-          	
-          	const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-          	if (passwordLabel) {
-              	passwordLabel.style.display = 'none';
-  s     	}
-          	
-          	let googleFlag = document.createElement('input');
-          	googleFlag.type = 'hidden';
-          	googleFlag.name = 'google_sign_in';
-          	googleFlag.value = 'true';
-          	form.appendChild(googleFlag);
-          	
-          	let googleToken = document.createElement('input');
-          	googleToken.type = 'hidden';
-          	googleToken.name = 'google_token';
-          	googleToken.value = credential;
-          	form.appendChild(googleToken);
-          	
-          	setTimeout(() => {
-              	form.classList.add('show-page-2');
-s             	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              	page2.scrollTop = 0;
-          	}, 500);
-      	}
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In response:', response);
+            
+            const credential = response.credential;
+            
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+            console.log('Google user info:', payload);
+            
+            document.getElementById('email').value = payload.email;
+            
+            const passwordInput = document.getElementById('password');
+            passwordInput.removeAttribute('required');
+            passwordInput.style.display = 'none'; 
+            
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'none';
+            }
+            
+            let googleFlag = document.createElement('input');
+            googleFlag.type = 'hidden';
+            googleFlag.name = 'google_sign_in';
+            googleFlag.value = 'true';
+            form.appendChild(googleFlag);
+            
+            let googleToken = document.createElement('input');
+            googleToken.type = 'hidden';
+            googleToken.name = 'google_token';
+            googleToken.value = credential;
+            form.appendChild(googleToken);
+            
+            setTimeout(() => {
+                form.classList.add('show-page-2');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                page2.scrollTop = 0;
+            }, 500);
+        }
 
-      	form.addEventListener('submit', (event) => {
-          	event.preventDefault(); 
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); 
 
-s         	const nameInput = document.getElementById('name');
-          	const positionInput = document.getElementById('position');
-          	const specificJobTitleInput = document.getElementById('specificJobTitle');
+            const nameInput = document.getElementById('name');
+            const positionInput = document.getElementById('position');
+            const specificJobTitleInput = document.getElementById('specificJobTitle');
 
-  	if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
-s           	alert('Please fill in your Name, Position, and Specific Job Title.');
-              	return; 
-          	}
+            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
+                alert('Please fill in your Name, Position, and Specific Job Title.');
+                return; 
+            }
 
-          	const submitButton = form.querySelector('input[type="submit"]');
-s         	submitButton.value = 'Submitting...';
-          	submitButton.disabled = true;
+            const submitButton = form.querySelector('input[type="submit"]');
+            submitButton.value = 'Submitting...';
+            submitButton.disabled = true;
 
-          	const formData = new FormData(form);
-          	const data = {};
-          	formData.forEach((value, key) => {
-s             	data[key] = value;
-s       	});
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
 
-          	fetch(form.action, {
-              	method: 'POST',
-              	headers: { 'Content-Type': 'application/json' },
-s             	body: JSON.stringify(data)
-s       	})
-          	.then(response => {
-              	if (!response.ok) { throw new Error('Network response was not ok'); }
-              	const contentType = response.headers.get("content-type");
-      	if (contentType && contentType.indexOf("application/json") !== -1) {
-                  	return response.json();
-              	} else {
-                  	return response.text();
-  	}
-          	})
-          	.then(result => {
-              	console.log('Success:', result);
-              	form.classList.add('show-page-3');
-s             	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-s           	page3.scrollTop = 0;
-          	})
-          	.catch(error => {
-              	console.error('Error:', error);
-s             	alert('Submission failed. Please check your connection and try again.');
-          	})
-          	.finally(() => {
-              	submitButton.value = 'Submit Attendance';
-      	submitButton.disabled = false; 
-          	});
-      	});
+            fetch(form.action, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) { throw new Error('Network response was not ok'); }
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json();
+                } else {
+                    return response.text();
+                }
+            })
+            .then(result => {
+                console.log('Success:', result);
+                form.classList.add('show-page-3');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                page3.scrollTop = 0;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Submission failed. Please check your connection and try again.');
+            })
+            .finally(() => {
+                submitButton.value = 'Submit Attendance';
+                submitButton.disabled = false; 
+            });
+        });
 
-      	window.addEventListener('load', () => {
-          	page1.scrollTop = 0;
-s         	page2.scrollTop = 0;
-          	page3.scrollTop = 0;
-      	});
-  	</script>
+        window.addEventListener('load', () => {
+            page1.scrollTop = 0;
+            page2.scrollTop = 0;
+            page3.scrollTop = 0;
+        });
+    </script>
 
-  	<script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </body>
 </html>
