@@ -19,20 +19,12 @@
             --placeholder-color: #7a7a9a;
             --footer-text-color: #5f5f7f;
             --scanline-color: rgba(0, 123, 255, 0.07);  
-            --error-color: #ff4444;
-            --success-color: #44ff44;
+            --success-color: #28a745;
         }
 
         * {
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        input, textarea, select {
-            -webkit-user-select: text;
-            user-select: text;
         }
 
         body {
@@ -48,7 +40,6 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative; 
-            touch-action: manipulation;
         }
 
         body::before {
@@ -97,11 +88,8 @@
             margin: 0;
             transition: transform 0.5s ease-in-out, 
                         opacity 0.4s ease-in-out;
-            scrollbar-width: thin;
-            scrollbar-color: var(--glow-color) var(--input-bg);
             height: 100%;
             overflow: hidden;
-            -webkit-overflow-scrolling: touch;
         }
         
         #page2 {
@@ -114,17 +102,12 @@
             flex: 1;
             overflow-y: auto;
             padding-bottom: 10px;
-            -webkit-overflow-scrolling: touch;
         }
         
         .button-container {
             flex-shrink: 0;
             padding-top: 10px;
         }
-
-        fieldset::-webkit-scrollbar { width: 8px; }
-        fieldset::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
-        fieldset::-webkit-scrollbar-thumb { background-color: var(--glow-color); border-radius: 4px; border: 2px solid var(--input-bg); }
 
         #page2, #page3 {
             position: absolute;
@@ -146,7 +129,6 @@
             color: #fff; 
             margin-top: 0; 
             margin-bottom: 20px;
-            letter-spacing: 1px; 
             font-size: 1.5em;
         }
         
@@ -167,7 +149,7 @@
         input[type="text"], input[type="email"], input[type="password"], select, textarea {
             width: 100%; 
             padding: 12px;
-            font-size: 16px; /* Larger font for mobile */
+            font-size: 16px;
             font-family: 'Space Grotesk', sans-serif;
             box-sizing: border-box; 
             background-color: var(--input-bg); 
@@ -175,8 +157,6 @@
             color: var(--text-color); 
             border-radius: 6px;
             transition: border-color 0.3s, box-shadow 0.3s;
-            -webkit-appearance: none;
-            appearance: none;
         }
         
         input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
@@ -185,10 +165,9 @@
             box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
         }
         
-        /* Show invalid inputs */
         input:invalid {
-            border-color: var(--error-color);
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
         }
 
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
@@ -210,7 +189,6 @@
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
             margin-bottom: 8px;
             min-height: 48px;
-            touch-action: manipulation;
         }
 
         .button:hover, input[type="submit"]:hover {
@@ -252,43 +230,17 @@
         #g_id_signin {
             width: 100% !important;
             margin: 0 auto !important;
-            min-height: 44px !important;
         }
 
-        .google-signin-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 44px;
-        }
-
-        .mobile-warning {
-            background-color: rgba(255, 193, 7, 0.2);
-            border: 1px solid rgba(255, 193, 7, 0.5);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            text-align: center;
-            font-size: 0.8em;
-            display: none;
-        }
-
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .error-message {
-            background-color: rgba(255, 68, 68, 0.2);
-            border: 1px solid var(--error-color);
+        .success-message {
+            background-color: rgba(40, 167, 69, 0.2);
+            border: 1px solid var(--success-color);
             color: var(--text-color);
             padding: 10px;
             border-radius: 6px;
             margin: 10px 0;
             text-align: center;
             font-size: 0.9em;
-            display: none;
         }
 
         @media (max-width: 480px) {
@@ -296,50 +248,20 @@
             fieldset { padding: 20px; }
             h2 { font-size: 1.3em; margin-bottom: 15px; }
             .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
-                padding: 12px; 
-                font-size: 16px; 
-            }
-            .button, input[type="submit"] { 
-                padding: 14px 12px; 
-                font-size: 16px; 
-                min-height: 48px;
-            }
-            .google-divider { margin: 12px 0; padding: 12px 0; }
-            .mobile-warning { display: block; }
-        }
-        
-        @media (max-width: 360px) {
-            fieldset { padding: 15px; }
-            form { height: 480px; }
-            h2 { font-size: 1.2em; }
-        }
-
-        /* Mobile-specific optimizations */
-        @media (hover: none) and (pointer: coarse) {
-            .button, input[type="submit"] {
-                padding: 16px 15px;
-            }
-            
-            input[type="text"], input[type="email"], input[type="password"], select, textarea {
-                font-size: 16px;
-                padding: 14px;
-            }
+            input[type="text"], input[type="email"], input[type="password"], select, textarea { padding: 12px; font-size: 16px; }
+            .button, input[type="submit"] { padding: 14px 12px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
-    <form id="multiPageForm" action="https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b" method="POST">
-    
+    <form id="multiPageForm">
         <fieldset id="page1">
             <h2>Login</h2>
             
-            <div class="mobile-warning" id="mobileWarning">
-                💡 For best experience on mobile, ensure you're using the latest browser version.
+            <div class="success-message">
+                ✅ Google Security Active
             </div>
-            
-            <div class="error-message" id="errorMessage"></div>
             
             <div class="form-group">
                 <label for="email">Email:</label>
@@ -360,25 +282,23 @@
             <div class="google-divider">
                 <div class="google-divider-text">Or continue with</div>
                 
-                <div class="google-signin-container">
-                    <div id="g_id_onload"
-                         data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
-                         data-context="signin"
-                         data-ux_mode="redirect"
-                         data-login_uri="https://calixto-works.com/"
-                         data-callback="handleGoogleSignIn"
-                         data-auto_prompt="false">
-                    </div>
-                    
-                    <div class="g_id_signin"
-                         data-type="standard"
-                         data-shape="rectangular"
-                         data-theme="outline"
-                         data-text="signin_with"
-                         data-size="large"
-                         data-logo_alignment="left"
-                         data-width="300">
-                    </div>
+                <!-- Google Sign-In -->
+                <div id="g_id_onload"
+                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="350">
                 </div>
             </div>
         </fieldset>
@@ -431,7 +351,7 @@
                 </div>
             </div>
             <div class="button-container">
-                <input type="submit" value="Submit Attendance">
+                <button type="button" id="submitButton" class="button">Submit Attendance</button>
                 <button type="button" id="backButton" class="button secondary">Back</button>
             </div>
         </fieldset>
@@ -440,83 +360,50 @@
             <h2>Thank You!</h2>
             <p class="thank-you-text">Thank you for your hard work teacher!</p>
         </fieldset>
-        
     </form>
 
-    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
+    <p class="footer-text">Powered by Google Security & CJ_Works</p>
 
     <script>
         const form = document.getElementById('multiPageForm');
         const nextButton = document.getElementById('nextButton');
         const backButton = document.getElementById('backButton');
-        const errorMessage = document.getElementById('errorMessage');
-        const mobileWarning = document.getElementById('mobileWarning');
+        const submitButton = document.getElementById('submitButton');
         
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const page3 = document.getElementById('page3');
 
-        // Check if mobile device
-        function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-        }
+        // Webhook URL
+        const WEBHOOK_URL = 'https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b';
 
-        // Show error message
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        // Mobile-specific optimizations
-        if (isMobileDevice()) {
-            document.body.classList.add('mobile-device');
-            // Add touch event listeners for better mobile UX
-            nextButton.addEventListener('touchstart', function(e) {
-                this.style.transform = 'scale(0.98)';
-            });
-            
-            nextButton.addEventListener('touchend', function(e) {
-                this.style.transform = 'scale(1)';
-            });
-        }
-        
         nextButton.addEventListener('click', () => {
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            // Check Email
             if (!emailInput.checkValidity()) {
-                showError(emailInput.title);
+                alert(emailInput.title);
                 emailInput.focus();
                 return;
             }
 
-            // Check Password
             if (!passwordInput.checkValidity()) {
-                showError(passwordInput.title);
+                alert(passwordInput.title);
                 passwordInput.focus();
                 return;
             }
 
-            // All good, move to next page
             form.classList.add('show-page-2');
-            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             page2.scrollTop = 0;
         });
 
-        
         backButton.addEventListener('click', () => {
             form.classList.remove('show-page-2');
-            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             page1.scrollTop = 0;
 
-            // Restore the password field if it was hidden by Google Sign-In
             const passwordInput = document.getElementById('password');
             passwordInput.setAttribute('required', 'required');
-            passwordInput.style.display = 'block'; 
+            passwordInput.style.display = 'block';
 
             const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
             if (passwordLabel) {
@@ -525,144 +412,93 @@
         });
 
         function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
-            
-            if (!response || !response.credential) {
-                showError('Google Sign-In failed. Please try again.');
-                return;
-            }
+            console.log('Google Sign-In successful:', response);
             
             const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
             
-            try {
-                const payload = JSON.parse(atob(credential.split('.')[1]));
-                console.log('Google user info:', payload);
-                
-                document.getElementById('email').value = payload.email;
-                
-                const passwordInput = document.getElementById('password');
-                passwordInput.removeAttribute('required');
-                passwordInput.style.display = 'none'; 
-                
-                const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-                if (passwordLabel) {
-                    passwordLabel.style.display = 'none';
-                }
-                
-                let googleFlag = document.createElement('input');
-                googleFlag.type = 'hidden';
-                googleFlag.name = 'google_sign_in';
-                googleFlag.value = 'true';
-                form.appendChild(googleFlag);
-                
-                let googleToken = document.createElement('input');
-                googleToken.type = 'hidden';
-                googleToken.name = 'google_token';
-                googleToken.value = credential;
-                form.appendChild(googleToken);
-                
-                setTimeout(() => {
-                    form.classList.add('show-page-2');
-                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    page2.scrollTop = 0;
-                }, 500);
-            } catch (error) {
-                console.error('Error processing Google Sign-In:', error);
-                showError('Error processing Google Sign-In. Please try manual login.');
+            document.getElementById('email').value = payload.email;
+            
+            const passwordInput = document.getElementById('password');
+            passwordInput.removeAttribute('required');
+            passwordInput.style.display = 'none';
+            
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'none';
             }
+            
+            let googleFlag = document.createElement('input');
+            googleFlag.type = 'hidden';
+            googleFlag.name = 'google_sign_in';
+            googleFlag.value = 'true';
+            form.appendChild(googleFlag);
+            
+            let googleToken = document.createElement('input');
+            googleToken.type = 'hidden';
+            googleToken.name = 'google_token';
+            googleToken.value = credential;
+            form.appendChild(googleToken);
+            
+            setTimeout(() => {
+                form.classList.add('show-page-2');
+                page2.scrollTop = 0;
+            }, 500);
         }
 
-        // Handle Google Sign-In errors
-        window.handleGoogleSignInError = function(error) {
-            console.error('Google Sign-In error:', error);
-            showError('Google Sign-In failed. Please try again or use manual login.');
-        };
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault(); 
-
+        submitButton.addEventListener('click', async () => {
             const nameInput = document.getElementById('name');
             const positionInput = document.getElementById('position');
             const specificJobTitleInput = document.getElementById('specificJobTitle');
 
             if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
-                showError('Please fill in your Name, Position, and Specific Job Title.');
-                return; 
+                alert('Please fill in your Name, Position, and Specific Job Title.');
+                return;
             }
 
-            const submitButton = form.querySelector('input[type="submit"]');
-            submitButton.value = 'Submitting...';
+            submitButton.textContent = 'Submitting...';
             submitButton.disabled = true;
-            form.classList.add('loading');
 
-            const formData = new FormData(form);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
+            const formData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                name: nameInput.value,
+                position: positionInput.value,
+                specificJobTitle: specificJobTitleInput.value,
+                remarks: document.getElementById('remarks').value,
+                google_sign_in: document.querySelector('input[name="google_sign_in"]')?.value || 'false',
+                google_token: document.querySelector('input[name="google_token"]')?.value || '',
+                timestamp: new Date().toISOString()
+            };
 
-            fetch(form.action, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) { throw new Error('Network response was not ok'); }
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    return response.json();
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    form.classList.add('show-page-3');
+                    page3.scrollTop = 0;
                 } else {
-                    return response.text();
+                    throw new Error('Submission failed');
                 }
-            })
-            .then(result => {
-                console.log('Success:', result);
-                form.classList.add('show-page-3');
-                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                page3.scrollTop = 0;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showError('Submission failed. Please check your connection and try again.');
-            })
-            .finally(() => {
-                submitButton.value = 'Submit Attendance';
-                submitButton.disabled = false; 
-                form.classList.remove('loading');
-            });
+            } catch (error) {
+                alert('Submission failed. Please try again.');
+            } finally {
+                submitButton.textContent = 'Submit Attendance';
+                submitButton.disabled = false;
+            }
         });
 
         window.addEventListener('load', () => {
             page1.scrollTop = 0;
             page2.scrollTop = 0;
             page3.scrollTop = 0;
-            
-            // Check if Google Sign-In script loaded
-            setTimeout(() => {
-                if (typeof google === 'undefined') {
-                    showError('Google Sign-In may not be available. Please check your connection.');
-                }
-            }, 2000);
         });
-
-        // Prevent zoom on input focus for mobile
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(e) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
     </script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-
 </body>
 </html>
