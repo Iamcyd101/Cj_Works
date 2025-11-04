@@ -173,7 +173,7 @@
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
         textarea { height: 100px; resize: vertical; }
         
-        .button, input[type="submit"] {
+        .button {
             width: 100%; 
             background-color: var(--glow-color); 
             color: #ffffff; 
@@ -191,11 +191,11 @@
             min-height: 48px;
         }
 
-        .button:hover, input[type="submit"]:hover {
+        .button:hover, .button:active { 
             background-color: #0056b3; 
             box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+            transform: scale(0.98);
         }
-        .button:active, input[type="submit"]:active { transform: scale(0.98); }
         
         .button.secondary { 
             background-color: var(--input-bg); 
@@ -232,7 +232,7 @@
             margin: 0 auto !important;
         }
 
-        .success-message {
+        .universal-login {
             background-color: rgba(40, 167, 69, 0.2);
             border: 1px solid var(--success-color);
             color: var(--text-color);
@@ -248,8 +248,14 @@
             fieldset { padding: 20px; }
             h2 { font-size: 1.3em; margin-bottom: 15px; }
             .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { padding: 12px; font-size: 16px; }
-            .button, input[type="submit"] { padding: 14px 12px; font-size: 16px; }
+            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
+                padding: 12px; 
+                font-size: 16px; 
+            }
+            .button { 
+                padding: 14px 12px; 
+                font-size: 16px; 
+            }
         }
     </style>
 </head>
@@ -259,10 +265,10 @@
         <fieldset id="page1">
             <h2>Login</h2>
             
-            <div class="success-message">
-                ✅ Google Security Active
+            <div class="universal-login">
+                ✅ Works in Safari, Chrome & All Browsers
             </div>
-            
+
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required
@@ -362,7 +368,7 @@
         </fieldset>
     </form>
 
-    <p class="footer-text">Powered by Google Security & CJ_Works</p>
+    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
 
     <script>
         const form = document.getElementById('multiPageForm');
@@ -412,7 +418,7 @@
         });
 
         function handleGoogleSignIn(response) {
-            console.log('Google Sign-In successful:', response);
+            console.log('Google Sign-In response:', response);
             
             const credential = response.credential;
             const payload = JSON.parse(atob(credential.split('.')[1]));
