@@ -20,6 +20,7 @@
             --footer-text-color: #5f5f7f;
             --scanline-color: rgba(0, 123, 255, 0.07);  
             --success-color: #28a745;
+            --warning-color: #ffc107;
         }
 
         * {
@@ -78,7 +79,7 @@
             position: relative;
             z-index: 1;           
             overflow: hidden;
-            height: 550px;
+            height: 650px;
         }
         
         fieldset {
@@ -92,10 +93,19 @@
             overflow: hidden;
         }
         
-        #page2 {
+        #page1 {
             display: flex;
             flex-direction: column;
             height: 100%;
+        }
+        
+        #page2 {
+            position: absolute;
+            top: 0; 
+            left: 100%; 
+            width: 100%; 
+            box-sizing: border-box; 
+            opacity: 0;
         }
         
         .scrollable-content {
@@ -109,20 +119,8 @@
             padding-top: 10px;
         }
 
-        #page2, #page3 {
-            position: absolute;
-            top: 0; 
-            left: 100%; 
-            width: 100%; 
-            box-sizing: border-box; 
-            opacity: 0;
-        }
-
         form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
         form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
-        
-        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
-        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
         
         h2 { 
             text-align: center; 
@@ -146,7 +144,7 @@
             font-size: 0.9em;
         }
 
-        input[type="text"], input[type="email"], input[type="password"], select, textarea {
+        input[type="text"], input[type="email"], select, textarea {
             width: 100%; 
             padding: 12px;
             font-size: 16px;
@@ -159,7 +157,7 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+        input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
             outline: none; 
             border-color: var(--glow-color); 
             box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
@@ -171,7 +169,7 @@
         }
 
         ::placeholder { color: var(--placeholder-color); opacity: 1; }
-        textarea { height: 100px; resize: vertical; }
+        textarea { height: 80px; resize: vertical; }
         
         .button {
             width: 100%; 
@@ -196,7 +194,7 @@
             box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
             transform: scale(0.98);
         }
-        
+
         .button.secondary { 
             background-color: var(--input-bg); 
             border: 1px solid var(--border-color); 
@@ -204,6 +202,21 @@
         .button.secondary:hover { 
             background-color: var(--border-color); 
             box-shadow: none; 
+        }
+
+        .button.warning { 
+            background-color: var(--warning-color); 
+            color: #000; 
+        }
+        .button.warning:hover { 
+            background-color: #e0a800; 
+        }
+
+        .button.success { 
+            background-color: var(--success-color); 
+        }
+        .button.success:hover { 
+            background-color: #218838; 
         }
 
         .footer-text {
@@ -214,47 +227,106 @@
             position: relative; 
             z-index: 1;
         }
-        
-        .google-divider {
-            text-align: center;
+
+        /* Photo Section Styles */
+        .photo-section {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
             margin: 15px 0;
-            padding: 15px 0;
-        }
-        
-        .google-divider-text {
-            color: var(--text-color);
-            margin-bottom: 12px;
-            font-size: 0.85em;
+            background-color: rgba(34, 34, 58, 0.5);
         }
 
-        #g_id_signin {
-            width: 100% !important;
-            margin: 0 auto !important;
-        }
-
-        .universal-login {
-            background-color: rgba(40, 167, 69, 0.2);
-            border: 1px solid var(--success-color);
-            color: var(--text-color);
-            padding: 10px;
+        .photo-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
             border-radius: 6px;
+            border: 1px solid var(--border-color);
             margin: 10px 0;
+            display: none;
+        }
+
+        .camera-container {
+            width: 100%;
+            height: 200px;
+            background-color: var(--input-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .camera-placeholder {
             text-align: center;
-            font-size: 0.9em;
+            color: var(--placeholder-color);
+            padding: 20px;
+        }
+
+        .photo-option-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .photo-option-buttons .button {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .photo-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .photo-buttons .button {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .photo-required {
+            color: var(--warning-color);
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .upload-info {
+            font-size: 0.8em;
+            color: var(--placeholder-color);
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .hidden {
+            display: none;
         }
 
         @media (max-width: 480px) {
-            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
+            form { margin: 10px; max-width: calc(100% - 20px); height: 600px; }
             fieldset { padding: 20px; }
             h2 { font-size: 1.3em; margin-bottom: 15px; }
             .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
+            input[type="text"], input[type="email"], select, textarea { 
                 padding: 12px; 
                 font-size: 16px; 
             }
             .button { 
                 padding: 14px 12px; 
                 font-size: 16px; 
+            }
+            .camera-container {
+                height: 150px;
             }
         }
     </style>
@@ -263,54 +335,7 @@
 
     <form id="multiPageForm">
         <fieldset id="page1">
-            <h2>Login</h2>
-            
-            <div class="universal-login">
-                ✅ Google Security Active
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required
-                       pattern=".*@gmail\.com$"
-                       title="Email must end with @gmail.com">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
-            </div>
-
-            <button type="button" id="nextButton" class="button">Submit</button>
-            
-            <div class="google-divider">
-                <div class="google-divider-text">Or continue with</div>
-                
-                <!-- Google Sign-In -->
-                <div id="g_id_onload"
-                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleSignIn"
-                     data-auto_prompt="false">
-                </div>
-                
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signin_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     data-width="350">
-                </div>
-            </div>
-        </fieldset>
-        
-        <fieldset id="page2">
-            <h2>♦️ Attendance</h2>
+            <h2>Attendance</h2>
             <div class="scrollable-content">
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -355,103 +380,245 @@
                     <label for="remarks">Remarks:</label>
                     <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
                 </div>
+
+                <!-- Photo Proof Section -->
+                <div class="form-group">
+                    <label for="photo">Photo Proof: <span class="photo-required">(Required)</span></label>
+                    <div class="photo-section">
+                        <!-- Option Selection -->
+                        <div class="photo-option-buttons">
+                            <button type="button" id="takePhotoOption" class="button secondary">📸 Take Photo</button>
+                            <button type="button" id="uploadPhotoOption" class="button secondary">📁 Upload Photo</button>
+                        </div>
+
+                        <!-- Take Photo Interface -->
+                        <div id="takePhotoInterface" class="hidden">
+                            <div class="camera-container">
+                                <video id="video" autoplay playsinline></video>
+                                <canvas id="canvas" style="display: none;"></canvas>
+                                <div class="camera-placeholder" id="cameraPlaceholder">
+                                    Click "Start Camera" below
+                                </div>
+                            </div>
+                            <div class="photo-buttons">
+                                <button type="button" id="startCamera" class="button">Start Camera</button>
+                                <button type="button" id="capturePhoto" class="button warning" disabled>Take Photo</button>
+                            </div>
+                        </div>
+
+                        <!-- Upload Photo Interface -->
+                        <div id="uploadPhotoInterface" class="hidden">
+                            <div class="camera-container">
+                                <div class="camera-placeholder" id="uploadPlaceholder">
+                                    📁 Select a photo to upload
+                                </div>
+                            </div>
+                            <input type="file" id="fileInput" accept="image/*" class="hidden">
+                            <div class="photo-buttons">
+                                <button type="button" id="chooseFile" class="button">Choose File</button>
+                                <button type="button" id="useCameraInstead" class="button secondary">Use Camera Instead</button>
+                            </div>
+                            <p class="upload-info">Supported formats: JPG, PNG, WebP</p>
+                        </div>
+
+                        <!-- Photo Preview -->
+                        <img id="photoPreview" class="photo-preview" alt="Captured photo">
+                        
+                        <!-- Action Buttons (shown after photo is captured/uploaded) -->
+                        <div class="photo-buttons">
+                            <button type="button" id="changePhoto" class="button secondary" style="display: none;">Change Photo</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="button-container">
-                <button type="button" id="submitButton" class="button">Submit Attendance</button>
-                <button type="button" id="backButton" class="button secondary">Back</button>
+                <button type="button" id="submitButton" class="button" disabled>Submit Attendance</button>
             </div>
         </fieldset>
         
-        <fieldset id="page3">
-            <h2>♦️Thank You!</h2>
+        <fieldset id="page2">
+            <h2>Thank You!</h2>
             <p class="thank-you-text">Thank you for your hard work teacher!</p>
+            <p class="thank-you-text">Your attendance has been recorded with photo proof.</p>
         </fieldset>
     </form>
 
-    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
+    <p class="footer-text">Powered by CJ_Works</p>
 
     <script>
         const form = document.getElementById('multiPageForm');
-        const nextButton = document.getElementById('nextButton');
-        const backButton = document.getElementById('backButton');
         const submitButton = document.getElementById('submitButton');
         
+        // Photo option elements
+        const takePhotoOption = document.getElementById('takePhotoOption');
+        const uploadPhotoOption = document.getElementById('uploadPhotoOption');
+        const takePhotoInterface = document.getElementById('takePhotoInterface');
+        const uploadPhotoInterface = document.getElementById('uploadPhotoInterface');
+        
+        // Camera elements
+        const startCameraButton = document.getElementById('startCamera');
+        const capturePhotoButton = document.getElementById('capturePhoto');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        
+        // Upload elements
+        const chooseFileButton = document.getElementById('chooseFile');
+        const useCameraInsteadButton = document.getElementById('useCameraInstead');
+        const fileInput = document.getElementById('fileInput');
+        
+        // Common elements
+        const photoPreview = document.getElementById('photoPreview');
+        const changePhotoButton = document.getElementById('changePhoto');
+        const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
-        const page3 = document.getElementById('page3');
 
         // Webhook URL
         const WEBHOOK_URL = 'https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b';
 
-        nextButton.addEventListener('click', () => {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
+        let stream = null;
+        let photoData = null;
+        let currentMode = null; // 'camera' or 'upload'
 
-            if (!emailInput.checkValidity()) {
-                alert(emailInput.title);
-                emailInput.focus();
-                return;
-            }
-
-            if (!passwordInput.checkValidity()) {
-                alert(passwordInput.title);
-                passwordInput.focus();
-                return;
-            }
-
-            form.classList.add('show-page-2');
-            page2.scrollTop = 0;
+        // Photo Option Selection
+        takePhotoOption.addEventListener('click', () => {
+            takePhotoInterface.classList.remove('hidden');
+            uploadPhotoInterface.classList.add('hidden');
+            currentMode = 'camera';
+            resetPhotoState();
         });
 
-        backButton.addEventListener('click', () => {
-            form.classList.remove('show-page-2');
-            page1.scrollTop = 0;
+        uploadPhotoOption.addEventListener('click', () => {
+            uploadPhotoInterface.classList.remove('hidden');
+            takePhotoInterface.classList.add('hidden');
+            currentMode = 'upload';
+            resetPhotoState();
+        });
 
-            const passwordInput = document.getElementById('password');
-            passwordInput.setAttribute('required', 'required');
-            passwordInput.style.display = 'block';
-
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'block';
+        // Camera Functions
+        startCameraButton.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                });
+                
+                video.srcObject = stream;
+                video.style.display = 'block';
+                cameraPlaceholder.style.display = 'none';
+                startCameraButton.disabled = true;
+                startCameraButton.textContent = 'Camera Active';
+                capturePhotoButton.disabled = false;
+                
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Unable to access camera. Please make sure you have granted camera permissions and try again.');
             }
         });
 
-        function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
+        capturePhotoButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            const credential = response.credential;
-            const payload = JSON.parse(atob(credential.split('.')[1]));
+            // Convert to data URL
+            photoData = canvas.toDataURL('image/jpeg', 0.8);
+            displayPhotoPreview(photoData);
             
-            document.getElementById('email').value = payload.email;
-            
-            const passwordInput = document.getElementById('password');
-            passwordInput.removeAttribute('required');
-            passwordInput.style.display = 'none';
-            
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'none';
+            // Stop camera stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
             }
             
-            let googleFlag = document.createElement('input');
-            googleFlag.type = 'hidden';
-            googleFlag.name = 'google_sign_in';
-            googleFlag.value = 'true';
-            form.appendChild(googleFlag);
+            video.style.display = 'none';
+            capturePhotoButton.disabled = true;
+            startCameraButton.textContent = 'Camera Off';
             
-            let googleToken = document.createElement('input');
-            googleToken.type = 'hidden';
-            googleToken.name = 'google_token';
-            googleToken.value = credential;
-            form.appendChild(googleToken);
+            enableSubmission();
+        });
+
+        // Upload Functions
+        chooseFileButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    photoData = e.target.result;
+                    displayPhotoPreview(photoData);
+                    enableSubmission();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        useCameraInsteadButton.addEventListener('click', () => {
+            takePhotoOption.click();
+        });
+
+        // Common Functions
+        changePhotoButton.addEventListener('click', () => {
+            resetPhotoState();
+            if (currentMode === 'camera') {
+                takePhotoOption.click();
+            } else {
+                uploadPhotoOption.click();
+            }
+        });
+
+        function displayPhotoPreview(dataUrl) {
+            photoPreview.src = dataUrl;
+            photoPreview.style.display = 'block';
+            changePhotoButton.style.display = 'block';
             
-            setTimeout(() => {
-                form.classList.add('show-page-2');
-                page2.scrollTop = 0;
-            }, 500);
+            if (currentMode === 'camera') {
+                cameraPlaceholder.style.display = 'none';
+            } else {
+                uploadPlaceholder.style.display = 'none';
+            }
         }
 
+        function resetPhotoState() {
+            photoPreview.style.display = 'none';
+            changePhotoButton.style.display = 'none';
+            photoData = null;
+            submitButton.disabled = true;
+            
+            // Reset camera
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            video.style.display = 'none';
+            cameraPlaceholder.style.display = 'block';
+            startCameraButton.disabled = false;
+            startCameraButton.textContent = 'Start Camera';
+            capturePhotoButton.disabled = true;
+            
+            // Reset upload
+            uploadPlaceholder.style.display = 'block';
+            fileInput.value = '';
+        }
+
+        function enableSubmission() {
+            submitButton.disabled = false;
+        }
+
+        // Submit attendance
         submitButton.addEventListener('click', async () => {
             const nameInput = document.getElementById('name');
             const positionInput = document.getElementById('position');
@@ -462,18 +629,21 @@
                 return;
             }
 
+            if (!photoData) {
+                alert('Please provide a photo as proof of attendance.');
+                return;
+            }
+
             submitButton.textContent = 'Submitting...';
             submitButton.disabled = true;
 
             const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
                 name: nameInput.value,
                 position: positionInput.value,
                 specificJobTitle: specificJobTitleInput.value,
                 remarks: document.getElementById('remarks').value,
-                google_sign_in: document.querySelector('input[name="google_sign_in"]')?.value || 'false',
-                google_token: document.querySelector('input[name="google_token"]')?.value || '',
+                photo: photoData,
+                photoMode: currentMode,
                 timestamp: new Date().toISOString()
             };
 
@@ -485,8 +655,8 @@
                 });
 
                 if (response.ok) {
-                    form.classList.add('show-page-3');
-                    page3.scrollTop = 0;
+                    form.classList.add('show-page-2');
+                    page2.scrollTop = 0;
                 } else {
                     throw new Error('Submission failed');
                 }
@@ -498,17 +668,17 @@
             }
         });
 
+        // Clean up camera stream when leaving page
+        window.addEventListener('beforeunload', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+
         window.addEventListener('load', () => {
             page1.scrollTop = 0;
             page2.scrollTop = 0;
-            page3.scrollTop = 0;
         });
     </script>
-
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>
-
-
-
-
