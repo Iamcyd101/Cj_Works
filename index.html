@@ -1,567 +1,267 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Attendance</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+import React, { useState, useEffect } from 'react';
+import { Zap, Brain, BookOpen, Crown, CheckCircle, XCircle, ArrowRight, Lightbulb } from 'lucide-react';
 
-    <style>
-        :root {
-            --dark-bg: #1a1a2e;        
-            --form-bg: #0f0f1c;        
-            --border-color: #3f3f6e;   
-            --glow-color: #007bff;     
-            --text-color: #e0e0e0;     
-            --input-bg: #22223a;       
-            --placeholder-color: #7a7a9a;
-            --footer-text-color: #5f5f7f;
-            --scanline-color: rgba(0, 123, 255, 0.07);  
-            --success-color: #28a745;
-        }
+// --- Data Structure for Rounds & Questions ---
+const gameData = [
+    {
+        id: 1,
+        title: "Round 1: Speed & Accuracy",
+        color: "bg-green-500",
+        icon: Zap,
+        questions: [
+            { q: "2, 4, 6, ___, 10", a: "8", type: "input", hint: "Skip counting by 2s" },
+            { q: "8 + 7 = ?", a: "15", type: "input" },
+            { q: "15 - 9 = ?", a: "6", type: "input" },
+            { q: "Which number is the biggest?", options: ["8", "12", "20", "1"], a: "20", type: "mcq" },
+            { q: "Write 'Twelve' in numbers.", a: "12", type: "input" }
+        ]
+    },
+    {
+        id: 2,
+        title: "Round 2: Logical Thinking",
+        color: "bg-blue-500",
+        icon: Brain,
+        questions: [
+            { q: "5 + ⭐ = 12. What is ⭐?", a: "7", type: "input" },
+            { q: "Triangle, Circle, Triangle, Triangle, Circle, Triangle, Triangle, Triangle... What comes next?", options: ["Triangle", "Circle", "Square"], a: "Circle", type: "mcq" },
+            { q: "I am > 10 and < 15. If you add 1 to me, I become 14. What am I?", a: "13", type: "input" },
+            { q: "Balance: 4 + 6 = ___ + 5", a: "5", type: "input" },
+            { q: "How many small triangles in a square with an X inside?", options: ["2", "4", "8"], a: "4", type: "mcq" }
+        ]
+    },
+    {
+        id: 3,
+        title: "Round 3: Word Problems",
+        color: "bg-orange-500",
+        icon: BookOpen,
+        questions: [
+            { q: "Cat is 3rd. Dog is Last. There are 4 animals between them. What position is Dog?", a: "8", type: "input", suffix: "th" },
+            { q: "Ken has 10 candies. Gives Tim 3. Gives Ben 5. How many left?", a: "2", type: "input" },
+            { q: "Bus has 8 kids. 3 get off. 5 get on. Total now?", a: "10", type: "input" }
+        ]
+    },
+    {
+        id: 4,
+        title: "Round 4: Genius Challenge",
+        color: "bg-purple-600",
+        icon: Crown,
+        questions: [
+            { q: "Cards: 1, 5, 9. Make the largest 2-digit number.", a: "95", type: "input" },
+            { q: "Sam is 6. In 3 years, he will be half his sister's age. How old is sister NOW?", a: "15", type: "input", hint: "Sam will be 9. Sister will be 18." }
+        ]
+    }
+];
 
-        * {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-        }
+export default function App() {
+    const [gameState, setGameState] = useState('welcome'); // welcome, roundIntro, playing, result
+    const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
+    const [currentQIdx, setCurrentQIdx] = useState(0);
+    const [score, setScore] = useState(0);
+    const [inputVal, setInputVal] = useState("");
+    const [feedback, setFeedback] = useState(null); // 'correct', 'wrong', null
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative; 
-        }
+    const currentRound = gameData[currentRoundIdx];
+    const currentQ = currentRound ? currentRound.questions[currentQIdx] : null;
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent 0,
-                transparent 3px,
-                var(--scanline-color) 3px,
-                var(--scanline-color) 4px
-            );
-            background-size: 100% 4px;
-            animation: scanlines 0.4s linear infinite;
-        }
+    // --- Handlers ---
+    const startGame = () => {
+        setGameState('roundIntro');
+    };
 
-        @keyframes scanlines {
-            from { background-position: 0 0; }
-            to { background-position: 0 -4px; }
-        }
+    const startRound = () => {
+        setGameState('playing');
+    };
 
-        form {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px;
-            background-color: var(--form-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 
-                0 0 5px rgba(0, 123, 255, 0.3),
-                inset 0 0 5px rgba(0, 123, 255, 0.2);
-            position: relative;
-            z-index: 1;           
-            overflow: hidden;
-            height: 550px;
-            animation: ledBeat 2s ease-in-out infinite;
-        }
+    const handleAnswer = (val) => {
+        const isCorrect = val.toString().toLowerCase() === currentQ.a.toString().toLowerCase();
         
-        @keyframes ledBeat {
-            0% {
-                box-shadow: 
-                    0 0 5px rgba(0, 123, 255, 0.3),
-                    inset 0 0 5px rgba(0, 123, 255, 0.2);
-                border-color: var(--border-color);
-            }
-            50% {
-                box-shadow: 
-                    0 0 20px rgba(0, 123, 255, 0.8),
-                    0 0 30px rgba(0, 123, 255, 0.4),
-                    inset 0 0 15px rgba(0, 123, 255, 0.3);
-                border-color: var(--glow-color);
-            }
-            100% {
-                box-shadow: 
-                    0 0 5px rgba(0, 123, 255, 0.3),
-                    inset 0 0 5px rgba(0, 123, 255, 0.2);
-                border-color: var(--border-color);
-            }
-        }
-        
-        fieldset {
-            box-sizing: border-box; 
-            border: none;
-            padding: 25px;
-            margin: 0;
-            transition: transform 0.5s ease-in-out, 
-                        opacity 0.4s ease-in-out;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        #page2 {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .scrollable-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 10px;
-        }
-        
-        .button-container {
-            flex-shrink: 0;
-            padding-top: 10px;
+        if (isCorrect) {
+            setScore(s => s + 10); // 10 points per question
+            setFeedback('correct');
+        } else {
+            setFeedback('wrong');
         }
 
-        #page2, #page3 {
-            position: absolute;
-            top: 0; 
-            left: 100%; 
-            width: 100%; 
-            box-sizing: border-box; 
-            opacity: 0;
-        }
-
-        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
-        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
-        
-        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
-        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
-        
-        h2 { 
-            text-align: center; 
-            color: #fff; 
-            margin-top: 0; 
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-        
-        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
-        
-        .form-group { 
-            margin-bottom: 15px;
-        }
-        
-        label { 
-            display: block; 
-            margin-bottom: 6px;
-            font-weight: 500; 
-            color: var(--text-color); 
-            font-size: 0.9em;
-        }
-
-        input[type="text"], input[type="email"], input[type="password"], select, textarea {
-            width: 100%; 
-            padding: 12px;
-            font-size: 16px;
-            font-family: 'Space Grotesk', sans-serif;
-            box-sizing: border-box; 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border-color);
-            color: var(--text-color); 
-            border-radius: 6px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
-            outline: none; 
-            border-color: var(--glow-color); 
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        }
-        
-        input:invalid {
-            border-color: #ff5555;
-            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
-        }
-
-        ::placeholder { color: var(--placeholder-color); opacity: 1; }
-        textarea { height: 100px; resize: vertical; }
-        
-        .button {
-            width: 100%; 
-            background-color: var(--glow-color); 
-            color: #ffffff; 
-            padding: 14px 15px;
-            border: none; 
-            border-radius: 6px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif; 
-            letter-spacing: 0.5px; 
-            text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 8px;
-            min-height: 48px;
-            animation: buttonPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
-            }
-        }
-
-        .button:hover, .button:active { 
-            background-color: #0056b3; 
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
-            transform: scale(0.98);
-            animation: none;
-        }
-        
-        .button.secondary { 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border-color); 
-            animation: secondaryPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes secondaryPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            }
-        }
-
-        .button.secondary:hover { 
-            background-color: var(--border-color); 
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-            animation: none;
-        }
-
-        .footer-text {
-            margin-top: 20px;
-            font-size: 0.8em;
-            color: var(--footer-text-color); 
-            text-align: center;
-            position: relative; 
-            z-index: 1;
-        }
-        
-        .google-divider {
-            text-align: center;
-            margin: 15px 0;
-            padding: 15px 0;
-        }
-        
-        .google-divider-text {
-            color: var(--text-color);
-            margin-bottom: 12px;
-            font-size: 0.85em;
-        }
-
-        #g_id_signin {
-            width: 100% !important;
-            margin: 0 auto !important;
-        }
-
-        .universal-login {
-            background-color: rgba(40, 167, 69, 0.2);
-            border: 1px solid var(--success-color);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            text-align: center;
-            font-size: 0.9em;
-            animation: securityPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes securityPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
-            }
-        }
-
-        @media (max-width: 480px) {
-            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
-            fieldset { padding: 20px; }
-            h2 { font-size: 1.3em; margin-bottom: 15px; }
-            .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
-                padding: 12px; 
-                font-size: 16px; 
-            }
-            .button { 
-                padding: 14px 12px; 
-                font-size: 16px; 
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <form id="multiPageForm">
-        <fieldset id="page1">
-            <h2>Login</h2>
+        // Delay to show feedback then move next
+        setTimeout(() => {
+            setFeedback(null);
+            setInputVal("");
             
-            <div class="universal-login">
-                ✅ Google Security Active
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required
-                       pattern=".*@gmail\.com$"
-                       title="Email must end with @gmail.com">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
-            </div>
-
-            <button type="button" id="nextButton" class="button">Submit</button>
-            
-            <div class="google-divider">
-                <div class="google-divider-text">Or continue with</div>
-                
-                <!-- Google Sign-In -->
-                <div id="g_id_onload"
-                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleSignIn"
-                     data-auto_prompt="false">
-                </div>
-                
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signin_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     data-width="350">
-                </div>
-            </div>
-        </fieldset>
-        
-        <fieldset id="page2">
-            <h2>Attendance</h2>
-            <div class="scrollable-content">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="position">Position:</label>
-                    <select id="position" name="position" required>
-                        <option value="">-- Select Position --</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Management">Management</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="specificJobTitle">Specific Job Title:</label>
-                    <select id="specificJobTitle" name="specificJobTitle" required>
-                        <option value="">-- Select Job Title --</option>
-                        <option value="School Director">School Director</option>
-                        <option value="Vice Principal">Vice Principal</option>
-                        <option value="Operation Supervisor">Operation Supervisor</option>
-                        <option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
-                        <option value="Lead Teacher">Lead Teacher</option>
-                        <option value="Costumer Service Manager">Costumer Service Manager</option>
-                        <option value="Marketing Department">Marketing Department</option>
-                        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="International Program Supervisor">International Program Supervisor</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Admin Assistant">Admin Assistant</option>
-                        <option value="Admin Supervisor">Admin Supervisor</option>
-                        <option value="Chinese Coordinator">Chinese Coordinator</option>
-                        <option value="Khmer Coordinator">Khmer Coordinator</option>
-                        <option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
-                        <option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
-                        <option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
-                        <option value="English Teacher">English Teacher</option>
-                        <option value="Khmer Teacher">Khmer Teacher</option>
-                        <option value="Teacher Assistant">Teacher Assistant</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="remarks">Remarks:</label>
-                    <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
-                </div>
-            </div>
-            <div class="button-container">
-                <button type="button" id="submitButton" class="button">Submit Attendance</button>
-                <button type="button" id="backButton" class="button secondary">Back</button>
-            </div>
-        </fieldset>
-        
-        <fieldset id="page3">
-            <h2>♦️Thank You!</h2>
-            <p class="thank-you-text">Thank you for your hard work teacher!</p>
-        </fieldset>
-    </form>
-
-    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
-
-    <script>
-        const form = document.getElementById('multiPageForm');
-        const nextButton = document.getElementById('nextButton');
-        const backButton = document.getElementById('backButton');
-        const submitButton = document.getElementById('submitButton');
-        
-        const page1 = document.getElementById('page1');
-        const page2 = document.getElementById('page2');
-        const page3 = document.getElementById('page3');
-
-        // Webhook URL
-        const WEBHOOK_URL = 'https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b';
-
-        nextButton.addEventListener('click', () => {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-
-            if (!emailInput.checkValidity()) {
-                alert(emailInput.title);
-                emailInput.focus();
-                return;
-            }
-
-            if (!passwordInput.checkValidity()) {
-                alert(passwordInput.title);
-                passwordInput.focus();
-                return;
-            }
-
-            form.classList.add('show-page-2');
-            page2.scrollTop = 0;
-        });
-
-        backButton.addEventListener('click', () => {
-            form.classList.remove('show-page-2');
-            page1.scrollTop = 0;
-
-            const passwordInput = document.getElementById('password');
-            passwordInput.setAttribute('required', 'required');
-            passwordInput.style.display = 'block';
-
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'block';
-            }
-        });
-
-        function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
-            
-            const credential = response.credential;
-            const payload = JSON.parse(atob(credential.split('.')[1]));
-            
-            document.getElementById('email').value = payload.email;
-            
-            const passwordInput = document.getElementById('password');
-            passwordInput.removeAttribute('required');
-            passwordInput.style.display = 'none';
-            
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'none';
-            }
-            
-            let googleFlag = document.createElement('input');
-            googleFlag.type = 'hidden';
-            googleFlag.name = 'google_sign_in';
-            googleFlag.value = 'true';
-            form.appendChild(googleFlag);
-            
-            let googleToken = document.createElement('input');
-            googleToken.type = 'hidden';
-            googleToken.name = 'google_token';
-            googleToken.value = credential;
-            form.appendChild(googleToken);
-            
-            setTimeout(() => {
-                form.classList.add('show-page-2');
-                page2.scrollTop = 0;
-            }, 500);
-        }
-
-        submitButton.addEventListener('click', async () => {
-            const nameInput = document.getElementById('name');
-            const positionInput = document.getElementById('position');
-            const specificJobTitleInput = document.getElementById('specificJobTitle');
-
-            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
-                alert('Please fill in your Name, Position, and Specific Job Title.');
-                return;
-            }
-
-            submitButton.textContent = 'Submitting...';
-            submitButton.disabled = true;
-
-            const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                name: nameInput.value,
-                position: positionInput.value,
-                specificJobTitle: specificJobTitleInput.value,
-                remarks: document.getElementById('remarks').value,
-                google_sign_in: document.querySelector('input[name="google_sign_in"]')?.value || 'false',
-                google_token: document.querySelector('input[name="google_token"]')?.value || '',
-                timestamp: new Date().toISOString()
-            };
-
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    form.classList.add('show-page-3');
-                    page3.scrollTop = 0;
+            if (currentQIdx + 1 < currentRound.questions.length) {
+                setCurrentQIdx(c => c + 1);
+            } else {
+                // End of Round
+                if (currentRoundIdx + 1 < gameData.length) {
+                    setCurrentRoundIdx(c => c + 1);
+                    setCurrentQIdx(0);
+                    setGameState('roundIntro');
                 } else {
-                    throw new Error('Submission failed');
+                    setGameState('result');
                 }
-            } catch (error) {
-                alert('Submission failed. Please try again.');
-            } finally {
-                submitButton.textContent = 'Submit Attendance';
-                submitButton.disabled = false;
             }
-        });
+        }, 1500);
+    };
 
-        window.addEventListener('load', () => {
-            page1.scrollTop = 0;
-            page2.scrollTop = 0;
-            page3.scrollTop = 0;
-        });
-    </script>
+    const handleKey = (e) => {
+        if (e.key === 'Enter') handleAnswer(inputVal);
+    }
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-</body>
-</html>
+    // --- Render Logic ---
+
+    if (gameState === 'welcome') {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-400 to-indigo-600 text-white p-4 font-sans">
+                <style>{`
+                    @keyframes bounce-short {
+                        0%, 100% { transform: translateY(-5%); }
+                        50% { transform: translateY(0); }
+                    }
+                    .animate-bounce-short { animation: bounce-short 0.5s infinite; }
+                `}</style>
+                <div className="text-6xl mb-4 animate-bounce-short">🧮</div>
+                <h1 className="text-4xl md:text-6xl font-bold text-center mb-6">Math Competition<br/><span className="text-2xl opacity-90">Term 1 Challenge</span></h1>
+                <p className="text-xl mb-8 text-center max-w-md">Are you ready to test your Speed, Logic, and Problem Solving?</p>
+                <button onClick={startGame} className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold py-4 px-10 rounded-full shadow-lg transform transition hover:scale-105 text-xl">
+                    Start Exam
+                </button>
+            </div>
+        );
+    }
+
+    if (gameState === 'roundIntro') {
+        const IconComponent = currentRound.icon;
+        return (
+            <div className={`min-h-screen flex flex-col items-center justify-center text-white p-4 ${currentRound.color} font-sans`}>
+                <IconComponent className="w-24 h-24 mb-6 opacity-80" />
+                <h2 className="text-3xl font-bold uppercase tracking-wider mb-2">Coming Up</h2>
+                <h1 className="text-5xl md:text-6xl font-bold text-center mb-8">{currentRound.title}</h1>
+                <button onClick={startRound} className="bg-white text-gray-900 font-bold py-3 px-12 rounded-full shadow-xl hover:bg-gray-100 transition text-xl">
+                    Ready!
+                </button>
+            </div>
+        );
+    }
+
+    if (gameState === 'result') {
+        const totalQ = gameData.reduce((acc, r) => acc + r.questions.length, 0);
+        const maxScore = totalQ * 10;
+        const percentage = Math.round((score / maxScore) * 100);
+        
+        let message = "";
+        if (percentage >= 90) message = "🏆 Gold Medal Standard!";
+        else if (percentage >= 70) message = "🥈 Silver Medal Standard!";
+        else if (percentage >= 50) message = "🥉 Bronze Medal Standard!";
+        else message = "Good Effort! Keep Practicing.";
+
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 font-sans">
+                <h1 className="text-5xl font-bold mb-4">Exam Complete!</h1>
+                <div className="bg-white text-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-md w-full">
+                    <p className="text-gray-500 uppercase tracking-widest font-bold text-sm mb-2">Final Score</p>
+                    <div className="text-6xl font-bold text-purple-600 mb-4">{score} <span className="text-2xl text-gray-400">/ {maxScore}</span></div>
+                    <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
+                        <div className="bg-purple-600 h-4 rounded-full" style={{width: `${percentage}%`}}></div>
+                    </div>
+                    <p className="text-2xl font-bold mb-6">{message}</p>
+                    <button onClick={() => window.location.reload()} className="bg-gray-900 text-white py-3 px-8 rounded-xl hover:bg-gray-700 transition">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const IconComponent = currentRound.icon;
+
+    // --- Playing State ---
+    return (
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 font-sans selection:bg-yellow-200">
+            {/* Top Bar */}
+            <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-white shadow-sm z-10">
+                <div className="flex items-center gap-2">
+                    <span className={`w-3 h-3 rounded-full ${currentRound.color}`}></span>
+                    <span className="font-bold text-gray-600 hidden md:block">{currentRound.title}</span>
+                </div>
+                <div className="font-bold text-xl text-indigo-600">Score: {score}</div>
+            </div>
+
+            {/* Question Card */}
+            <div className="relative w-full max-w-2xl">
+                {/* Feedback Overlay */}
+                {feedback && (
+                    <div className={`absolute inset-0 z-20 flex items-center justify-center rounded-3xl backdrop-blur-sm ${feedback === 'correct' ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+                         <style>{`
+                            @keyframes bounce-short {
+                                0%, 100% { transform: translateY(-5%); }
+                                50% { transform: translateY(0); }
+                            }
+                            .animate-bounce-short { animation: bounce-short 0.5s infinite; }
+                        `}</style>
+                        <div className={`text-6xl md:text-8xl animate-bounce-short ${feedback === 'correct' ? 'text-green-600' : 'text-red-500'}`}>
+                            {feedback === 'correct' ? <CheckCircle className="w-24 h-24" /> : <XCircle className="w-24 h-24" />}
+                        </div>
+                    </div>
+                )}
+
+                <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border-b-8 border-gray-200">
+                    <div className="flex justify-between items-center mb-6">
+                        <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-sm font-bold">
+                            Q{currentQIdx + 1} / {currentRound.questions.length}
+                        </span>
+                        <IconComponent className="text-gray-300 w-8 h-8" />
+                    </div>
+
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 leading-tight">
+                        {currentQ.q}
+                    </h2>
+
+                    {/* Input Area */}
+                    <div className="space-y-4">
+                        {currentQ.type === 'mcq' ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {currentQ.options.map((opt, idx) => (
+                                    <button 
+                                        key={idx}
+                                        onClick={() => handleAnswer(opt)}
+                                        disabled={feedback !== null}
+                                        className="bg-indigo-50 hover:bg-indigo-100 border-2 border-indigo-100 hover:border-indigo-300 text-indigo-900 font-bold py-4 px-6 rounded-xl transition text-lg text-left"
+                                    >
+                                        {opt}
+                                    </button>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    value={inputVal}
+                                    onChange={(e) => setInputVal(e.target.value)}
+                                    onKeyDown={handleKey}
+                                    disabled={feedback !== null}
+                                    placeholder="Type answer..."
+                                    className="w-full bg-gray-50 border-2 border-gray-300 focus:border-indigo-500 rounded-xl px-6 py-4 text-2xl outline-none font-bold text-gray-700"
+                                    autoFocus
+                                />
+                                <button 
+                                    onClick={() => handleAnswer(inputVal)}
+                                    disabled={!inputVal || feedback !== null}
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 rounded-xl text-xl shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <ArrowRight className="w-6 h-6" />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Hint if available */}
+                    {currentQ.hint && (
+                        <div className="mt-6 text-sm text-gray-400 italic flex items-center">
+                            <Lightbulb className="w-4 h-4 mr-1 text-yellow-400" />
+                            Hint: {currentQ.hint}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
