@@ -1,567 +1,665 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Attendance</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Bridge International Academy - Placement Test</title>
     <style>
         :root {
-            --dark-bg: #1a1a2e;        
-            --form-bg: #0f0f1c;        
-            --border-color: #3f3f6e;   
-            --glow-color: #007bff;     
-            --text-color: #e0e0e0;     
-            --input-bg: #22223a;       
-            --placeholder-color: #7a7a9a;
-            --footer-text-color: #5f5f7f;
-            --scanline-color: rgba(0, 123, 255, 0.07);  
-            --success-color: #28a745;
-        }
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+            /* Updated Theme: Deep Teal & Gold */
+            --primary: #004F63; /* Deep Teal */
+            --secondary: #ffca28; /* Academic Gold */
+            --accent: #e53935; /* Alert Red */
+            --success: #2e7d32; /* Success Green */
+            --bg: #f5f5f5;
+            --card: #ffffff;
+            --text: #333333;
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
             margin: 0;
             padding: 0;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            justify-content: center; 
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative; 
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent 0,
-                transparent 3px,
-                var(--scanline-color) 3px,
-                var(--scanline-color) 4px
-            );
-            background-size: 100% 4px;
-            animation: scanlines 0.4s linear infinite;
+        .container {
+            background: var(--card);
+            width: 95%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            border-top: 8px solid var(--primary);
         }
 
-        @keyframes scanlines {
-            from { background-position: 0 0; }
-            to { background-position: 0 -4px; }
-        }
-
-        form {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px;
-            background-color: var(--form-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 
-                0 0 5px rgba(0, 123, 255, 0.3),
-                inset 0 0 5px rgba(0, 123, 255, 0.2);
-            position: relative;
-            z-index: 1;           
-            overflow: hidden;
-            height: 550px;
-            animation: ledBeat 2s ease-in-out infinite;
-        }
-        
-        @keyframes ledBeat {
-            0% {
-                box-shadow: 
-                    0 0 5px rgba(0, 123, 255, 0.3),
-                    inset 0 0 5px rgba(0, 123, 255, 0.2);
-                border-color: var(--border-color);
-            }
-            50% {
-                box-shadow: 
-                    0 0 20px rgba(0, 123, 255, 0.8),
-                    0 0 30px rgba(0, 123, 255, 0.4),
-                    inset 0 0 15px rgba(0, 123, 255, 0.3);
-                border-color: var(--glow-color);
-            }
-            100% {
-                box-shadow: 
-                    0 0 5px rgba(0, 123, 255, 0.3),
-                    inset 0 0 5px rgba(0, 123, 255, 0.2);
-                border-color: var(--border-color);
-            }
-        }
-        
-        fieldset {
-            box-sizing: border-box; 
-            border: none;
-            padding: 25px;
-            margin: 0;
-            transition: transform 0.5s ease-in-out, 
-                        opacity 0.4s ease-in-out;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        #page2 {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .scrollable-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 10px;
-        }
-        
-        .button-container {
-            flex-shrink: 0;
-            padding-top: 10px;
-        }
-
-        #page2, #page3 {
-            position: absolute;
-            top: 0; 
-            left: 100%; 
-            width: 100%; 
-            box-sizing: border-box; 
-            opacity: 0;
-        }
-
-        form.show-page-2 #page1 { transform: translateX(-100%); opacity: 0; }
-        form.show-page-2 #page2 { transform: translateX(-100%); opacity: 1; }
-        
-        form.show-page-3 #page2 { transform: translateX(-200%); opacity: 0; }
-        form.show-page-3 #page3 { transform: translateX(-100%); opacity: 1; }
-        
-        h2 { 
-            text-align: center; 
-            color: #fff; 
-            margin-top: 0; 
+        .logo-area {
             margin-bottom: 20px;
-            font-size: 1.5em;
         }
-        
-        p.thank-you-text { text-align: center; font-size: 1.1em; line-height: 1.6; }
-        
-        .form-group { 
-            margin-bottom: 15px;
-        }
-        
-        label { 
-            display: block; 
-            margin-bottom: 6px;
-            font-weight: 500; 
-            color: var(--text-color); 
-            font-size: 0.9em;
+        .logo-area img {
+            max-height: 100px; /* Adjust based on your actual logo size */
+            width: auto;
         }
 
-        input[type="text"], input[type="email"], input[type="password"], select, textarea {
-            width: 100%; 
+        h1 { color: var(--primary); margin-bottom: 5px; font-weight: 700; }
+        h2 { color: #555; font-size: 1.1rem; margin-top: 0; font-weight: 400; }
+        p { color: var(--text); line-height: 1.6; }
+
+        /* Input Fields */
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .input-group input {
+            width: 100%;
             padding: 12px;
-            font-size: 16px;
-            font-family: 'Space Grotesk', sans-serif;
-            box-sizing: border-box; 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border-color);
-            color: var(--text-color); 
-            border-radius: 6px;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Fix padding issue */
         }
-        
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
-            outline: none; 
-            border-color: var(--glow-color); 
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        }
-        
-        input:invalid {
-            border-color: #ff5555;
-            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
         }
 
-        ::placeholder { color: var(--placeholder-color); opacity: 1; }
-        textarea { height: 100px; resize: vertical; }
-        
-        .button {
-            width: 100%; 
-            background-color: var(--glow-color); 
-            color: #ffffff; 
-            padding: 14px 15px;
-            border: none; 
-            border-radius: 6px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif; 
-            letter-spacing: 0.5px; 
-            text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
-            margin-bottom: 8px;
-            min-height: 48px;
-            animation: buttonPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
-            }
-        }
-
-        .button:hover, .button:active { 
-            background-color: #0056b3; 
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
-            transform: scale(0.98);
-            animation: none;
-        }
-        
-        .button.secondary { 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border-color); 
-            animation: secondaryPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes secondaryPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            }
-        }
-
-        .button.secondary:hover { 
-            background-color: var(--border-color); 
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-            animation: none;
-        }
-
-        .footer-text {
+        /* Level Grid */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
             margin-top: 20px;
-            font-size: 0.8em;
-            color: var(--footer-text-color); 
-            text-align: center;
-            position: relative; 
-            z-index: 1;
-        }
-        
-        .google-divider {
-            text-align: center;
-            margin: 15px 0;
-            padding: 15px 0;
-        }
-        
-        .google-divider-text {
-            color: var(--text-color);
-            margin-bottom: 12px;
-            font-size: 0.85em;
         }
 
-        #g_id_signin {
-            width: 100% !important;
-            margin: 0 auto !important;
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+        .btn:hover { background-color: #003644; transform: translateY(-2px); }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; }
 
-        .universal-login {
-            background-color: rgba(40, 167, 69, 0.2);
-            border: 1px solid var(--success-color);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 6px;
+        .btn-option {
+            display: block;
+            width: 100%;
+            background: white;
+            color: var(--text);
+            border: 2px solid #e0e0e0;
             margin: 10px 0;
-            text-align: center;
-            font-size: 0.9em;
-            animation: securityPulse 3s ease-in-out infinite;
+            text-align: left;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.05rem;
+        }
+        .btn-option:hover { border-color: var(--secondary); background: #fffde7; }
+        .btn-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        @keyframes securityPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
-            }
+        /* Screens */
+        .screen { display: none; }
+        .active { display: block; animation: fadeIn 0.4s ease-in-out; }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width 0.3s;
         }
 
-        @media (max-width: 480px) {
-            form { margin: 10px; max-width: calc(100% - 20px); height: 500px; }
-            fieldset { padding: 20px; }
-            h2 { font-size: 1.3em; margin-bottom: 15px; }
-            .form-group { margin-bottom: 12px; }
-            input[type="text"], input[type="email"], input[type="password"], select, textarea { 
-                padding: 12px; 
-                font-size: 16px; 
-            }
-            .button { 
-                padding: 14px 12px; 
-                font-size: 16px; 
-            }
+        /* Results */
+        .score-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
         }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .pass { color: var(--success); font-weight: bold; font-size: 1.4rem; }
+        .fail { color: var(--accent); font-weight: bold; font-size: 1.4rem; }
+        
+        .subject-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #e0f2f1;
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <form id="multiPageForm">
-        <fieldset id="page1">
-            <h2>Login</h2>
-            
-            <div class="universal-login">
-                ✅ Google Security Active
-            </div>
+<div class="container">
+    <div class="logo-area">
+        <!-- Replaced placeholder with your file name -->
+        <img src="IMG_7876.jpg" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
+    </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required
-                       pattern=".*@gmail\.com$"
-                       title="Email must end with @gmail.com">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Password must be 8+ characters and include uppercase, lowercase, and a number.">
-            </div>
-
-            <button type="button" id="nextButton" class="button">Submit</button>
-            
-            <div class="google-divider">
-                <div class="google-divider-text">Or continue with</div>
-                
-                <!-- Google Sign-In -->
-                <div id="g_id_onload"
-                     data-client_id="1095539904663-66e5lbfk3uevspuboamcjbkv6o93n07t.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleSignIn"
-                     data-auto_prompt="false">
-                </div>
-                
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signin_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     data-width="350">
-                </div>
-            </div>
-        </fieldset>
+    <!-- Screen 1: Registration -->
+    <div id="registration-screen" class="screen active">
+        <h1>Vision Bridge International Academy</h1>
+        <h2>Digital Placement Test</h2>
+        <p>Please enter the candidate and assessor details to begin.</p>
         
-        <fieldset id="page2">
-            <h2>Attendance</h2>
-            <div class="scrollable-content">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="position">Position:</label>
-                    <select id="position" name="position" required>
-                        <option value="">-- Select Position --</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Management">Management</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="specificJobTitle">Specific Job Title:</label>
-                    <select id="specificJobTitle" name="specificJobTitle" required>
-                        <option value="">-- Select Job Title --</option>
-                        <option value="School Director">School Director</option>
-                        <option value="Vice Principal">Vice Principal</option>
-                        <option value="Operation Supervisor">Operation Supervisor</option>
-                        <option value="Curriculum Coordinator & Head Teacher">Curriculum Coordinator & Head Teacher</option>
-                        <option value="Lead Teacher">Lead Teacher</option>
-                        <option value="Costumer Service Manager">Costumer Service Manager</option>
-                        <option value="Marketing Department">Marketing Department</option>
-                        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="International Program Supervisor">International Program Supervisor</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Admin Assistant">Admin Assistant</option>
-                        <option value="Admin Supervisor">Admin Supervisor</option>
-                        <option value="Chinese Coordinator">Chinese Coordinator</option>
-                        <option value="Khmer Coordinator">Khmer Coordinator</option>
-                        <option value="Head of Teacher Assistant">Head of Teacher Assistant</option>
-                        <option value="Personal Assistant to School Director">Personal Assistant to School Director</option>
-                        <option value="Student Affairs and Well-Being Coordinator">Student Affairs and Well-Being Coordinator</option>
-                        <option value="English Teacher">English Teacher</option>
-                        <option value="Khmer Teacher">Khmer Teacher</option>
-                        <option value="Teacher Assistant">Teacher Assistant</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="remarks">Remarks:</label>
-                    <textarea id="remarks" name="remarks" placeholder="Enter your take aways..."></textarea>
-                </div>
-            </div>
-            <div class="button-container">
-                <button type="button" id="submitButton" class="button">Submit Attendance</button>
-                <button type="button" id="backButton" class="button secondary">Back</button>
-            </div>
-        </fieldset>
+        <div class="input-group">
+            <label for="student-name">Student Name:</label>
+            <input type="text" id="student-name" placeholder="Enter Full Name" required>
+        </div>
+        <div class="input-group">
+            <label for="assessor-name">Assessor Name:</label>
+            <input type="text" id="assessor-name" placeholder="Enter Teacher/Assessor Name" required>
+        </div>
+
+        <button class="btn" onclick="goToLevelSelection()">Continue ➡️</button>
+    </div>
+
+    <!-- Screen 2: Level Selection -->
+    <div id="level-screen" class="screen">
+        <h1>Select Level</h1>
+        <p>Which grade level is <span id="display-student-name" style="font-weight:bold; color:var(--primary)">the student</span> applying for?</p>
+        <div class="level-grid" id="level-buttons">
+            <!-- Buttons generated by JS -->
+        </div>
+        <br>
+        <button class="btn" style="background:#999; font-size: 0.8rem;" onclick="location.reload()">⬅️ Back</button>
+    </div>
+
+    <!-- Screen 3: Quiz -->
+    <div id="quiz-screen" class="screen">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="subject-badge" id="subject-badge">Subject</div>
+        <h3 id="question-text" style="font-size: 1.4rem; margin: 20px 0; color: var(--primary);">Question text...</h3>
+        <div id="options-container">
+            <!-- Options generated by JS -->
+        </div>
+        <br>
+        <button class="btn" id="next-btn" style="display:none; width: 100%;" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
+
+    <!-- Screen 4: Results -->
+    <div id="result-screen" class="screen">
+        <h1>Assessment Report</h1>
+        <p>Placement Test Results</p>
         
-        <fieldset id="page3">
-            <h2>♦️Thank You!</h2>
-            <p class="thank-you-text">Thank you for your hard work teacher!</p>
-        </fieldset>
-    </form>
+        <div class="score-card">
+            <div class="info-row">
+                <span><strong>Student:</strong> <span id="res-student"></span></span>
+                <span><strong>Assessor:</strong> <span id="res-assessor"></span></span>
+            </div>
+            <div class="info-row" style="border:none; padding-bottom:0;">
+                <span><strong>Level Applied:</strong> <span id="res-level"></span></span>
+                <span><strong>Date:</strong> <span id="res-date"></span></span>
+            </div>
+            <hr>
+            <h3>Score Breakdown:</h3>
+            <p><strong>🇬🇧 English (50%):</strong> <span id="score-eng">0</span>%</p>
+            <p><strong>🧮 Math (30%):</strong> <span id="score-math">0</span>%</p>
+            <p><strong>🔬 Science (20%):</strong> <span id="score-sci">0</span>%</p>
+            <hr>
+            <h2 style="color:var(--primary)">Final Score: <span id="final-score">0</span>/100</h2>
+        </div>
 
-    <p class="footer-text">Powered by Google Sign-in & CJ_Works</p>
-
-    <script>
-        const form = document.getElementById('multiPageForm');
-        const nextButton = document.getElementById('nextButton');
-        const backButton = document.getElementById('backButton');
-        const submitButton = document.getElementById('submitButton');
+        <div id="final-verdict" style="margin-bottom: 20px;"></div>
         
-        const page1 = document.getElementById('page1');
-        const page2 = document.getElementById('page2');
-        const page3 = document.getElementById('page3');
+        <button class="btn" onclick="location.reload()">Start New Assessment 🔄</button>
+        <br><br>
+        <button class="btn" style="background: #333;" onclick="window.print()">Print Report 🖨️</button>
+    </div>
+</div>
 
-        // Webhook URL
-        const WEBHOOK_URL = 'https://calixtojohnn.app.n8n.cloud/webhook/204f8937-2390-432a-9826-f4fe9154837b';
+<script>
+    // --- FULL DATABASE (K2 - P7) ---
+    // Updated Grade 7 to P7
+    const quizData = {
+        "K2": {
+            "English": [
+                { q: "1. Which letter starts the word 'Apple'?", options: ["B", "A", "C", "D"], ans: 1 },
+                { q: "2. Look at the picture of a 🐱. What is it?", options: ["Dog", "Cat", "Cow", "Pig"], ans: 1 },
+                { q: "3. Which word rhymes with 'Bat'?", options: ["Car", "Hat", "Dog", "Sun"], ans: 1 },
+                { q: "4. 'The ball is _____ the box.' (Ball inside)", options: ["in", "on", "under", "up"], ans: 0 },
+                { q: "5. Choose the action word (verb):", options: ["Blue", "Run", "Boy", "Happy"], ans: 1 },
+                { q: "6. Which word is a color?", options: ["Three", "Red", "Table", "Go"], ans: 1 },
+                { q: "7. Complete the word: D_G 🐶", options: ["A", "O", "I", "E"], ans: 1 },
+                { q: "8. Which is the capital letter 'm'?", options: ["M", "n", "w", "z"], ans: 0 }
+            ],
+            "Math": [
+                { q: "1. Count the stars: ★ ★ ★", options: ["2", "4", "3", "5"], ans: 2 },
+                { q: "2. What is 2 + 2?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "3. Which shape is round?", options: ["Square", "Triangle", "Circle", "Star"], ans: 2 },
+                { q: "4. Which number is missing? 1, 2, __, 4", options: ["3", "5", "6", "0"], ans: 0 },
+                { q: "5. Which object is bigger?", options: ["An Elephant", "An Ant", "A Mouse", "A Bee"], ans: 0 },
+                { q: "6. How many fingers are on one hand?", options: ["4", "5", "10", "2"], ans: 1 },
+                { q: "7. 5 - 1 = ?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "8. Which number is Ten?", options: ["01", "10", "100", "1"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. Is a dog a living thing?", options: ["Yes", "No"], ans: 0 },
+                { q: "2. We use our eyes to:", options: ["Hear", "See", "Smell", "Touch"], ans: 1 },
+                { q: "3. Where do fish live?", options: ["In the sky", "In the water", "In a tree", "On the grass"], ans: 1 },
+                { q: "4. Which one is hot?", options: ["Ice Cream", "Fire", "Snow", "Water"], ans: 1 },
+                { q: "5. A bird has:", options: ["Wings", "Hands", "Fins", "Wheels"], ans: 0 },
+                { q: "6. What falls from the sky?", options: ["Rocks", "Rain", "Trees", "Cars"], ans: 1 },
+                { q: "7. When do we sleep?", options: ["At night", "At breakfast", "At lunch", "At school"], ans: 0 },
+                { q: "8. A baby chicken is called a:", options: ["Puppy", "Chick", "Kitten", "Calf"], ans: 1 }
+            ]
+        },
+        "P1": {
+            "English": [
+                { q: "1. The cat is sleeping _____ the bed.", options: ["on", "happy", "run", "fast"], ans: 0 },
+                { q: "2. Which word rhymes with 'Cat'?", options: ["Dog", "Hat", "Ball", "Fish"], ans: 1 },
+                { q: "3. Choose the correct sentence.", options: ["I has a book.", "I have a book.", "I having books.", "Me has book."], ans: 1 },
+                { q: "4. What is the plural of 'Apple'?", options: ["Apple", "Apples", "Applez", "Appless"], ans: 1 },
+                { q: "5. Which word is a verb (action word)?", options: ["Red", "Jump", "Big", "Table"], ans: 1 },
+                { q: "6. 'She _____ a teacher.'", options: ["are", "is", "am", "be"], ans: 1 },
+                { q: "7. Choose the opposite of 'Big'.", options: ["Large", "Small", "Tall", "Fat"], ans: 1 },
+                { q: "8. Which word needs a capital letter?", options: ["cat", "monday", "run", "blue"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is 5 + 4?", options: ["8", "9", "10", "7"], ans: 1 },
+                { q: "2. Which number is smaller than 10?", options: ["12", "20", "8", "15"], ans: 2 },
+                { q: "3. If you have 3 apples and buy 2 more, how many do you have?", options: ["4", "5", "6", "1"], ans: 1 },
+                { q: "4. Which shape has 3 sides?", options: ["Square", "Circle", "Triangle", "Star"], ans: 2 },
+                { q: "5. What number comes next? 10, 20, 30, ___", options: ["35", "40", "50", "25"], ans: 1 },
+                { q: "6. Write 'Sixteen' as a number.", options: ["60", "61", "16", "06"], ans: 2 },
+                { q: "7. 15 - 5 = ?", options: ["10", "20", "11", "5"], ans: 0 },
+                { q: "8. Which object is heavy?", options: ["A feather", "A truck", "A pencil", "A leaf"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. What do humans need to live?", options: ["Candy", "Toys", "Water", "TV"], ans: 2 },
+                { q: "2. Which one is a plant?", options: ["Rose", "Rock", "Rabbit", "Rain"], ans: 0 },
+                { q: "3. Which animal lives in water?", options: ["Cat", "Fish", "Bird", "Lion"], ans: 1 },
+                { q: "4. We use our nose to:", options: ["See", "Hear", "Smell", "Walk"], ans: 2 },
+                { q: "5. Is a stone a living thing?", options: ["Yes", "No"], ans: 1 },
+                { q: "6. The sun gives us:", options: ["Water", "Light", "Air", "Food"], ans: 1 },
+                { q: "7. Which animal eats only plants?", options: ["Lion", "Rabbit", "Tiger", "Shark"], ans: 1 },
+                { q: "8. A car is made of:", options: ["Paper", "Metal", "Water", "Leaves"], ans: 1 }
+            ]
+        },
+        "P2": {
+            "English": [
+                { q: "1. What is the past tense of 'Run'?", options: ["Runned", "Running", "Ran", "Runs"], ans: 2 },
+                { q: "2. Find the Adjective: 'The big red car.'", options: ["Car", "The", "Red", "Is"], ans: 2 },
+                { q: "3. 'They _____ playing football yesterday.'", options: ["was", "were", "are", "is"], ans: 1 },
+                { q: "4. Which word is a noun (thing)?", options: ["Quickly", "Sing", "School", "Hot"], ans: 2 },
+                { q: "5. Choose the opposite of 'Happy'.", options: ["Glad", "Sad", "Fun", "Play"], ans: 1 },
+                { q: "6. 'I _____ to the park.' (Present Continuous)", options: ["am going", "go", "gone", "went"], ans: 0 },
+                { q: "7. Which word is spelled correctly?", options: ["Freind", "Friend", "Frend", "Frind"], ans: 1 },
+                { q: "8. A person who flies a plane is a:", options: ["Driver", "Pilot", "Chef", "Teacher"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is 100 + 50?", options: ["105", "150", "500", "115"], ans: 1 },
+                { q: "2. How many minutes are in one hour?", options: ["30", "100", "60", "24"], ans: 2 },
+                { q: "3. What is 3 x 5?", options: ["8", "12", "15", "10"], ans: 2 },
+                { q: "4. Which number is Even?", options: ["3", "7", "8", "11"], ans: 2 },
+                { q: "5. Bob has 20 candies. He gives away 5. How many are left?", options: ["10", "15", "25", "12"], ans: 1 },
+                { q: "6. What comes next? 2, 4, 6, 8, __", options: ["9", "10", "12", "11"], ans: 1 },
+                { q: "7. How many sides does a rectangle have?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "8. What is half of 10?", options: ["2", "5", "4", "6"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. The sun gives us light and ______?", options: ["Water", "Heat", "Rain", "Sound"], ans: 1 },
+                { q: "2. Which material is waterproof?", options: ["Paper", "Plastic", "Tissue", "Sponge"], ans: 1 },
+                { q: "3. A baby frog is called a:", options: ["Puppy", "Kitten", "Tadpole", "Calf"], ans: 2 },
+                { q: "4. Which food is healthy?", options: ["Chips", "Apple", "Soda", "Cake"], ans: 1 },
+                { q: "5. Shadows are made when light is:", options: ["Blocked", "Hot", "Bright", "Fast"], ans: 0 },
+                { q: "6. Which animal lives in a hive?", options: ["Dog", "Bee", "Bird", "Cat"], ans: 1 },
+                { q: "7. Paper is made from:", options: ["Plastic", "Wood (Trees)", "Metal", "Sand"], ans: 1 },
+                { q: "8. To grow, a plant needs water and:", options: ["Sugar", "Sunlight", "Juice", "Milk"], ans: 1 }
+            ]
+        },
+        "P3": {
+            "English": [
+                { q: "1. Which sentence uses a comma correctly?", options: ["I like, apples", "I like apples, bananas, and pears.", "I like apples bananas,", "I, like apples"], ans: 1 },
+                { q: "2. Choose the adverb: 'She sings loudly.'", options: ["She", "Sings", "Loudly", "Song"], ans: 2 },
+                { q: "3. What is the opposite of 'Create'?", options: ["Build", "Destroy", "Make", "Draw"], ans: 1 },
+                { q: "4. 'I _____ to the shop tomorrow.'", options: ["went", "will go", "gone", "going"], ans: 1 },
+                { q: "5. Which word is spelled correctly?", options: ["Becuse", "Becuase", "Because", "Beacuse"], ans: 2 },
+                { q: "6. 'The children _____ happy with their toys.'", options: ["was", "were", "is", "be"], ans: 1 },
+                { q: "7. What is a 'Biography'?", options: ["Dragon story", "Story about a person's life", "Poem", "Recipe"], ans: 1 },
+                { q: "8. Choose the correct pronoun: 'Tom is my friend. _____ is nice.'", options: ["She", "He", "It", "They"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is 24 divided by 4?", options: ["5", "6", "8", "12"], ans: 1 },
+                { q: "2. Write the number: Three hundred and fifty-two.", options: ["352", "30052", "325", "532"], ans: 0 },
+                { q: "3. What is half of 50?", options: ["20", "25", "30", "15"], ans: 1 },
+                { q: "4. What is 120 - 45?", options: ["85", "75", "65", "80"], ans: 1 },
+                { q: "5. How many cm in 1 meter?", options: ["10", "100", "1000", "50"], ans: 1 },
+                { q: "6. 9 x 9 = ?", options: ["18", "81", "99", "72"], ans: 1 },
+                { q: "7. What is 1/4 of 20?", options: ["4", "5", "10", "2"], ans: 1 },
+                { q: "8. A square has 4 sides. How many sides do 2 squares have?", options: ["6", "8", "10", "12"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. What part of the plant absorbs water?", options: ["Leaves", "Flower", "Roots", "Stem"], ans: 2 },
+                { q: "2. Which animal lays eggs?", options: ["Dog", "Cat", "Chicken", "Cow"], ans: 2 },
+                { q: "3. Magnets attract which metal?", options: ["Gold", "Iron", "Aluminum", "Copper"], ans: 1 },
+                { q: "4. What do lungs help us do?", options: ["Eat", "Breathe", "Think", "Walk"], ans: 1 },
+                { q: "5. Solids, Liquids, and _____ are states of matter.", options: ["Water", "Ice", "Gas", "Air"], ans: 2 },
+                { q: "6. Which animal is a reptile?", options: ["Frog", "Snake", "Eagle", "Bear"], ans: 1 },
+                { q: "7. Friction makes moving things:", options: ["Go faster", "Slow down", "Fly", "Bounce"], ans: 1 },
+                { q: "8. Sound is caused by:", options: ["Vibrations", "Light", "Heat", "Water"], ans: 0 }
+            ]
+        },
+        "P4": {
+            "English": [
+                { q: "1. 'I haven't seen him _____ last week.'", options: ["for", "since", "from", "by"], ans: 1 },
+                { q: "2. Which word is a synonym for 'Happy'?", options: ["Sad", "Angry", "Joyful", "Tired"], ans: 2 },
+                { q: "3. Subject: 'The teacher gave the students a test.'", options: ["The teacher", "Gave", "A test", "The students"], ans: 0 },
+                { q: "4. 'He is the _____ boy in the class.'", options: ["tall", "taller", "tallest", "most tall"], ans: 2 },
+                { q: "5. Choose the correct homophone: 'I can _____ the ocean.'", options: ["sea", "see", "saw", "seen"], ans: 1 },
+                { q: "6. 'The car was driven _____ my father.'", options: ["with", "by", "from", "at"], ans: 1 },
+                { q: "7. Which word is a conjunction?", options: ["Because", "House", "Run", "Slowly"], ans: 0 },
+                { q: "8. 'I am interested _____ learning math.'", options: ["on", "in", "at", "for"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is 7 x 8?", options: ["54", "56", "48", "64"], ans: 1 },
+                { q: "2. Perimeter of square with side 5cm?", options: ["10cm", "20cm", "25cm", "15cm"], ans: 1 },
+                { q: "3. Which fraction is the same as 0.5?", options: ["1/4", "1/2", "3/4", "1/10"], ans: 1 },
+                { q: "4. Round 456 to the nearest 100.", options: ["400", "450", "460", "500"], ans: 3 },
+                { q: "5. What is 15.5 + 4.5?", options: ["19.0", "20.0", "20.5", "19.5"], ans: 1 },
+                { q: "6. 120 divided by 10 = ?", options: ["10", "12", "1200", "20"], ans: 1 },
+                { q: "7. Which angle is 90 degrees?", options: ["Acute", "Right Angle", "Obtuse", "Straight"], ans: 1 },
+                { q: "8. Value of digit 4 in 4,520?", options: ["4", "4000", "400", "40"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. What happens when water freezes?", options: ["Becomes gas", "Becomes solid (ice)", "Disappears", "Becomes hot"], ans: 1 },
+                { q: "2. Which one conducts electricity?", options: ["Wood", "Metal", "Plastic", "Rubber"], ans: 1 },
+                { q: "3. The process where water turns into vapor is:", options: ["Condensation", "Evaporation", "Precipitation", "Melting"], ans: 1 },
+                { q: "4. Sound travels fastest through:", options: ["Air", "Water", "Solids", "Vacuum"], ans: 2 },
+                { q: "5. Which animal is a predator?", options: ["Rabbit", "Lion", "Deer", "Mouse"], ans: 1 },
+                { q: "6. Which planet is closest to the Sun?", options: ["Earth", "Mercury", "Jupiter", "Mars"], ans: 1 },
+                { q: "7. A circuit needs a power source, like a:", options: ["Battery", "Bulb", "Wire", "Switch"], ans: 0 },
+                { q: "8. Teeth are used for:", options: ["Breathing", "Digestion (Chewing)", "Circulation", "Thinking"], ans: 1 }
+            ]
+        },
+        "P5": {
+            "English": [
+                { q: "1. 'If I had known, I _____ called you.'", options: ["will have", "would have", "can have", "shall have"], ans: 1 },
+                { q: "2. Choose the correct spelling.", options: ["Neccessary", "Necessary", "Neccesary", "Neccesary"], ans: 1 },
+                { q: "3. 'The book was written _____ JK Rowling.'", options: ["from", "by", "with", "of"], ans: 1 },
+                { q: "4. Choose the prefix to make 'Agree' negative.", options: ["Un-", "Dis-", "Mis-", "Im-"], ans: 1 },
+                { q: "5. Which sentence is in the Passive Voice?", options: ["The cat ate food", "The food was eaten by the cat", "Cat is eating", "Cat will eat"], ans: 1 },
+                { q: "6. 'She accused him _____ stealing the money.'", options: ["of", "for", "with", "on"], ans: 0 },
+                { q: "7. Identify the preposition: 'The cat jumped over the fence.'", options: ["Jumped", "Over", "Cat", "Fence"], ans: 1 },
+                { q: "8. 'Neither John _____ Mary came to the party.'", options: ["or", "nor", "and", "but"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is 12 squared (12²)?", options: ["24", "144", "120", "100"], ans: 1 },
+                { q: "2. Solve for x: 2x + 4 = 14", options: ["10", "5", "7", "2"], ans: 1 },
+                { q: "3. Area of a rectangle with length 6m and width 4m.", options: ["10m²", "24m²", "20m²", "12m²"], ans: 1 },
+                { q: "4. Simplify the fraction: 8/12", options: ["4/6", "2/3", "3/4", "1/2"], ans: 1 },
+                { q: "5. What is 10% of 500?", options: ["10", "50", "100", "5"], ans: 1 },
+                { q: "6. LCM of 4 and 6?", options: ["24", "12", "10", "2"], ans: 1 },
+                { q: "7. Convert 0.75 to a percentage.", options: ["7.5%", "75%", "0.75%", "750%"], ans: 1 },
+                { q: "8. How many degrees are in a triangle?", options: ["90", "180", "360", "100"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. Which force pulls objects toward the Earth?", options: ["Friction", "Magnetism", "Gravity", "Tension"], ans: 2 },
+                { q: "2. The Earth orbits around the ______?", options: ["Moon", "Sun", "Mars", "Stars"], ans: 1 },
+                { q: "3. Which organ pumps blood?", options: ["Brain", "Lungs", "Heart", "Stomach"], ans: 2 },
+                { q: "4. Light travels in:", options: ["Curved lines", "Straight lines", "Zigzags", "Circles"], ans: 1 },
+                { q: "5. Photosynthesis requires sunlight, water, and:", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Sugar"], ans: 1 },
+                { q: "6. Which part of the cell controls its activity?", options: ["Cell Wall", "Nucleus", "Cytoplasm", "Membrane"], ans: 1 },
+                { q: "7. When light bounces off a mirror, it is called:", options: ["Refraction", "Reflection", "Absorption", "Dispersion"], ans: 1 },
+                { q: "8. What protects the brain?", options: ["Ribcage", "Skull", "Spine", "Pelvis"], ans: 1 }
+            ]
+        },
+        "P6": {
+            "English": [
+                { q: "1. 'If it rains, we _____ inside.'", options: ["Stay", "Will stay", "Would stay", "Stayed"], ans: 1 },
+                { q: "2. 'He asked me where _____ going.'", options: ["was I", "I was", "am I", "I am"], ans: 1 },
+                { q: "3. What does 'Optimistic' mean?", options: ["Sad", "Hopeful/Positive", "Angry", "Confused"], ans: 1 },
+                { q: "4. Which of these is a metaphor?", options: ["Brave as a lion", "Time is a thief", "Leaves danced", "Snap, crackle, pop"], ans: 1 },
+                { q: "5. Identify the conjunction: 'I wanted to go, but I was tired.'", options: ["Wanted", "But", "Was", "Tired"], ans: 1 },
+                { q: "6. 'The manager, _____ I spoke to, was very helpful.'", options: ["who", "whom", "which", "that"], ans: 1 },
+                { q: "7. 'She is used to _____ early.'", options: ["wake up", "waking up", "woke up", "wakes up"], ans: 1 },
+                { q: "8. Choose the correct synonym for 'Difficult'.", options: ["Facile", "Arduous", "Simple", "Plain"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. What is the value of Pi roughly?", options: ["3.00", "3.14", "3.41", "2.14"], ans: 1 },
+                { q: "2. Calculate: 3 + 4 x 5", options: ["35", "23", "20", "60"], ans: 1 },
+                { q: "3. What is the sum of angles in a triangle?", options: ["90", "180", "360", "100"], ans: 1 },
+                { q: "4. If 3x = 15, what is x?", options: ["3", "5", "12", "45"], ans: 1 },
+                { q: "5. Convert 1.5kg to grams.", options: ["150g", "1500g", "15000g", "1050g"], ans: 1 },
+                { q: "6. Probability of flipping a coin and getting Heads?", options: ["1/4", "1/2", "1/3", "1/1"], ans: 1 },
+                { q: "7. Solve: -5 + 8 = ?", options: ["-3", "3", "-13", "13"], ans: 1 },
+                { q: "8. Calculate the volume of a cube with side 3cm.", options: ["9cm³", "27cm³", "18cm³", "12cm³"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. What is the chemical symbol for Oxygen?", options: ["Ox", "O2", "H2O", "Co2"], ans: 1 },
+                { q: "2. Which energy comes from the sun?", options: ["Kinetic", "Solar", "Potential", "Chemical"], ans: 1 },
+                { q: "3. In a food chain, what eats a producer?", options: ["Carnivore", "Herbivore", "Decomposer", "Predator"], ans: 1 },
+                { q: "4. Object in motion stays in motion (Newton's 1st Law):", options: ["Gravity", "Inertia", "Friction", "Speed"], ans: 1 },
+                { q: "5. Acid turns litmus paper:", options: ["Blue", "Red", "Green", "Yellow"], ans: 1 },
+                { q: "6. Which planet has rings?", options: ["Mars", "Saturn", "Venus", "Mercury"], ans: 1 },
+                { q: "7. Water boils at:", options: ["50°C", "100°C", "90°C", "120°C"], ans: 1 },
+                { q: "8. What carries oxygen in our blood?", options: ["White blood cells", "Red blood cells", "Platelets", "Plasma"], ans: 1 }
+            ]
+        },
+        "P7": {
+             "English": [
+                { q: "1. Which sentence uses Present Perfect Continuous?", options: ["I have eaten lunch", "I have been waiting", "I am waiting", "I was waiting"], ans: 1 },
+                { q: "2. 'The wind whispered' is an example of:", options: ["Simile", "Personification", "Metaphor", "Alliteration"], ans: 1 },
+                { q: "3. The scientist, _____ invention changed the world...", options: ["who", "whose", "which", "that"], ans: 1 },
+                { q: "4. Meaning of 'Inevitable':", options: ["Certain/Unavoidable", "Expensive", "Dangerous", "Lucky"], ans: 0 },
+                { q: "5. 'Although it was raining...' 'Although' is a:", options: ["Adjective", "Conjunction", "Verb", "Noun"], ans: 1 },
+                { q: "6. Correct grammar:", options: ["She don't like", "She doesn't like", "She not like", "She isn't like"], ans: 1 },
+                { q: "7. 'Strong as an ox' is a:", options: ["Metaphor", "Simile", "Personification", "Hyperbole"], ans: 1 },
+                { q: "8. Passive form: 'Someone stole my bike.'", options: ["My bike is stolen", "My bike was stolen", "My bike has stolen", "My bike was stealing"], ans: 1 }
+            ],
+            "Math": [
+                { q: "1. Solve: 3(x - 2) = 15", options: ["5", "7", "3", "17"], ans: 1 },
+                { q: "2. Value of -8 - 5?", options: ["-3", "-13", "3", "13"], ans: 1 },
+                { q: "3. Area of circle (r=3cm, pi=3.14)", options: ["9.42", "28.26", "18.84", "6"], ans: 1 },
+                { q: "4. Share $500 in ratio 1:4", options: ["100:400", "200:300", "125:375", "50:450"], ans: 0 },
+                { q: "5. Simplify: 2a + 3b - a + 2b", options: ["a + 5b", "3a + 5b", "a + b", "2a + 6b"], ans: 0 },
+                { q: "6. Square root of 81?", options: ["8", "9", "7", "18"], ans: 1 },
+                { q: "7. Speed: 120km in 2 hours", options: ["50 km/h", "60 km/h", "100 km/h", "240 km/h"], ans: 1 },
+                { q: "8. 25% of 80?", options: ["10", "20", "25", "40"], ans: 1 }
+            ],
+            "Science": [
+                { q: "1. Which part of a cell contains DNA?", options: ["Cytoplasm", "Nucleus", "Membrane", "Vacuole"], ans: 1 },
+                { q: "2. pH 7 represents:", options: ["Acid", "Neutral", "Base", "Zero"], ans: 1 },
+                { q: "3. Plants absorb:", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], ans: 1 },
+                { q: "4. Forces on a book sitting on a table:", options: ["None", "Gravity & Normal (Balanced)", "Gravity only", "Friction only"], ans: 1 },
+                { q: "5. Smallest particle of an element:", options: ["Atom", "Molecule", "Compound", "Mixture"], ans: 0 },
+                { q: "6. The Red Planet:", options: ["Venus", "Mars", "Jupiter", "Saturn"], ans: 1 },
+                { q: "7. In 'Grass -> Rabbit -> Fox', Rabbit is:", options: ["Producer", "Primary Consumer", "Predator", "Decomposer"], ans: 1 },
+                { q: "8. Solid directly to Gas:", options: ["Melting", "Sublimation", "Evaporation", "Freezing"], ans: 1 }
+            ]
+        }
+    };
 
-        nextButton.addEventListener('click', () => {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
+    // --- VARIABLES ---
+    let currentLevel = "";
+    let flatQuestions = [];
+    let currentQIndex = 0;
+    let scores = { English: 0, Math: 0, Science: 0 };
+    let maxScores = { English: 0, Math: 0, Science: 0 };
+    let selectedOption = null;
+    
+    // Input Data
+    let studentName = "";
+    let assessorName = "";
 
-            if (!emailInput.checkValidity()) {
-                alert(emailInput.title);
-                emailInput.focus();
-                return;
-            }
-
-            if (!passwordInput.checkValidity()) {
-                alert(passwordInput.title);
-                passwordInput.focus();
-                return;
-            }
-
-            form.classList.add('show-page-2');
-            page2.scrollTop = 0;
+    function init() {
+        const btnContainer = document.getElementById("level-buttons");
+        Object.keys(quizData).forEach(level => {
+            let btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = level;
+            btn.onclick = () => startQuiz(level);
+            btnContainer.appendChild(btn);
         });
+    }
 
-        backButton.addEventListener('click', () => {
-            form.classList.remove('show-page-2');
-            page1.scrollTop = 0;
+    // New Function to handle Registration
+    function goToLevelSelection() {
+        const sName = document.getElementById("student-name").value;
+        const aName = document.getElementById("assessor-name").value;
 
-            const passwordInput = document.getElementById('password');
-            passwordInput.setAttribute('required', 'required');
-            passwordInput.style.display = 'block';
-
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'block';
-            }
-        });
-
-        function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
-            
-            const credential = response.credential;
-            const payload = JSON.parse(atob(credential.split('.')[1]));
-            
-            document.getElementById('email').value = payload.email;
-            
-            const passwordInput = document.getElementById('password');
-            passwordInput.removeAttribute('required');
-            passwordInput.style.display = 'none';
-            
-            const passwordLabel = passwordInput.closest('.form-group').querySelector('label[for="password"]');
-            if (passwordLabel) {
-                passwordLabel.style.display = 'none';
-            }
-            
-            let googleFlag = document.createElement('input');
-            googleFlag.type = 'hidden';
-            googleFlag.name = 'google_sign_in';
-            googleFlag.value = 'true';
-            form.appendChild(googleFlag);
-            
-            let googleToken = document.createElement('input');
-            googleToken.type = 'hidden';
-            googleToken.name = 'google_token';
-            googleToken.value = credential;
-            form.appendChild(googleToken);
-            
-            setTimeout(() => {
-                form.classList.add('show-page-2');
-                page2.scrollTop = 0;
-            }, 500);
+        if (sName.trim() === "" || aName.trim() === "") {
+            alert("Please fill in both Student Name and Assessor Name.");
+            return;
         }
 
-        submitButton.addEventListener('click', async () => {
-            const nameInput = document.getElementById('name');
-            const positionInput = document.getElementById('position');
-            const specificJobTitleInput = document.getElementById('specificJobTitle');
+        studentName = sName;
+        assessorName = aName;
 
-            if (!nameInput.value || !positionInput.value || !specificJobTitleInput.value) {
-                alert('Please fill in your Name, Position, and Specific Job Title.');
-                return;
-            }
+        // Update display on next screen
+        document.getElementById("display-student-name").innerText = studentName;
 
-            submitButton.textContent = 'Submitting...';
-            submitButton.disabled = true;
+        document.getElementById("registration-screen").classList.remove("active");
+        document.getElementById("level-screen").classList.add("active");
+    }
 
-            const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                name: nameInput.value,
-                position: positionInput.value,
-                specificJobTitle: specificJobTitleInput.value,
-                remarks: document.getElementById('remarks').value,
-                google_sign_in: document.querySelector('input[name="google_sign_in"]')?.value || 'false',
-                google_token: document.querySelector('input[name="google_token"]')?.value || '',
-                timestamp: new Date().toISOString()
-            };
+    function startQuiz(level) {
+        currentLevel = level;
+        flatQuestions = [];
+        scores = { English: 0, Math: 0, Science: 0 };
+        maxScores = { English: 0, Math: 0, Science: 0 };
+        currentQIndex = 0;
 
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+        ["English", "Math", "Science"].forEach(subj => {
+            if(quizData[level][subj]) {
+                quizData[level][subj].forEach(q => {
+                    flatQuestions.push({ ...q, subject: subj });
+                    maxScores[subj]++; 
                 });
-
-                if (response.ok) {
-                    form.classList.add('show-page-3');
-                    page3.scrollTop = 0;
-                } else {
-                    throw new Error('Submission failed');
-                }
-            } catch (error) {
-                alert('Submission failed. Please try again.');
-            } finally {
-                submitButton.textContent = 'Submit Attendance';
-                submitButton.disabled = false;
             }
         });
 
-        window.addEventListener('load', () => {
-            page1.scrollTop = 0;
-            page2.scrollTop = 0;
-            page3.scrollTop = 0;
-        });
-    </script>
+        document.getElementById("level-screen").classList.remove("active");
+        document.getElementById("quiz-screen").classList.add("active");
+        loadQuestion();
+    }
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    function loadQuestion() {
+        if (currentQIndex >= flatQuestions.length) {
+            showResults();
+            return;
+        }
+
+        const qData = flatQuestions[currentQIndex];
+        document.getElementById("subject-badge").innerText = qData.subject + " - " + "Question " + (currentQIndex + 1) + " of " + flatQuestions.length;
+        document.getElementById("question-text").innerText = qData.q;
+        
+        const pct = ((currentQIndex) / flatQuestions.length) * 100;
+        document.getElementById("progress-bar").style.width = pct + "%";
+
+        const optContainer = document.getElementById("options-container");
+        optContainer.innerHTML = "";
+        selectedOption = null;
+        document.getElementById("next-btn").style.display = "none";
+
+        qData.options.forEach((opt, idx) => {
+            let btn = document.createElement("button");
+            btn.className = "btn-option";
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(idx, btn);
+            optContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(index, btnElement) {
+        selectedOption = index;
+        document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("selected"));
+        btnElement.classList.add("selected");
+        document.getElementById("next-btn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+        const qData = flatQuestions[currentQIndex];
+        if (selectedOption === qData.ans) {
+            scores[qData.subject]++;
+        }
+        currentQIndex++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById("quiz-screen").classList.remove("active");
+        document.getElementById("result-screen").classList.add("active");
+
+        // Calculate Scores
+        let engPct = (scores.English / maxScores.English) * 100 || 0;
+        let mathPct = (scores.Math / maxScores.Math) * 100 || 0;
+        let sciPct = (scores.Science / maxScores.Science) * 100 || 0;
+
+        let weightedScore = (engPct * 0.50) + (mathPct * 0.30) + (sciPct * 0.20);
+        weightedScore = Math.round(weightedScore);
+
+        // Fill Details
+        document.getElementById("res-student").innerText = studentName;
+        document.getElementById("res-assessor").innerText = assessorName;
+        document.getElementById("res-level").innerText = currentLevel;
+        document.getElementById("res-date").innerText = new Date().toLocaleDateString();
+
+        // Fill Scores
+        document.getElementById("score-eng").innerText = Math.round(engPct);
+        document.getElementById("score-math").innerText = Math.round(mathPct);
+        document.getElementById("score-sci").innerText = Math.round(sciPct);
+        document.getElementById("final-score").innerText = weightedScore;
+
+        const verdict = document.getElementById("final-verdict");
+        if (weightedScore >= 60) {
+            verdict.innerHTML = "<h2 class='pass'>PASSED ✅</h2><p>Excellent! The student is ready for " + currentLevel + ".</p>";
+        } else {
+            verdict.innerHTML = "<h2 class='fail'>REVIEW NEEDED ⚠️</h2><p>The student may need support in English or core subjects.</p>";
+        }
+    }
+
+    init();
+</script>
 </body>
 </html>
