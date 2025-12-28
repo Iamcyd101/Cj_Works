@@ -61,15 +61,18 @@
             font-weight: bold;
             color: var(--primary);
         }
-        .input-group input {
+        .input-group input, 
+        .input-group select { /* Added select for styling */
             width: 100%;
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
             box-sizing: border-box; /* Fix padding issue */
+            background-color: white;
         }
-        .input-group input:focus {
+        .input-group input:focus,
+        .input-group select:focus {
             border-color: var(--primary);
             outline: none;
         }
@@ -205,6 +208,17 @@
             <label for="assessor-name">Assessor Name:</label>
             <input type="text" id="assessor-name" placeholder="Enter Teacher/Assessor Name" required>
         </div>
+        
+        <!-- NEW CAMPUS DROPDOWN -->
+        <div class="input-group">
+            <label for="campus-select">Campus:</label>
+            <select id="campus-select" required>
+                <option value="" disabled selected>-- Select Campus --</option>
+                <option value="BKK Campus">BKK Campus</option>
+                <option value="Sen Sok Campus">Sen Sok Campus</option>
+                <option value="Campus 3">Campus 3</option>
+            </select>
+        </div>
 
         <button class="btn" onclick="goToLevelSelection()">Continue ➡️</button>
     </div>
@@ -244,8 +258,11 @@
                 <span><strong>Student:</strong> <span id="res-student"></span></span>
                 <span><strong>Assessor:</strong> <span id="res-assessor"></span></span>
             </div>
+            <div class="info-row">
+                <span><strong>Campus:</strong> <span id="res-campus"></span></span>
+                <span><strong>Level:</strong> <span id="res-level"></span></span>
+            </div>
             <div class="info-row" style="border:none; padding-bottom:0;">
-                <span><strong>Level Applied:</strong> <span id="res-level"></span></span>
                 <span><strong>Date:</strong> <span id="res-date"></span></span>
             </div>
             <hr>
@@ -542,6 +559,7 @@
     // Input Data
     let studentName = "";
     let assessorName = "";
+    let selectedCampus = "";
 
     function init() {
         const btnContainer = document.getElementById("level-buttons");
@@ -558,14 +576,16 @@
     function goToLevelSelection() {
         const sName = document.getElementById("student-name").value;
         const aName = document.getElementById("assessor-name").value;
+        const campus = document.getElementById("campus-select").value;
 
-        if (sName.trim() === "" || aName.trim() === "") {
-            alert("Please fill in both Student Name and Assessor Name.");
+        if (sName.trim() === "" || aName.trim() === "" || campus === "") {
+            alert("Please fill in all details including the Campus.");
             return;
         }
 
         studentName = sName;
         assessorName = aName;
+        selectedCampus = campus;
 
         // Update display on next screen
         document.getElementById("display-student-name").innerText = studentName;
@@ -653,6 +673,7 @@
         // Fill Details
         document.getElementById("res-student").innerText = studentName;
         document.getElementById("res-assessor").innerText = assessorName;
+        document.getElementById("res-campus").innerText = selectedCampus;
         document.getElementById("res-level").innerText = currentLevel;
         document.getElementById("res-date").innerText = new Date().toLocaleDateString();
 
@@ -675,6 +696,7 @@
         const payload = {
             student_name: studentName,
             assessor_name: assessorName,
+            campus: selectedCampus,
             level_applied: currentLevel,
             date: new Date().toLocaleDateString(),
             scores: {
