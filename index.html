@@ -172,6 +172,13 @@
             margin-bottom: 15px;
             font-weight: bold;
         }
+        
+        #upload-status {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #666;
+        }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -251,6 +258,10 @@
         </div>
 
         <div id="final-verdict" style="margin-bottom: 20px;"></div>
+        
+        <!-- Webhook Status Indicator -->
+        <div id="upload-status"></div>
+        <br>
         
         <button class="btn" onclick="location.reload()">Start New Assessment 🔄</button>
         <br><br>
@@ -652,11 +663,42 @@
         document.getElementById("final-score").innerText = weightedScore;
 
         const verdict = document.getElementById("final-verdict");
+        const statusText = weightedScore >= 60 ? "PASSED" : "REVIEW NEEDED";
+
         if (weightedScore >= 60) {
             verdict.innerHTML = "<h2 class='pass'>PASSED ✅</h2><p>Excellent! The student is ready for " + currentLevel + ".</p>";
         } else {
             verdict.innerHTML = "<h2 class='fail'>REVIEW NEEDED ⚠️</h2><p>The student may need support in English or core subjects.</p>";
         }
+
+        // --- WEBHOOK INTEGRATION ---
+        const payload = {
+            student_name: studentName,
+            assessor_name: assessorName,
+            level_applied: currentLevel,
+            date: new Date().toLocaleDateString(),
+            scores: {
+                english: Math.round(engPct),
+                math: Math.round(mathPct),
+                science: Math.round(sciPct)
+            },
+            final_score: weightedScore,
+            result: statusText
+        };
+
+        // Use no-cors mode to bypass browser security restrictions
+        // Content-Type header removed to ensure the request is treated as a "Simple Request" and not blocked
+        fetch("https://calixtojohnn.app.n8n.cloud/webhook-test/4cecec6e-b2f2-46c1-98fc-b3b11ccf3932", {
+            method: "POST",
+            mode: "no-cors", 
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: JSON.stringify(payload)
+        })
+        .catch(error => {
+            console.warn("Webhook Sync Issue:", error);
+        });
     }
 
     init();
