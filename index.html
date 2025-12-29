@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vision Bridge International Academy - Placement Test</title>
+    <!-- Import html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             /* Updated Theme: Deep Teal & Gold */
@@ -33,7 +35,6 @@
             max-width: 800px;
             padding: 40px;
             border-radius: 15px;
-            /* box-shadow removed for better printing */
             text-align: center;
             border-top: 8px solid var(--primary);
         }
@@ -62,13 +63,13 @@
             color: var(--primary);
         }
         .input-group input, 
-        .input-group select { /* Added select for styling */
+        .input-group select { 
             width: 100%;
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            box-sizing: border-box; /* Fix padding issue */
+            box-sizing: border-box; 
             background-color: white;
         }
         .input-group input:focus,
@@ -150,7 +151,6 @@
             border-radius: 12px;
             margin: 20px 0;
             text-align: left;
-            /* border: 1px solid #e0e0e0;  Removed border */
             box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
         }
         .info-row {
@@ -183,6 +183,149 @@
             color: #666;
         }
 
+        /* --- MODERN PDF STYLES --- */
+        #pdf-export-container {
+            display: none;
+            background: white;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            /* FIXED WIDTH for perfect A4 fitting */
+            width: 800px;
+            box-sizing: border-box;
+            margin: 0 auto; /* Center if displayed */
+        }
+        .pdf-header-bar {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px 40px;
+            display: flex; 
+            align-items: center;
+            justify-content: flex-end; /* Align title to the right */
+            border-bottom: 5px solid var(--secondary);
+        }
+        
+        .pdf-title-wrapper {
+            text-align: right;
+            /* Add this to align header text to the right */
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .pdf-title-wrapper h1 { 
+            color: white; 
+            margin: 0; 
+            font-size: 22px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        .pdf-title-wrapper p { 
+            color: rgba(255,255,255,0.9); 
+            margin: 5px 0 0; 
+            font-size: 14px; 
+        }
+
+        .pdf-body {
+            padding: 40px;
+        }
+
+        /* Modern Grid for Info */
+        .pdf-info-grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .pdf-info-row {
+            display: table-row;
+        }
+        .pdf-info-cell {
+            display: table-cell;
+            width: 50%;
+            padding-bottom: 20px;
+            vertical-align: top;
+        }
+        .pdf-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: 600;
+        }
+        .pdf-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        /* Modern Table */
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .pdf-table th {
+            text-align: left;
+            color: #666;
+            font-weight: 600;
+            border-bottom: 2px solid #eee;
+            padding: 12px 10px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .pdf-table td {
+            padding: 15px 10px;
+            /* Grid Lines Restored */
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 16px;
+            color: #444;
+        }
+        .pdf-table .total-row td {
+            border-top: 2px solid var(--primary);
+            border-bottom: none;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            padding-top: 20px;
+        }
+
+        /* Badge Verdict */
+        .pdf-verdict-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .pdf-verdict-badge {
+            display: block; /* Ensures full width block inside container */
+            padding: 20px;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .pdf-verdict-title {
+            font-size: 24px; 
+            font-weight: bold; 
+            color: var(--success);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .pdf-verdict-subtitle {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* .pdf-footer removed here */
+
+        .signature-line {
+            width: 200px;
+            border-top: 1px solid #333;
+            margin-top: 270px;
+            padding-top: 5px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -190,8 +333,8 @@
 
 <div class="container">
     <div class="logo-area">
-        <!-- Replaced placeholder with your file name -->
-        <img src="IMG_7876.jpg" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
+        <!-- Main Screen Logo: Updated to new image -->
+        <img src="image_53389d.png" id="main-logo" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
     </div>
 
     <!-- Screen 1: Registration -->
@@ -209,7 +352,7 @@
             <input type="text" id="assessor-name" placeholder="Enter Teacher/Assessor Name" required>
         </div>
         
-        <!-- NEW CAMPUS DROPDOWN -->
+        <!-- CAMPUS DROPDOWN -->
         <div class="input-group">
             <label for="campus-select">Campus:</label>
             <select id="campus-select" required>
@@ -253,7 +396,8 @@
         <h1>Assessment Report</h1>
         <p>Placement Test Results</p>
         
-        <div class="score-card">
+        <!-- Visual Score Card -->
+        <div class="score-card" id="screen-score-card">
             <div class="info-row">
                 <span><strong>Student:</strong> <span id="res-student"></span></span>
                 <span><strong>Assessor:</strong> <span id="res-assessor"></span></span>
@@ -280,9 +424,97 @@
         <div id="upload-status"></div>
         <br>
         
+        <!-- Download PDF Button -->
+        <button class="btn" style="background: #e53935;" onclick="downloadPDF()">Download PDF Report 📥</button>
+        <br><br>
+        
         <button class="btn" onclick="location.reload()">Start New Assessment 🔄</button>
         <br><br>
         <button class="btn" style="background: #333;" onclick="window.print()">Print Report 🖨️</button>
+    </div>
+</div>
+
+<!-- MODERN PDF TEMPLATE -->
+<div id="pdf-export-container">
+    <div class="pdf-header-bar">
+        <!-- Logo REMOVED from PDF Header -->
+        <div class="pdf-title-wrapper">
+            <h1>Vision Bridge International Academy</h1>
+            <p>Official Digital Placement Report</p>
+        </div>
+    </div>
+
+    <div class="pdf-body">
+        <!-- Modern Grid Layout for Info -->
+        <div class="pdf-info-grid">
+            <div class="pdf-info-row">
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Candidate Name</span>
+                    <span class="pdf-value" id="pdf-student">Student Name</span>
+                </div>
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Campus</span>
+                    <span class="pdf-value" id="pdf-campus">Campus Name</span>
+                </div>
+            </div>
+            <div class="pdf-info-row">
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Assessment Date</span>
+                    <span class="pdf-value" id="pdf-date">Date</span>
+                </div>
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Assessed By</span>
+                    <span class="pdf-value" id="pdf-assessor">Teacher Name</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clean Score Table -->
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Subject Area</th>
+                    <th>Weight</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🇬🇧 English Language</td>
+                    <td>50%</td>
+                    <td id="pdf-eng-score">0%</td>
+                </tr>
+                <tr>
+                    <td>🧮 Mathematics</td>
+                    <td>30%</td>
+                    <td id="pdf-math-score">0%</td>
+                </tr>
+                <tr>
+                    <td>🔬 Science</td>
+                    <td>20%</td>
+                    <td id="pdf-sci-score">0%</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">FINAL WEIGHTED SCORE</td>
+                    <td id="pdf-final-score">0/100</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Verdict Badge (UPDATED FORMAT) -->
+        <div class="pdf-verdict-container">
+            <div id="pdf-verdict-box" class="pdf-verdict-badge">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+
+        <!-- Footer / Signature -->
+        <div class="pdf-footer">
+            <div>
+                <div class="signature-line">Assessor Signature</div>
+            </div>
+            <!-- Removed the authorized by director lines here -->
+        </div>
     </div>
 </div>
 
@@ -720,6 +952,76 @@
         })
         .catch(error => {
             console.warn("Webhook Sync Issue:", error);
+        });
+    }
+
+    // --- PDF Download Logic (Updated) ---
+    function downloadPDF() {
+        const element = document.getElementById('pdf-export-container');
+        
+        // Prepare content for PDF
+        // Removed logo logic
+
+        const engPct = document.getElementById("score-eng").innerText;
+        const mathPct = document.getElementById("score-math").innerText;
+        const sciPct = document.getElementById("score-sci").innerText;
+        const finalScore = document.getElementById("final-score").innerText;
+        const date = document.getElementById("res-date").innerText;
+        const verdictText = parseInt(finalScore) >= 60 ? "PASSED ✅" : "REVIEW NEEDED ⚠️";
+        
+        // Dynamic Remark Text
+        let verdictSubtitle = "";
+        if (parseInt(finalScore) >= 60) {
+            verdictSubtitle = "Excellent! The student is ready for " + currentLevel + ".";
+        } else {
+            verdictSubtitle = "The student may need support in English or core subjects.";
+        }
+        
+        // Update Grid Values
+        document.getElementById('pdf-student').innerText = studentName;
+        // document.getElementById('pdf-level').innerText = currentLevel; // REMOVED
+        document.getElementById('pdf-campus').innerText = selectedCampus;
+        document.getElementById('pdf-date').innerText = date;
+        document.getElementById('pdf-assessor').innerText = assessorName;
+
+        // Update Scores
+        document.getElementById('pdf-eng-score').innerText = engPct + "%";
+        document.getElementById('pdf-math-score').innerText = mathPct + "%";
+        document.getElementById('pdf-sci-score').innerText = sciPct + "%";
+        document.getElementById('pdf-final-score').innerText = finalScore + "/100";
+        // Removed PDF ID update
+
+        // Update Verdict Box Content (HTML Injection for multi-line)
+        const verdictBox = document.getElementById('pdf-verdict-box');
+        verdictBox.innerHTML = `
+            <span class="pdf-verdict-title">${verdictText}</span>
+            <span class="pdf-verdict-subtitle">${verdictSubtitle}</span>
+        `;
+        
+        // Update styling based on Pass/Fail
+        if (parseInt(finalScore) >= 60) {
+            verdictBox.style.backgroundColor = "#e8f5e9"; // Light Green BG
+            verdictBox.style.border = "2px solid #2e7d32";
+            verdictBox.querySelector('.pdf-verdict-title').style.color = "#2e7d32";
+        } else {
+            verdictBox.style.backgroundColor = "#ffebee"; // Light Red BG
+            verdictBox.style.border = "2px solid #e53935";
+            verdictBox.querySelector('.pdf-verdict-title').style.color = "#e53935";
+        }
+        
+        // Temporarily show container to generate PDF, then hide
+        element.style.display = 'block';
+        
+        const opt = {
+            margin:       0,
+            filename:     `Result_${studentName.replace(/\s+/g, '_')}_${currentLevel}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, scrollY: 0 },
+            jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.style.display = 'none';
         });
     }
 
