@@ -198,26 +198,25 @@
             background-color: var(--primary);
             color: white;
             padding: 30px 40px;
-            display: flex; 
-            align-items: center;
-            justify-content: flex-end; /* Align title to the right */
+            /* Changed to Block display for stability */
+            display: block; 
+            text-align: right; /* Forces content to right */
             border-bottom: 5px solid var(--secondary);
+            overflow: hidden;
         }
         
         .pdf-title-wrapper {
-            text-align: right;
-            /* Add this to align header text to the right */
-            flex-grow: 1; 
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            /* Full width block, aligned right */
+            width: 100%;
+            text-align: right; 
         }
         .pdf-title-wrapper h1 { 
             color: white; 
             margin: 0; 
-            font-size: 22px; 
+            font-size: 24px; /* Increased slightly */
             text-transform: uppercase; 
             letter-spacing: 1px; 
+            line-height: 1.2;
         }
         .pdf-title-wrapper p { 
             color: rgba(255,255,255,0.9); 
@@ -314,12 +313,19 @@
             color: #555;
         }
 
-        /* .pdf-footer removed here */
-
+        .pdf-footer {
+            margin-top: 60px;
+            /* Border top removed */
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #aaa;
+        }
         .signature-line {
             width: 200px;
             border-top: 1px solid #333;
-            margin-top: 270px;
+            margin-top: 40px;
             padding-top: 5px;
             font-weight: bold;
             color: #333;
@@ -440,7 +446,7 @@
         <!-- Logo REMOVED from PDF Header -->
         <div class="pdf-title-wrapper">
             <h1>Vision Bridge International Academy</h1>
-            <p>Official Digital Placement Test Report</p>
+            <p>Official Digital Placement Report</p>
         </div>
     </div>
 
@@ -480,7 +486,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>🇬🇧 English Language</td>
+                    <td>Ox English Language</td>
                     <td>50%</td>
                     <td id="pdf-eng-score">0%</td>
                 </tr>
