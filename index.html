@@ -198,25 +198,26 @@
             background-color: var(--primary);
             color: white;
             padding: 30px 40px;
-            /* Changed to Block display for stability */
-            display: block; 
-            text-align: right; /* Forces content to right */
+            display: flex; 
+            align-items: center;
+            justify-content: flex-end; /* Align title to the right */
             border-bottom: 5px solid var(--secondary);
-            overflow: hidden;
         }
         
         .pdf-title-wrapper {
-            /* Full width block, aligned right */
-            width: 100%;
-            text-align: right; 
+            text-align: right;
+            /* Add this to align header text to the right */
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
         .pdf-title-wrapper h1 { 
             color: white; 
             margin: 0; 
-            font-size: 24px; /* Increased slightly */
+            font-size: 22px; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
-            line-height: 1.2;
         }
         .pdf-title-wrapper p { 
             color: rgba(255,255,255,0.9); 
