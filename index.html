@@ -189,6 +189,30 @@
         .grade-40 { background-color: #fb8c00; }  /* Below Average */
         .grade-20 { background-color: #e53935; }  /* Poor */
         .grade-0 { background-color: #424242; }   /* No Answer */
+        
+        /* Speaking Question List */
+        .speaking-list {
+            text-align: left;
+            margin: 15px auto;
+            padding: 0;
+            font-size: 1.1rem;
+            color: #333;
+            list-style-type: none; 
+            max-width: 90%;
+        }
+        .speaking-list li {
+            margin-bottom: 12px;
+            padding-left: 25px; 
+            position: relative;
+        }
+        .speaking-list li::before {
+            content: "➢";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
 
         /* Screens */
         .screen { display: none; }
@@ -242,6 +266,20 @@
             font-weight: bold;
         }
         
+        /* New Sub-score List Style */
+        .sub-score-list {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 15px 0;
+            padding-left: 10px;
+            border-left: 3px solid #ddd;
+        }
+        .sub-score-list li {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 3px;
+        }
+        
         #upload-status {
             font-size: 0.9rem;
             margin-top: 10px;
@@ -255,9 +293,10 @@
             background: white;
             font-family: 'Segoe UI', sans-serif;
             color: #333;
+            /* FIXED WIDTH for perfect A4 fitting */
             width: 800px;
             box-sizing: border-box;
-            margin: 0 auto;
+            margin: 0 auto; /* Center if displayed */
         }
         .pdf-header-bar {
             background-color: var(--primary);
@@ -265,12 +304,13 @@
             padding: 30px 40px;
             display: flex; 
             align-items: center;
-            justify-content: flex-end; 
+            justify-content: flex-end; /* Align title to the right */
             border-bottom: 5px solid var(--secondary);
         }
         
         .pdf-title-wrapper {
             text-align: right;
+            /* Add this to align header text to the right */
             flex-grow: 1; 
             display: flex;
             flex-direction: column;
@@ -297,7 +337,7 @@
         .pdf-info-grid {
             display: table;
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 20px; /* Reduced to pull line up slightly */
         }
         .pdf-info-row {
             display: table-row;
@@ -321,6 +361,14 @@
             font-size: 18px;
             font-weight: bold;
             color: #222;
+        }
+        
+        /* NEW: DIVIDER LINE IN PDF */
+        .pdf-divider {
+            border-bottom: 1px solid #e0e0e0; /* Light grey line requested */
+            margin-bottom: 30px;
+            width: 100%;
+            display: block;
         }
 
         /* Modern Table */
@@ -352,6 +400,12 @@
             color: var(--primary);
             padding-top: 20px;
         }
+        .pdf-sub-row td {
+            padding: 5px 10px 5px 30px; /* Indent sub items */
+            font-size: 14px;
+            color: #666;
+            border-bottom: none;
+        }
 
         /* Badge Verdict */
         .pdf-verdict-container {
@@ -359,7 +413,7 @@
             text-align: center;
         }
         .pdf-verdict-badge {
-            display: block;
+            display: block; /* Ensures full width block inside container */
             padding: 20px;
             color: #333;
             font-size: 16px;
@@ -411,7 +465,7 @@
 
 <div class="container">
     <div class="logo-area">
-        <!-- Main Screen Logo: Updated to new image -->
+        <!-- Main Screen Logo -->
         <img src="image_53389d.png" id="main-logo" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
     </div>
 
@@ -476,6 +530,11 @@
         <!-- Display for Reading/Writing Prompts -->
         <div id="prompt-display" style="font-size: 1.2rem; color: #555; margin-bottom: 20px; display:none;"></div>
 
+        <!-- Speaking List Display -->
+        <ul id="speaking-display" class="speaking-list" style="display:none;">
+            <!-- Injected by JS -->
+        </ul>
+
         <!-- Writing Input (Visible to student in Writing Section) -->
         <div id="writing-container" style="display:none; text-align:left;">
             <div class="input-group">
@@ -523,7 +582,13 @@
             </div>
             <hr>
             <h3>Score Breakdown:</h3>
-            <p><strong>🇬🇧 English (50%):</strong> <span id="score-eng">0</span>%</p>
+            <p><strong>🇬🇧 English Total (50%):</strong> <span id="score-eng">0</span>%</p>
+            <ul class="sub-score-list">
+                <li>Listening & Grammar: <span id="score-eng-mcq">0</span>%</li>
+                <li>Reading Aloud: <span id="score-eng-read">0</span>%</li>
+                <li>Writing: <span id="score-eng-write">0</span>%</li>
+                <li>Speaking: <span id="score-eng-speak">0</span>%</li>
+            </ul>
             <p><strong>🧮 Math (30%):</strong> <span id="score-math">0</span>%</p>
             <p><strong>🔬 Science (20%):</strong> <span id="score-sci">0</span>%</p>
             <hr>
@@ -581,6 +646,9 @@
             </div>
         </div>
 
+        <!-- NEW: DIVIDER LINE -->
+        <div class="pdf-divider"></div>
+
         <!-- Clean Score Table -->
         <table class="pdf-table">
             <thead>
@@ -592,10 +660,20 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>🇬🇧 English Language</td>
+                    <td>🇬🇧 English Language (Total)</td>
                     <td>50%</td>
                     <td id="pdf-eng-score">0%</td>
                 </tr>
+                <!-- Sub rows for English -->
+                <tr class="pdf-sub-row">
+                    <td colspan="3">
+                        • Listening & Grammar: <span id="pdf-eng-mcq">0</span>%<br>
+                        • Reading Aloud: <span id="pdf-eng-read">0</span>%<br>
+                        • Writing: <span id="pdf-eng-write">0</span>%<br>
+                        • Speaking: <span id="pdf-eng-speak">0</span>%
+                    </td>
+                </tr>
+
                 <tr>
                     <td>🧮 Mathematics</td>
                     <td>30%</td>
@@ -631,7 +709,8 @@
 
 <script>
     // --- DATABASE WITH LISTENING & WRITING (K2 - P6) ---
-    // Expanded with more Math and English questions
+    // Expanded with more Math and English questions and updated reading prompts
+    // NOW FULLY POPULATED FOR ALL LEVELS
     const quizData = {
         "K2": {
             "English": {
@@ -647,11 +726,16 @@
                     { q: "Which word is a color?", options: ["Three", "Red", "Table", "Go"], ans: 1 },
                     { q: "Complete the word: D_G 🐶", options: ["A", "O", "I", "E"], ans: 1 },
                     { q: "Which is the capital letter 'm'?", options: ["M", "n", "w", "z"], ans: 0 },
-                    { q: "Which one is small?", options: ["Elephant", "Ant", "House", "Tree"], ans: 1 }, // New
-                    { q: "One cat, two ______?", options: ["Cat", "Cats", "Cates", "Kat"], ans: 1 } // New
+                    { q: "Which one is small?", options: ["Elephant", "Ant", "House", "Tree"], ans: 1 }, 
+                    { q: "One cat, two ______?", options: ["Cat", "Cats", "Cates", "Kat"], ans: 1 } 
                 ],
                 writingPrompt: "Write your name (Assessor Grades).",
-                readingPrompt: "Read aloud: 'The dog runs fast.'"
+                readingPrompt: "Read aloud: 'The dog runs fast.'",
+                speakingQuestions: [
+                    "What is your name?",
+                    "How old are you?",
+                    "What color do you like?"
+                ]
             },
             "Math": [
                 { q: "Count the stars: ★ ★ ★", options: ["2", "4", "3", "5"], ans: 2 },
@@ -662,8 +746,8 @@
                 { q: "How many fingers are on one hand?", options: ["4", "5", "10", "2"], ans: 1 },
                 { q: "5 - 1 = ?", options: ["3", "4", "5", "6"], ans: 1 },
                 { q: "Which number is Ten?", options: ["01", "10", "100", "1"], ans: 1 },
-                { q: "Which shape has 3 sides?", options: ["Circle", "Triangle", "Square", "Star"], ans: 1 }, // New
-                { q: "1 + 1 + 1 = ?", options: ["2", "3", "4", "1"], ans: 1 } // New
+                { q: "Which shape has 3 sides?", options: ["Circle", "Triangle", "Square", "Star"], ans: 1 }, 
+                { q: "1 + 1 + 1 = ?", options: ["2", "3", "4", "1"], ans: 1 } 
             ],
             "Science": [
                 { q: "Is a dog a living thing?", options: ["Yes", "No"], ans: 0 },
@@ -681,6 +765,8 @@
                 story: "Tom has a big, shiny red ball. He goes to the park every Saturday to play with his dog, Rex. Rex loves to run fast and catch the ball.",
                 questions: [
                     { q: "What does Tom have?", options: ["A blue car", "A red ball", "A green hat", "A yellow bike"], ans: 1, isStory: true },
+                    { q: "Where does Tom go?", options: ["To the school", "To the park", "To the shop", "To home"], ans: 1, isStory: true },
+                    { q: "Who is Rex?", options: ["His cat", "His bird", "His dog", "His friend"], ans: 2, isStory: true },
                     { q: "The cat is sleeping _____ the bed.", options: ["on", "happy", "run", "fast"], ans: 0 },
                     { q: "Which word rhymes with 'Cat'?", options: ["Dog", "Hat", "Ball", "Fish"], ans: 1 },
                     { q: "Choose the correct sentence.", options: ["I has a book.", "I have a book.", "I having books.", "Me has book."], ans: 1 },
@@ -689,11 +775,16 @@
                     { q: "'She _____ a teacher.'", options: ["are", "is", "am", "be"], ans: 1 },
                     { q: "Choose the opposite of 'Big'.", options: ["Large", "Small", "Tall", "Fat"], ans: 1 },
                     { q: "Which word needs a capital letter?", options: ["cat", "monday", "run", "blue"], ans: 1 },
-                    { q: "The book is _____ the table.", options: ["under", "happy", "running", "fast"], ans: 0 }, // New
-                    { q: "My sister is a girl. _____ is nice.", options: ["He", "She", "It", "They"], ans: 1 } // New
+                    { q: "The book is _____ the table.", options: ["under", "happy", "running", "fast"], ans: 0 }, 
+                    { q: "My sister is a girl. _____ is nice.", options: ["He", "She", "It", "They"], ans: 1 } 
                 ],
                 writingPrompt: "Write about your favorite toy.",
-                readingPrompt: "Read aloud: 'I like to play with my friends.'"
+                readingPrompt: "Read aloud: 'I like to play with my friends.'",
+                speakingQuestions: [
+                    "What is your favorite toy?",
+                    "Do you have any pets?",
+                    "What do you like to do at school?"
+                ]
             },
             "Math": [
                 { q: "What is 5 + 4?", options: ["8", "9", "10", "7"], ans: 1 },
@@ -704,16 +795,27 @@
                 { q: "Write 'Sixteen' as a number.", options: ["60", "61", "16", "06"], ans: 2 },
                 { q: "15 - 5 = ?", options: ["10", "20", "11", "5"], ans: 0 },
                 { q: "Which object is heavy?", options: ["A feather", "A truck", "A pencil", "A leaf"], ans: 1 },
-                { q: "10 + 10 = ?", options: ["10", "20", "30", "100"], ans: 1 }, // New
-                { q: "Count backwards: 5, 4, 3, __", options: ["1", "2", "6", "0"], ans: 1 } // New
+                { q: "10 + 10 = ?", options: ["10", "20", "30", "100"], ans: 1 }, 
+                { q: "Count backwards: 5, 4, 3, __", options: ["1", "2", "6", "0"], ans: 1 } 
             ],
-            "Science": [{ q: "What do humans need to live?", options: ["Candy", "Toys", "Water", "TV"], ans: 2 }]
+            "Science": [
+                { q: "What do humans need to live?", options: ["Candy", "Toys", "Water", "TV"], ans: 2 },
+                { q: "Which one is a plant?", options: ["Rose", "Rock", "Rabbit", "Rain"], ans: 0 },
+                { q: "Which animal lives in water?", options: ["Cat", "Fish", "Bird", "Lion"], ans: 1 },
+                { q: "We use our nose to:", options: ["See", "Hear", "Smell", "Walk"], ans: 2 },
+                { q: "Is a stone a living thing?", options: ["Yes", "No"], ans: 1 },
+                { q: "The sun gives us:", options: ["Water", "Light", "Air", "Food"], ans: 1 },
+                { q: "Which animal eats only plants?", options: ["Lion", "Rabbit", "Tiger", "Shark"], ans: 1 },
+                { q: "A car is made of:", options: ["Paper", "Metal", "Water", "Leaves"], ans: 1 }
+            ]
         },
         "P2": {
             "English": {
                 story: "Sarah goes to the zoo with her family. First, she sees a big grey elephant eating green grass. Then, she walks to see the tall giraffes eating leaves from the top of the trees. It is a fun day.",
                 questions: [
                     { q: "Where does Sarah go?", options: ["To school", "To the park", "To the zoo", "To the shop"], ans: 2, isStory: true },
+                    { q: "What is the elephant eating?", options: ["Meat", "Grass", "Ice cream", "Leaves"], ans: 1, isStory: true },
+                    { q: "Which animal is tall?", options: ["Elephant", "Ant", "Giraffe", "Cat"], ans: 2, isStory: true },
                     { q: "What is the past tense of 'Run'?", options: ["Runned", "Running", "Ran", "Runs"], ans: 2 },
                     { q: "Find the Adjective: 'The big red car.'", options: ["Car", "The", "Red", "Is"], ans: 2 },
                     { q: "'They _____ playing football yesterday.'", options: ["was", "were", "are", "is"], ans: 1 },
@@ -722,11 +824,16 @@
                     { q: "'I _____ to the park.' (Present Continuous)", options: ["am going", "go", "gone", "went"], ans: 0 },
                     { q: "Which word is spelled correctly?", options: ["Freind", "Friend", "Frend", "Frind"], ans: 1 },
                     { q: "A person who flies a plane is a:", options: ["Driver", "Pilot", "Chef", "Teacher"], ans: 1 },
-                    { q: "I like ice cream _____ cake.", options: ["and", "but", "so", "because"], ans: 0 }, // New
-                    { q: "Yesterday, I _____ an apple.", options: ["eat", "eats", "ate", "eating"], ans: 2 } // New
+                    { q: "I like ice cream _____ cake.", options: ["and", "but", "so", "because"], ans: 0 }, 
+                    { q: "Yesterday, I _____ an apple.", options: ["eat", "eats", "ate", "eating"], ans: 2 } 
                 ],
                 writingPrompt: "Write about your favorite animal.",
-                readingPrompt: "Read aloud: 'The elephant has a long trunk.'"
+                readingPrompt: "Read aloud: 'The elephant has a long trunk. It likes to eat peanuts.'",
+                speakingQuestions: [
+                    "Tell me about your family.",
+                    "What is your favorite animal and why?",
+                    "What did you do yesterday?"
+                ]
             },
             "Math": [
                 { q: "What is 100 + 50?", options: ["105", "150", "500", "115"], ans: 1 },
@@ -737,16 +844,27 @@
                 { q: "What comes next? 2, 4, 6, 8, __", options: ["9", "10", "12", "11"], ans: 1 },
                 { q: "How many sides does a rectangle have?", options: ["3", "4", "5", "6"], ans: 1 },
                 { q: "What is half of 10?", options: ["2", "5", "4", "6"], ans: 1 },
-                { q: "50 - 25 = ?", options: ["20", "25", "30", "15"], ans: 1 }, // New
-                { q: "2 x 10 = ?", options: ["12", "20", "22", "10"], ans: 1 } // New
+                { q: "50 - 25 = ?", options: ["20", "25", "30", "15"], ans: 1 }, 
+                { q: "2 x 10 = ?", options: ["12", "20", "22", "10"], ans: 1 } 
             ],
-            "Science": [{ q: "The sun gives us light and ______?", options: ["Water", "Heat", "Rain", "Sound"], ans: 1 }]
+            "Science": [
+                { q: "The sun gives us light and ______?", options: ["Water", "Heat", "Rain", "Sound"], ans: 1 },
+                { q: "Which material is waterproof?", options: ["Paper", "Plastic", "Tissue", "Sponge"], ans: 1 },
+                { q: "A baby frog is called a:", options: ["Puppy", "Kitten", "Tadpole", "Calf"], ans: 2 },
+                { q: "Which food is healthy?", options: ["Chips", "Apple", "Soda", "Cake"], ans: 1 },
+                { q: "Shadows are made when light is:", options: ["Blocked", "Hot", "Bright", "Fast"], ans: 0 },
+                { q: "Which animal lives in a hive?", options: ["Dog", "Bee", "Bird", "Cat"], ans: 1 },
+                { q: "Paper is made from:", options: ["Plastic", "Wood (Trees)", "Metal", "Sand"], ans: 1 },
+                { q: "To grow, a plant needs water and:", options: ["Sugar", "Sunlight", "Juice", "Milk"], ans: 1 }
+            ]
         },
         "P3": {
              "English": {
                 story: "Every morning, Jack wakes up at 6 AM when his alarm rings. First, he brushes his teeth until they are clean. Then, he eats a healthy breakfast of toast and eggs. Finally, he walks to school with his best friends.",
                 questions: [
                     { q: "When does Jack wake up?", options: ["7 AM", "6 AM", "8 AM", "5 AM"], ans: 1, isStory: true },
+                    { q: "What does Jack eat?", options: ["Toast and eggs", "Pizza", "Rice", "Soup"], ans: 0, isStory: true },
+                    { q: "How does he go to school?", options: ["By bus", "By car", "He walks", "He runs"], ans: 2, isStory: true },
                     { q: "Which sentence uses a comma correctly?", options: ["I like, apples", "I like apples, bananas, and pears.", "I like apples bananas,", "I, like apples"], ans: 1 },
                     { q: "Choose the adverb: 'She sings loudly.'", options: ["She", "Sings", "Loudly", "Song"], ans: 2 },
                     { q: "What is the opposite of 'Create'?", options: ["Build", "Destroy", "Make", "Draw"], ans: 1 },
@@ -755,11 +873,16 @@
                     { q: "'The children _____ happy with their toys.'", options: ["was", "were", "is", "be"], ans: 1 },
                     { q: "What is a 'Biography'?", options: ["Dragon story", "Story about a person's life", "Poem", "Recipe"], ans: 1 },
                     { q: "Choose the correct pronoun: 'Tom is my friend. _____ is nice.'", options: ["She", "He", "It", "They"], ans: 1 },
-                    { q: "She is taller _____ her brother.", options: ["then", "than", "that", "this"], ans: 1 }, // New
-                    { q: "We _____ playing football now.", options: ["is", "am", "are", "be"], ans: 2 } // New
+                    { q: "She is taller _____ her brother.", options: ["then", "than", "that", "this"], ans: 1 }, 
+                    { q: "We _____ playing football now.", options: ["is", "am", "are", "be"], ans: 2 } 
                 ],
                 writingPrompt: "Describe your morning routine.",
-                readingPrompt: "Read aloud: 'We walk to school every day.'"
+                readingPrompt: "Read aloud: 'We walk to school every morning. The sun is shining bright today. My friends are walking with me.'",
+                speakingQuestions: [
+                    "What do you do in the morning before school?",
+                    "What is your favorite subject and why?",
+                    "Describe your best friend."
+                ]
             },
             "Math": [
                 { q: "What is 24 divided by 4?", options: ["5", "6", "8", "12"], ans: 1 },
@@ -770,16 +893,27 @@
                 { q: "9 x 9 = ?", options: ["18", "81", "99", "72"], ans: 1 },
                 { q: "What is 1/4 of 20?", options: ["4", "5", "10", "2"], ans: 1 },
                 { q: "A square has 4 sides. How many sides do 2 squares have?", options: ["6", "8", "10", "12"], ans: 1 },
-                { q: "200 + 300 + 50 = ?", options: ["530", "550", "2350", "505"], ans: 1 }, // New
-                { q: "Which month comes after June?", options: ["May", "August", "July", "April"], ans: 2 } // New
+                { q: "200 + 300 + 50 = ?", options: ["530", "550", "2350", "505"], ans: 1 }, 
+                { q: "Which month comes after June?", options: ["May", "August", "July", "April"], ans: 2 } 
             ],
-            "Science": [{ q: "Which animal lays eggs?", options: ["Dog", "Cat", "Chicken", "Cow"], ans: 2 }]
+            "Science": [
+                { q: "What part of the plant absorbs water?", options: ["Leaves", "Flower", "Roots", "Stem"], ans: 2 },
+                { q: "Which animal lays eggs?", options: ["Dog", "Cat", "Chicken", "Cow"], ans: 2 },
+                { q: "Magnets attract which metal?", options: ["Gold", "Iron", "Aluminum", "Copper"], ans: 1 },
+                { q: "What do lungs help us do?", options: ["Eat", "Breathe", "Think", "Walk"], ans: 1 },
+                { q: "Solids, Liquids, and _____ are states of matter.", options: ["Water", "Ice", "Gas", "Air"], ans: 2 },
+                { q: "Which animal is a reptile?", options: ["Frog", "Snake", "Eagle", "Bear"], ans: 1 },
+                { q: "Friction makes moving things:", options: ["Go faster", "Slow down", "Fly", "Bounce"], ans: 1 },
+                { q: "Sound is caused by:", options: ["Vibrations", "Light", "Heat", "Water"], ans: 0 }
+            ]
         },
         "P4": {
              "English": {
                 story: "Football is a very popular sport all over the world. To be a good player, you need to be fast, strong, and smart. Players practice every single day to improve their skills. Most importantly, they must learn to work together as a team to win the game.",
                 questions: [
                     { q: "What do players need?", options: ["Sleepy", "Fast and strong", "Quiet", "Loud"], ans: 1, isStory: true },
+                    { q: "How often do they practice?", options: ["Every week", "Every day", "Every month", "Never"], ans: 1, isStory: true },
+                    { q: "What is most important to win?", options: ["Running fast", "Being strong", "Working together", "Buying new shoes"], ans: 2, isStory: true },
                     { q: "'I haven't seen him _____ last week.'", options: ["for", "since", "from", "by"], ans: 1 },
                     { q: "Which word is a synonym for 'Happy'?", options: ["Sad", "Angry", "Joyful", "Tired"], ans: 2 },
                     { q: "Subject: 'The teacher gave the students a test.'", options: ["The teacher", "Gave", "A test", "The students"], ans: 0 },
@@ -788,11 +922,16 @@
                     { q: "'The car was driven _____ my father.'", options: ["with", "by", "from", "at"], ans: 1 },
                     { q: "Which word is a conjunction?", options: ["Because", "House", "Run", "Slowly"], ans: 0 },
                     { q: "'I am interested _____ learning math.'", options: ["on", "in", "at", "for"], ans: 1 },
-                    { q: "The movie was very _____.", options: ["excite", "excited", "exciting", "excites"], ans: 2 }, // New
-                    { q: "We ate dinner _____ we watched TV.", options: ["before", "during", "so", "but"], ans: 0 } // New
+                    { q: "The movie was very _____.", options: ["excite", "excited", "exciting", "excites"], ans: 2 }, 
+                    { q: "We ate dinner _____ we watched TV.", options: ["before", "during", "so", "but"], ans: 0 } 
                 ],
                 writingPrompt: "What is your favorite sport?",
-                readingPrompt: "Read aloud: 'Teamwork is very important in sports.'"
+                readingPrompt: "Read aloud: 'Teamwork is very important in sports. Players must help each other to win. Practice makes the team get better daily. Everyone is happy when they score a goal.'",
+                speakingQuestions: [
+                    "What sport or game do you like to play?",
+                    "Why is teamwork important?",
+                    "Tell me about a time you helped someone."
+                ]
             },
             "Math": [
                 { q: "What is 7 x 8?", options: ["54", "56", "48", "64"], ans: 1 },
@@ -803,16 +942,27 @@
                 { q: "120 divided by 10 = ?", options: ["10", "12", "1200", "20"], ans: 1 },
                 { q: "Which angle is 90 degrees?", options: ["Acute", "Right Angle", "Obtuse", "Straight"], ans: 1 },
                 { q: "Value of digit 4 in 4,520?", options: ["4", "4000", "400", "40"], ans: 1 },
-                { q: "What is 1/3 of 15?", options: ["3", "5", "6", "10"], ans: 1 }, // New
-                { q: "25 x 4 = ?", options: ["50", "75", "100", "125"], ans: 2 } // New
+                { q: "What is 1/3 of 15?", options: ["3", "5", "6", "10"], ans: 1 }, 
+                { q: "25 x 4 = ?", options: ["50", "75", "100", "125"], ans: 2 } 
             ],
-            "Science": [{ q: "What happens when water freezes?", options: ["Gas", "Solid (Ice)", "Disappears", "Hot"], ans: 1 }]
+            "Science": [
+                { q: "What happens when water freezes?", options: ["Gas", "Solid (Ice)", "Disappears", "Hot"], ans: 1 },
+                { q: "Which one conducts electricity?", options: ["Wood", "Metal", "Plastic", "Rubber"], ans: 1 },
+                { q: "The process where water turns into vapor is:", options: ["Condensation", "Evaporation", "Precipitation", "Melting"], ans: 1 },
+                { q: "Sound travels fastest through:", options: ["Air", "Water", "Solids", "Vacuum"], ans: 2 },
+                { q: "Which animal is a predator?", options: ["Rabbit", "Lion", "Deer", "Mouse"], ans: 1 },
+                { q: "Which planet is closest to the Sun?", options: ["Earth", "Mercury", "Jupiter", "Mars"], ans: 1 },
+                { q: "A circuit needs a power source, like a:", options: ["Battery", "Bulb", "Wire", "Switch"], ans: 0 },
+                { q: "Teeth are used for:", options: ["Breathing", "Digestion (Chewing)", "Circulation", "Thinking"], ans: 1 }
+            ]
         },
         "P5": {
              "English": {
                 story: "The solar system is a fascinating place with eight unique planets orbiting the Sun. Mercury is the closest planet to the Sun, but Venus is actually the hottest because of its thick clouds. Earth is special because it is the only planet known to have water and support life.",
                 questions: [
                     { q: "Which planet is hottest?", options: ["Mercury", "Earth", "Mars", "Venus"], ans: 3, isStory: true },
+                    { q: "How many planets are there?", options: ["7", "8", "9", "10"], ans: 1, isStory: true },
+                    { q: "Why is Earth special?", options: ["It is hot", "It has rings", "It has life", "It is small"], ans: 2, isStory: true },
                     { q: "'If I had known, I _____ called you.'", options: ["will have", "would have", "can have", "shall have"], ans: 1 },
                     { q: "Choose the correct spelling.", options: ["Neccessary", "Necessary", "Neccesary", "Neccesary"], ans: 1 },
                     { q: "'The book was written _____ JK Rowling.'", options: ["from", "by", "with", "of"], ans: 1 },
@@ -821,11 +971,16 @@
                     { q: "'She accused him _____ stealing the money.'", options: ["of", "for", "with", "on"], ans: 0 },
                     { q: "Identify the preposition: 'The cat jumped over the fence.'", options: ["Jumped", "Over", "Cat", "Fence"], ans: 1 },
                     { q: "'Neither John _____ Mary came to the party.'", options: ["or", "nor", "and", "but"], ans: 1 },
-                    { q: "He said he _____ hungry.", options: ["is", "was", "were", "are"], ans: 1 }, // New
-                    { q: "I look forward to _____ you.", options: ["see", "saw", "seen", "seeing"], ans: 3 } // New
+                    { q: "He said he _____ hungry.", options: ["is", "was", "were", "are"], ans: 1 }, 
+                    { q: "I look forward to _____ you.", options: ["see", "saw", "seen", "seeing"], ans: 3 } 
                 ],
                 writingPrompt: "Write a fact about space.",
-                readingPrompt: "Read aloud: 'Earth is the only planet known to have life.'"
+                readingPrompt: "Read aloud: 'Earth is the only planet known to have life. It has vast oceans and green forests. We must protect our environment from pollution. Recycling plastic helps keep our world clean. Let us work together to save the planet.'",
+                speakingQuestions: [
+                    "If you could travel to space, where would you go?",
+                    "Why is it important to learn about science?",
+                    "Describe your favorite book or movie."
+                ]
             },
             "Math": [
                 { q: "What is 12 squared?", options: ["24", "144", "120", "100"], ans: 1 },
@@ -836,16 +991,27 @@
                 { q: "LCM of 4 and 6?", options: ["24", "12", "10", "2"], ans: 1 },
                 { q: "Convert 0.75 to a percentage.", options: ["7.5%", "75%", "0.75%", "750%"], ans: 1 },
                 { q: "How many degrees are in a triangle?", options: ["90", "180", "360", "100"], ans: 1 },
-                { q: "0.5 + 0.25 = ?", options: ["0.30", "0.75", "0.80", "0.55"], ans: 1 }, // New
-                { q: "Which number is prime?", options: ["4", "9", "7", "10"], ans: 2 } // New
+                { q: "0.5 + 0.25 = ?", options: ["0.30", "0.75", "0.80", "0.55"], ans: 1 }, 
+                { q: "Which number is prime?", options: ["4", "9", "7", "10"], ans: 2 } 
             ],
-            "Science": [{ q: "Which force pulls objects to Earth?", options: ["Friction", "Magnetism", "Gravity", "Tension"], ans: 2 }]
+            "Science": [
+                { q: "Which force pulls objects to Earth?", options: ["Friction", "Magnetism", "Gravity", "Tension"], ans: 2 },
+                { q: "The Earth orbits around the ______?", options: ["Moon", "Sun", "Mars", "Stars"], ans: 1 },
+                { q: "Which organ pumps blood?", options: ["Brain", "Lungs", "Heart", "Stomach"], ans: 2 },
+                { q: "Light travels in:", options: ["Curved lines", "Straight lines", "Zigzags", "Circles"], ans: 1 },
+                { q: "Photosynthesis requires sunlight, water, and:", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Sugar"], ans: 1 },
+                { q: "Which part of the cell controls its activity?", options: ["Cell Wall", "Nucleus", "Cytoplasm", "Membrane"], ans: 1 },
+                { q: "When light bounces off a mirror, it is called:", options: ["Refraction", "Reflection", "Absorption", "Dispersion"], ans: 1 },
+                { q: "What protects the brain?", options: ["Ribcage", "Skull", "Spine", "Pelvis"], ans: 1 }
+            ]
         },
         "P6": {
              "English": {
                 story: "Climate change is one of the most serious issues facing our world today. It is largely caused by the increase of greenhouse gases like carbon dioxide in the atmosphere, which trap heat. To help fix this problem, people can reduce waste, use renewable energy like solar power, and plant more trees to clean the air.",
                 questions: [
                     { q: "What causes climate change?", options: ["Trees", "Recycling", "Greenhouse gases", "Energy"], ans: 2, isStory: true },
+                    { q: "What traps the heat?", options: ["Greenhouse gases", "Water", "Trees", "Wind"], ans: 0, isStory: true },
+                    { q: "How can people help?", options: ["Use more plastic", "Plant trees", "Drive more cars", "Burn trash"], ans: 1, isStory: true },
                     { q: "'If it rains, we _____ inside.'", options: ["Stay", "Will stay", "Would stay", "Stayed"], ans: 1 },
                     { q: "'He asked me where _____ going.'", options: ["was I", "I was", "am I", "I am"], ans: 1 },
                     { q: "What does 'Optimistic' mean?", options: ["Sad", "Hopeful/Positive", "Angry", "Confused"], ans: 1 },
@@ -854,11 +1020,16 @@
                     { q: "'The manager, _____ I spoke to, was very helpful.'", options: ["who", "whom", "which", "that"], ans: 1 },
                     { q: "'She is used to _____ early.'", options: ["wake up", "waking up", "woke up", "wakes up"], ans: 1 },
                     { q: "Choose the correct synonym for 'Difficult'.", options: ["Facile", "Arduous", "Simple", "Plain"], ans: 1 },
-                    { q: "He denied _____ the money.", options: ["steal", "to steal", "stealing", "stole"], ans: 2 }, // New
-                    { q: "I wish I _____ richer.", options: ["am", "was", "were", "be"], ans: 2 } // New
+                    { q: "He denied _____ the money.", options: ["steal", "to steal", "stealing", "stole"], ans: 2 }, 
+                    { q: "I wish I _____ richer.", options: ["am", "was", "were", "be"], ans: 2 } 
                 ],
                 writingPrompt: "Why should we protect nature?",
-                readingPrompt: "Read aloud: 'Renewable energy helps reduce pollution.'"
+                readingPrompt: "Read aloud: 'Renewable energy helps reduce pollution in our cities. Solar power comes from the bright sun above. Wind turbines use the wind to make electricity. These clean sources do not harm the air. We must use energy wisely to help nature. A clean planet is a healthy place for us.'",
+                speakingQuestions: [
+                    "What do you think is the biggest problem in the world today?",
+                    "How can we help the environment?",
+                    "What are your goals for the future?"
+                ]
             },
             "Math": [
                 { q: "Calculate 3 + 4 x 5", options: ["35", "23", "20", "60"], ans: 1 },
@@ -869,10 +1040,19 @@
                 { q: "Probability of flipping a coin and getting Heads?", options: ["1/4", "1/2", "1/3", "1/1"], ans: 1 },
                 { q: "Solve: -5 + 8 = ?", options: ["-3", "3", "-13", "13"], ans: 1 },
                 { q: "Calculate the volume of a cube with side 3cm.", options: ["9cm³", "27cm³", "18cm³", "12cm³"], ans: 1 },
-                { q: "25% of 200 is:", options: ["25", "50", "75", "100"], ans: 1 }, // New
-                { q: "Square root of 64?", options: ["6", "7", "8", "9"], ans: 2 } // New
+                { q: "25% of 200 is:", options: ["25", "50", "75", "100"], ans: 1 }, 
+                { q: "Square root of 64?", options: ["6", "7", "8", "9"], ans: 2 } 
             ],
-            "Science": [{ q: "Chemical symbol for Oxygen?", options: ["Ox", "O2", "H2O", "Co2"], ans: 1 }]
+            "Science": [
+                { q: "What is the chemical symbol for Oxygen?", options: ["Ox", "O2", "H2O", "Co2"], ans: 1 },
+                { q: "Which energy comes from the sun?", options: ["Kinetic", "Solar", "Potential", "Chemical"], ans: 1 },
+                { q: "In a food chain, what eats a producer?", options: ["Carnivore", "Herbivore", "Decomposer", "Predator"], ans: 1 },
+                { q: "An object in motion stays in motion unless acted on by a force. This is:", options: ["Gravity", "Inertia", "Friction", "Speed"], ans: 1 },
+                { q: "Acid turns litmus paper:", options: ["Blue", "Red", "Green", "Yellow"], ans: 1 },
+                { q: "Which planet has rings?", options: ["Mars", "Saturn", "Venus", "Mercury"], ans: 1 },
+                { q: "Water boils at:", options: ["50°C", "100°C", "90°C", "120°C"], ans: 1 },
+                { q: "What carries oxygen in our blood?", options: ["White blood cells", "Red blood cells", "Platelets", "Plasma"], ans: 1 }
+            ]
         }
     };
 
@@ -890,7 +1070,8 @@
         mcqScore: 0,
         mcqMax: 0,
         readingScorePct: 0, // Percentage
-        writingScorePct: 0  // Percentage
+        writingScorePct: 0,  // Percentage
+        speakingScorePct: 0 // Percentage
     };
 
     let selectedOption = null;
@@ -934,7 +1115,7 @@
         flatQuestions = [];
         scores = { English: 0, Math: 0, Science: 0 };
         maxScores = { English: 0, Math: 0, Science: 0 };
-        englishComponents = { mcqScore: 0, mcqMax: 0, readingScorePct: 0, writingScorePct: 0 };
+        englishComponents = { mcqScore: 0, mcqMax: 0, readingScorePct: 0, writingScorePct: 0, speakingScorePct: 0 };
         currentQIndex = 0;
         studentWriting = "";
 
@@ -943,7 +1124,7 @@
         if (quizData[level]["English"]) {
              const engData = quizData[level]["English"];
              engData.questions.forEach(q => {
-                 flatQuestions.push({ ...q, subject: "English", type: "mcq" });
+                 flatQuestions.push({ ...q, subject: "English", type: "mcq", isStory: q.isStory });
                  maxScores["English"]++; 
                  englishComponents.mcqMax++;
              });
@@ -960,6 +1141,13 @@
                  type: "assessor_grade", 
                  subType: "Writing",
                  prompt: engData.writingPrompt
+             });
+             // NEW: Add Speaking Task (Assessor Graded)
+             flatQuestions.push({ 
+                 subject: "English", 
+                 type: "speaking_task", 
+                 subType: "Speaking",
+                 questions: engData.speakingQuestions || ["Default Q1", "Default Q2", "Default Q3"]
              });
         }
         
@@ -989,16 +1177,22 @@
         // Use prompt text if available (for Reading/Writing), otherwise question text
         let text = "";
         const promptDisplay = document.getElementById("prompt-display");
+        const speakingDisplay = document.getElementById("speaking-display");
         
         if (promptDisplay.style.display !== "none") {
-            // It's a reading/writing prompt
              text = promptDisplay.innerText.replace("Task: ", "");
+        } else if (speakingDisplay.style.display !== "none") {
+             // For speaking, read the instruction
+             text = "Please answer these questions. " + speakingDisplay.innerText;
         } else {
-            // It's a standard question
              text = document.getElementById("question-text").innerText;
         }
 
-        const utterance = new SpeechSynthesisUtterance(text);
+        // Remove emojis to prevent giving away answers
+        // Replaces emojis with the word "picture" for audio
+        let safeText = text.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, " picture ");
+
+        const utterance = new SpeechSynthesisUtterance(safeText);
         utterance.rate = 0.9; 
         window.speechSynthesis.speak(utterance);
     }
@@ -1028,10 +1222,11 @@
         document.getElementById("next-btn").style.display = "none";
         document.getElementById("btn-listen-story").style.display = "none"; // Hide Story Button
         document.getElementById("prompt-display").style.display = "none";
+        document.getElementById("speaking-display").style.display = "none"; // Hide Speaking list
 
         document.getElementById("subject-badge").innerText = qData.subject + " - " + "Step " + (currentQIndex + 1) + " of " + flatQuestions.length;
         
-        // --- 1. Assessor Grading Task ---
+        // --- 1. Assessor Grading Task (Reading/Writing) ---
         if (qData.type === "assessor_grade") {
             document.getElementById("question-text").innerText = "ASSESSOR GRADING: " + qData.subType;
             document.getElementById("question-text").style.color = "#e53935"; 
@@ -1044,8 +1239,25 @@
             }
             
             document.getElementById("assessor-grading-container").style.display = "grid";
-        
-        // --- 2. Standard MCQ ---
+            
+        // --- 2. Speaking Task ---
+        } else if (qData.type === "speaking_task") {
+            document.getElementById("question-text").innerText = "ASSESSOR GRADING: Speaking";
+            document.getElementById("question-text").style.color = "#e53935";
+            
+            // Build list of questions
+            const listEl = document.getElementById("speaking-display");
+            listEl.innerHTML = "";
+            qData.questions.forEach(q => {
+                const li = document.createElement("li");
+                li.innerText = q;
+                listEl.appendChild(li);
+            });
+            listEl.style.display = "block"; // Changed from inline-block to block via CSS class
+            
+            document.getElementById("assessor-grading-container").style.display = "grid";
+
+        // --- 3. Standard MCQ ---
         } else {
             document.getElementById("question-text").innerText = qData.q;
             document.getElementById("question-text").style.color = "var(--primary)";
@@ -1073,29 +1285,8 @@
         document.getElementById("progress-bar").style.width = pct + "%";
     }
 
-    function selectOption(index, btnElement) {
-        selectedOption = index;
-        document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("selected"));
-        btnElement.classList.add("selected");
-        document.getElementById("next-btn").style.display = "inline-block";
-    }
-    
-    // Function called by Assessor Buttons
-    function gradeAssessorTask(scorePercentage) {
-        const qData = flatQuestions[currentQIndex];
-        
-        if (qData.subType === "Reading") {
-            englishComponents.readingScorePct = scorePercentage;
-        } else if (qData.subType === "Writing") {
-            englishComponents.writingScorePct = scorePercentage;
-            const inputVal = document.getElementById("writing-input").value;
-            if(inputVal) studentWriting = inputVal;
-        }
-        
-        currentQIndex++;
-        loadQuestion();
-    }
-
+    // Audio stop logic
+    // 1. Stop audio when moving to next question
     function nextQuestion() {
         window.speechSynthesis.cancel();
         
@@ -1110,12 +1301,60 @@
         loadQuestion();
     }
 
+    // 2. Stop audio on refresh or page close
+    window.addEventListener('beforeunload', function() {
+        window.speechSynthesis.cancel();
+    });
+
+    function selectOption(index, btnElement) {
+        selectedOption = index;
+        document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("selected"));
+        btnElement.classList.add("selected");
+        document.getElementById("next-btn").style.display = "inline-block";
+    }
+    
+    // Function called by Assessor Buttons
+    function gradeAssessorTask(scorePercentage) {
+        window.speechSynthesis.cancel(); // Also stop audio when assessor grades
+        
+        const qData = flatQuestions[currentQIndex];
+        
+        if (qData.subType === "Reading") {
+            englishComponents.readingScorePct = scorePercentage;
+        } else if (qData.subType === "Writing") {
+            englishComponents.writingScorePct = scorePercentage;
+            const inputVal = document.getElementById("writing-input").value;
+            if(inputVal) studentWriting = inputVal;
+        } else if (qData.subType === "Speaking") {
+            englishComponents.speakingScorePct = scorePercentage;
+        }
+        
+        currentQIndex++;
+        loadQuestion();
+    }
+
     function showResults() {
         document.getElementById("quiz-screen").classList.remove("active");
         document.getElementById("result-screen").classList.add("active");
+        
+        // Populate Date correctly
+        const now = new Date();
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const formattedDate = `${days[now.getDay()]}, ${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+        
+        // Fix: Ensure element exists before setting innerText
+        const dateElement = document.getElementById("res-date");
+        if(dateElement) {
+             dateElement.innerText = formattedDate;
+        }
 
+        // --- Calculate English Score (Weighted Average: 25% each) ---
         let engMcqPct = (englishComponents.mcqScore / englishComponents.mcqMax) * 100 || 0;
-        let finalEngPct = (engMcqPct * 0.4) + (englishComponents.readingScorePct * 0.3) + (englishComponents.writingScorePct * 0.3);
+        let finalEngPct = (engMcqPct * 0.25) + 
+                          (englishComponents.readingScorePct * 0.25) + 
+                          (englishComponents.writingScorePct * 0.25) +
+                          (englishComponents.speakingScorePct * 0.25);
 
         let mathPct = (scores.Math / maxScores.Math) * 100 || 0;
         let sciPct = (scores.Science / maxScores.Science) * 100 || 0;
@@ -1124,6 +1363,12 @@
         weightedScore = Math.round(weightedScore);
 
         document.getElementById("score-eng").innerText = Math.round(finalEngPct);
+        // Update Breakdown
+        document.getElementById("score-eng-mcq").innerText = Math.round(engMcqPct);
+        document.getElementById("score-eng-read").innerText = Math.round(englishComponents.readingScorePct);
+        document.getElementById("score-eng-write").innerText = Math.round(englishComponents.writingScorePct);
+        document.getElementById("score-eng-speak").innerText = Math.round(englishComponents.speakingScorePct);
+        
         document.getElementById("score-math").innerText = Math.round(mathPct);
         document.getElementById("score-sci").innerText = Math.round(sciPct);
         document.getElementById("final-score").innerText = weightedScore;
@@ -1137,14 +1382,21 @@
             verdict.innerHTML = "<h2 class='fail'>REVIEW NEEDED ⚠️</h2><p>The student may need support in English or core subjects.</p>";
         }
 
+        // --- WEBHOOK INTEGRATION ---
         const payload = {
             student_name: studentName,
             assessor_name: assessorName,
             campus: selectedCampus,
             level_applied: currentLevel,
-            date: new Date().toLocaleDateString(),
+            date: formattedDate,
             scores: {
                 english: Math.round(finalEngPct),
+                english_details: {
+                    mcq: Math.round(engMcqPct),
+                    reading: Math.round(englishComponents.readingScorePct),
+                    writing: Math.round(englishComponents.writingScorePct),
+                    speaking: Math.round(englishComponents.speakingScorePct)
+                },
                 math: Math.round(mathPct),
                 science: Math.round(sciPct)
             },
@@ -1153,15 +1405,21 @@
             result: statusText
         };
 
+        // Use no-cors mode to bypass browser security restrictions
         fetch("https://calixtojohnn.app.n8n.cloud/webhook/4cecec6e-b2f2-46c1-98fc-b3b11ccf3932", {
             method: "POST",
             mode: "no-cors", 
-            headers: { "Content-Type": "text/plain" },
+            headers: {
+                "Content-Type": "text/plain"
+            },
             body: JSON.stringify(payload)
-        }).catch(error => { console.warn("Webhook Sync Issue:", error); });
+        })
+        .catch(error => {
+            console.warn("Webhook Sync Issue:", error);
+        });
     }
 
-    // --- PDF Download Logic ---
+    // --- PDF Download Logic (Updated) ---
     function downloadPDF() {
         const element = document.getElementById('pdf-export-container');
         
@@ -1180,6 +1438,12 @@
         }
 
         const engPct = document.getElementById("score-eng").innerText;
+        // Get Breakdown Values
+        const engMcqPct = document.getElementById("score-eng-mcq").innerText;
+        const engReadPct = document.getElementById("score-eng-read").innerText;
+        const engWritePct = document.getElementById("score-eng-write").innerText;
+        const engSpeakPct = document.getElementById("score-eng-speak").innerText;
+        
         const mathPct = document.getElementById("score-math").innerText;
         const sciPct = document.getElementById("score-sci").innerText;
         const finalScore = document.getElementById("final-score").innerText;
@@ -1194,11 +1458,18 @@
         }
         
         document.getElementById('pdf-student').innerText = studentName;
+        // document.getElementById('pdf-level').innerText = currentLevel; // REMOVED
         document.getElementById('pdf-campus').innerText = selectedCampus;
         document.getElementById('pdf-date').innerText = date;
         document.getElementById('pdf-assessor').innerText = assessorName;
 
         document.getElementById('pdf-eng-score').innerText = engPct + "%";
+        // Set Breakdown Values in PDF
+        document.getElementById('pdf-eng-mcq').innerText = engMcqPct;
+        document.getElementById('pdf-eng-read').innerText = engReadPct;
+        document.getElementById('pdf-eng-write').innerText = engWritePct;
+        document.getElementById('pdf-eng-speak').innerText = engSpeakPct;
+        
         document.getElementById('pdf-math-score').innerText = mathPct + "%";
         document.getElementById('pdf-sci-score').innerText = sciPct + "%";
         document.getElementById('pdf-final-score').innerText = finalScore + "/100";
@@ -1210,15 +1481,16 @@
         `;
         
         if (parseInt(finalScore) >= 60) {
-            verdictBox.style.backgroundColor = "#e8f5e9"; 
+            verdictBox.style.backgroundColor = "#e8f5e9"; // Light Green BG
             verdictBox.style.border = "2px solid #2e7d32";
             verdictBox.querySelector('.pdf-verdict-title').style.color = "#2e7d32";
         } else {
-            verdictBox.style.backgroundColor = "#ffebee";
+            verdictBox.style.backgroundColor = "#ffebee"; // Light Red BG
             verdictBox.style.border = "2px solid #e53935";
             verdictBox.querySelector('.pdf-verdict-title').style.color = "#e53935";
         }
         
+        // Temporarily show container to generate PDF, then hide
         element.style.display = 'block';
         
         const opt = {
