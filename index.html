@@ -1106,6 +1106,9 @@
         assessorName = aName;
         selectedCampus = campus;
 
+        // Update display on next screen
+        document.getElementById("display-student-name").innerText = studentName;
+
         document.getElementById("registration-screen").classList.remove("active");
         document.getElementById("level-screen").classList.add("active");
     }
@@ -1338,6 +1341,7 @@
         document.getElementById("result-screen").classList.add("active");
         
         // Populate Date correctly
+        // Force Cambodian format: [Day of Week], [DD]-[Month]-[YYYY]
         const now = new Date();
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1348,6 +1352,12 @@
         if(dateElement) {
              dateElement.innerText = formattedDate;
         }
+        
+        // Fill Details on Screen
+        document.getElementById("res-student").innerText = studentName;
+        document.getElementById("res-assessor").innerText = assessorName;
+        document.getElementById("res-campus").innerText = selectedCampus;
+        document.getElementById("res-level").innerText = currentLevel;
 
         // --- Calculate English Score (Weighted Average: 25% each) ---
         let engMcqPct = (englishComponents.mcqScore / englishComponents.mcqMax) * 100 || 0;
@@ -1406,6 +1416,7 @@
         };
 
         // Use no-cors mode to bypass browser security restrictions
+        // Content-Type header removed to ensure the request is treated as a "Simple Request" and not blocked
         fetch("https://calixtojohnn.app.n8n.cloud/webhook/4cecec6e-b2f2-46c1-98fc-b3b11ccf3932", {
             method: "POST",
             mode: "no-cors", 
@@ -1423,19 +1434,8 @@
     function downloadPDF() {
         const element = document.getElementById('pdf-export-container');
         
-        // Prepare content 
-        const mainLogoSrc = document.getElementById('main-logo').src;
-        // Logic to safely set image src if needed
-        
-        const writingBox = document.getElementById('pdf-writing-text');
-        // Check if element exists before setting innerText
-        if(writingBox) {
-             if (studentWriting && studentWriting.trim() !== "") {
-                writingBox.innerText = studentWriting;
-            } else {
-                writingBox.innerText = "(Student left the writing section blank)";
-            }
-        }
+        // Prepare content for PDF
+        // Removed logo logic
 
         const engPct = document.getElementById("score-eng").innerText;
         // Get Breakdown Values
@@ -1450,6 +1450,7 @@
         const date = document.getElementById("res-date").innerText;
         const verdictText = parseInt(finalScore) >= 60 ? "PASSED ✅" : "REVIEW NEEDED ⚠️";
         
+        // Dynamic Remark Text
         let verdictSubtitle = "";
         if (parseInt(finalScore) >= 60) {
             verdictSubtitle = "Excellent! The student is ready for " + currentLevel + ".";
@@ -1457,12 +1458,14 @@
             verdictSubtitle = "The student may need support in English or core subjects.";
         }
         
+        // Update Grid Values
         document.getElementById('pdf-student').innerText = studentName;
         // document.getElementById('pdf-level').innerText = currentLevel; // REMOVED
         document.getElementById('pdf-campus').innerText = selectedCampus;
         document.getElementById('pdf-date').innerText = date;
         document.getElementById('pdf-assessor').innerText = assessorName;
 
+        // Update Scores
         document.getElementById('pdf-eng-score').innerText = engPct + "%";
         // Set Breakdown Values in PDF
         document.getElementById('pdf-eng-mcq').innerText = engMcqPct;
@@ -1473,13 +1476,16 @@
         document.getElementById('pdf-math-score').innerText = mathPct + "%";
         document.getElementById('pdf-sci-score').innerText = sciPct + "%";
         document.getElementById('pdf-final-score').innerText = finalScore + "/100";
+        // Removed PDF ID update
 
+        // Update Verdict Box Content (HTML Injection for multi-line)
         const verdictBox = document.getElementById('pdf-verdict-box');
         verdictBox.innerHTML = `
             <span class="pdf-verdict-title">${verdictText}</span>
             <span class="pdf-verdict-subtitle">${verdictSubtitle}</span>
         `;
         
+        // Update styling based on Pass/Fail
         if (parseInt(finalScore) >= 60) {
             verdictBox.style.backgroundColor = "#e8f5e9"; // Light Green BG
             verdictBox.style.border = "2px solid #2e7d32";
