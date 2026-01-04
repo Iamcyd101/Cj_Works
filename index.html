@@ -304,14 +304,8 @@
             padding: 30px 40px;
             display: flex; 
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end; /* Align title to the right */
             border-bottom: 5px solid var(--secondary);
-        }
-        
-        .pdf-logo {
-            max-height: 80px;
-            width: auto;
-            background-color: transparent; /* No background */
         }
         
         .pdf-title-wrapper {
@@ -472,7 +466,7 @@
 <div class="container">
     <div class="logo-area">
         <!-- Main Screen Logo -->
-        <img src="IMG_7876.PNG" id="main-logo" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
+        <img src="image_53389d.png" id="main-logo" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
     </div>
 
     <!-- Screen 1: Registration -->
@@ -620,7 +614,7 @@
 <!-- MODERN PDF TEMPLATE -->
 <div id="pdf-export-container">
     <div class="pdf-header-bar">
-        <img src="IMG_7876.PNG" class="pdf-logo" alt="VBIA Logo">
+        <!-- Logo REMOVED from PDF Header -->
         <div class="pdf-title-wrapper">
             <h1>Vision Bridge International Academy</h1>
             <p>Official Digital Placement Report</p>
@@ -970,7 +964,7 @@
                     { q: "How many planets are there?", options: ["7", "8", "9", "10"], ans: 1, isStory: true },
                     { q: "Why is Earth special?", options: ["It is hot", "It has rings", "It has life", "It is small"], ans: 2, isStory: true },
                     { q: "'If I had known, I _____ called you.'", options: ["will have", "would have", "can have", "shall have"], ans: 1 },
-                    { q: "Choose the correct spelling.", options: ["Neccessary", "Necessary", "Neccesary", "Necessery"], ans: 1 },
+                    { q: "Choose the correct spelling.", options: ["Neccessary", "Necessary", "Neccesary", "Neccesary"], ans: 1 },
                     { q: "'The book was written _____ JK Rowling.'", options: ["from", "by", "with", "of"], ans: 1 },
                     { q: "Choose the prefix to make 'Agree' negative.", options: ["Un-", "Dis-", "Mis-", "Im-"], ans: 1 },
                     { q: "Which sentence is in the Passive Voice?", options: ["The cat ate food", "The food was eaten by the cat", "Cat is eating", "Cat will eat"], ans: 1 },
@@ -1127,9 +1121,6 @@
         englishComponents = { mcqScore: 0, mcqMax: 0, readingScorePct: 0, writingScorePct: 0, speakingScorePct: 0 };
         currentQIndex = 0;
         studentWriting = "";
-        
-        // Reset Text Area
-        document.getElementById("writing-input").value = "";
 
         // Build flat array
         // 1. English MCQs
@@ -1200,10 +1191,9 @@
              text = document.getElementById("question-text").innerText;
         }
 
-        // Remove emojis safely
+        // Remove emojis to prevent giving away answers
         // Replaces emojis with the word "picture" for audio
-        // Modified Regex for better compatibility
-        let safeText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, " picture ");
+        let safeText = text.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, " picture ");
 
         const utterance = new SpeechSynthesisUtterance(safeText);
         utterance.rate = 0.9; 
@@ -1513,15 +1503,11 @@
             margin:       0,
             filename:     `Result_${studentName.replace(/\s+/g, '_')}_${currentLevel}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, scrollY: 0, useCORS: true },
+            html2canvas:  { scale: 2, scrollY: 0 },
             jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
-            element.style.display = 'none';
-        }).catch(err => {
-            console.error("PDF Failed:", err);
-            alert("PDF Download Failed. Please check the console for details.");
             element.style.display = 'none';
         });
     }
