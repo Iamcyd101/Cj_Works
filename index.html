@@ -48,7 +48,11 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
+
+        // --- CONFIGURATION ---
+        // PRODUCTION Webhook URL (Updated as requested)
+        const WEBHOOK_URL = "https://calixtojohnn.app.n8n.cloud/webhook/4cdadfc8-2591-431f-9d34-c12f5f318fcc";
 
         // --- Icons (Inline SVGs for reliability) ---
         const Icons = {
@@ -63,64 +67,125 @@
             Home: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
             Grid: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
             Corner: () => <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12V2H12" /><path d="M28 2H38V12" /><path d="M38 28V38H28" /><path d="M12 38H2V28" /></svg>,
-            Lock: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Lock: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+            User: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            Wifi: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
+            WifiOff: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
         };
 
-        // --- LEVEL DATA CONFIGURATION (4 Rounds: Easy, Medium, Hard, Tie Breaker) ---
+        // --- LEVEL DATA CONFIGURATION ---
         const levelsData = {
             "K2": [
-                { id: 1, title: "Round 1: Easy", color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "Count: 🍎🍎", options: ["1", "2", "3"], a: "2", type: "mcq" }, { q: "Which is SMALLER?", options: ["🐭 Mouse", "🐘 Elephant"], a: "🐭 Mouse", type: "mcq" }] },
-                { id: 2, title: "Round 2: Medium", color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "1 + 2 = ?", a: "3", type: "input" }, { q: "Complete: 1, 2, __, 4", a: "3", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "3 + 2 = ?", a: "5", type: "input" }, { q: "Pattern: A, B, A, B, __", a: "A", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "I have 2 legs. I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" }, { q: "5 - 4 = ?", a: "1", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "Count: 🍎🍎", options: ["1", "2", "3"], a: "2", type: "mcq" }, { q: "Which is SMALLER?", options: ["🐭 Mouse", "🐘 Elephant"], a: "🐭 Mouse", type: "mcq" }] },
+                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "1 + 2 = ?", a: "3", type: "input" }, { q: "Complete: 1, 2, __, 4", a: "3", type: "input" }] },
+                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "3 + 2 = ?", a: "5", type: "input" }, { q: "Pattern: A, B, A, B, __", a: "A", type: "input" }] },
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "I have 2 legs. I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" }, { q: "5 - 4 = ?", a: "1", type: "input" }] }
             ],
             "P1": [
-                { id: 1, title: "Round 1: Easy", color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "2 + 3 = ?", a: "5", type: "input" }, { q: "Which is MAX?", options: ["5", "9", "2"], a: "9", type: "mcq" }] },
-                { id: 2, title: "Round 2: Medium", color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "10 - 4 = ?", a: "6", type: "input" }, { q: "2, 4, 6, __", a: "8", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Tom has 5 apples. Gives 2 away. Left?", a: "3", type: "input" }, { q: "12 + 5 = ?", a: "17", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "15 - 8 = ?", a: "7", type: "input" }, { q: "Shape with 3 sides?", a: "Triangle", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "2 + 3 = ?", a: "5", type: "input" }, { q: "Which is MAX?", options: ["5", "9", "2"], a: "9", type: "mcq" }] },
+                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "10 - 4 = ?", a: "6", type: "input" }, { q: "2, 4, 6, __", a: "8", type: "input" }] },
+                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Tom has 5 apples. Gives 2 away. Left?", a: "3", type: "input" }, { q: "12 + 5 = ?", a: "17", type: "input" }] },
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "15 - 8 = ?", a: "7", type: "input" }, { q: "Shape with 3 sides?", a: "Triangle", type: "input" }] }
             ],
             "P2": [
-                { id: 1, title: "Round 1: Easy", color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "20 + 30 = ?", a: "50", type: "input" }, { q: "5 x 2 = ?", a: "10", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "100 - 45 = ?", a: "55", type: "input" }, { q: "4 x 5 = ?", a: "20", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "$1.50 + $0.50 = ?", a: "2.00", type: "input" }, { q: "Days in 2 weeks?", a: "14", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Half of 50?", a: "25", type: "input" }, { q: "3 x 3 + 1 = ?", a: "10", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "20 + 30 = ?", a: "50", type: "input" }, { q: "5 x 2 = ?", a: "10", type: "input" }] },
+                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "100 - 45 = ?", a: "55", type: "input" }, { q: "4 x 5 = ?", a: "20", type: "input" }] },
+                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "$1.50 + $0.50 = ?", a: "2.00", type: "input" }, { q: "Days in 2 weeks?", a: "14", type: "input" }] },
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Half of 50?", a: "25", type: "input" }, { q: "3 x 3 + 1 = ?", a: "10", type: "input" }] }
             ],
             "P3": [
-                { id: 1, title: "Round 1: Easy", color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "300 + 200 = ?", a: "500", type: "input" }, { q: "8 x 5 = ?", a: "40", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "45 ÷ 5 = ?", a: "9", type: "input" }, { q: "Perimeter of sq side 5?", a: "20", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "12 x 12 = ?", a: "144", type: "input" }, { q: "150cm = __ m?", a: "1.5", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" }, { q: "250g x 4 = __ kg?", a: "1", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "300 + 200 = ?", a: "500", type: "input" }, { q: "8 x 5 = ?", a: "40", type: "input" }] },
+                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "45 ÷ 5 = ?", a: "9", type: "input" }, { q: "Perimeter of sq side 5?", a: "20", type: "input" }] },
+                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "12 x 12 = ?", a: "144", type: "input" }, { q: "150cm = __ m?", a: "1.5", type: "input" }] },
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" }, { q: "250g x 4 = __ kg?", a: "1", type: "input" }] }
             ],
             "P4": [
-                { id: 1, title: "Round 1: Easy", color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "0.5 + 0.2 = ?", a: "0.7", type: "input" }, { q: "Angle of right angle?", a: "90", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "Factors of 6: 1, 2, 3, __", a: "6", type: "input" }, { q: "Area: 6m x 4m?", a: "24", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Train: 2h @ 80km/h. Dist?", a: "160", type: "input" }, { q: "1/4 of 100?", a: "25", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Simplest form: 5/10?", a: "1/2", type: "input" }, { q: "Degrees in triangle?", a: "180", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "0.5 + 0.2 = ?", a: "0.7", type: "input" }, { q: "Angle of right angle?", a: "90", type: "input" }] },
+                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "Factors of 6: 1, 2, 3, __", a: "6", type: "input" }, { q: "Area: 6m x 4m?", a: "24", type: "input" }] },
+                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Train: 2h @ 80km/h. Dist?", a: "160", type: "input" }, { q: "1/4 of 100?", a: "25", type: "input" }] },
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Simplest form: 5/10?", a: "1/2", type: "input" }, { q: "Degrees in triangle?", a: "180", type: "input" }] }
             ]
         };
 
         function App() {
             // States
-            // gameState options: 'levelSelect', 'welcome', 'roundIntro', 'playing', 'preTieBreaker', 'result'
-            const [gameState, setGameState] = useState('levelSelect'); 
+            // gameState options: 'login', 'levelSelect', 'welcome', 'roundIntro', 'playing', 'preTieBreaker', 'result'
+            const [gameState, setGameState] = useState('login'); 
+            const [studentName, setStudentName] = useState("");
             const [selectedLevel, setSelectedLevel] = useState(null);
             const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
             const [currentQIdx, setCurrentQIdx] = useState(0);
             const [score, setScore] = useState(0);
+            const [tieBreakerScore, setTieBreakerScore] = useState(0);
             const [inputVal, setInputVal] = useState("");
-            const [feedback, setFeedback] = useState(null); 
+            const [feedback, setFeedback] = useState(null);
+            // New state for submission status
+            const [submissionStatus, setSubmissionStatus] = useState('idle'); // idle, sending, success, error
+            const hasSentData = useRef(false);
 
             // Derived State
             const activeGameData = selectedLevel ? levelsData[selectedLevel] : [];
             const currentRound = activeGameData[currentRoundIdx];
             const currentQ = currentRound ? currentRound.questions[currentQIdx] : null;
 
+            // --- WEBHOOK EFFECT ---
+            useEffect(() => {
+                if (gameState === 'result' && !hasSentData.current) {
+                    hasSentData.current = true; // Prevent double send
+                    setSubmissionStatus('sending');
+
+                    const maxPossibleScore = currentRoundIdx === 3 ? 100 : 90;
+                    const tieBreakerStatus = currentRoundIdx === 3 ? "Played" : "Skipped";
+                    
+                    const data = {
+                        studentName,
+                        selectedLevel,
+                        score, // This is total score
+                        maxPossibleScore,
+                        tieBreakerStatus,
+                        tieBreakerScore: currentRoundIdx === 3 ? tieBreakerScore : 0,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    // Send data to n8n webhook (Using the specific URL provided)
+                    fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            setSubmissionStatus('success');
+                        } else {
+                            setSubmissionStatus('error');
+                            console.error("Webhook responded with:", response.status);
+                        }
+                    })
+                    .catch(err => {
+                        setSubmissionStatus('error');
+                        console.error("Webhook error:", err);
+                    });
+                }
+                // Reset ref if we go back to login/level select
+                if (gameState !== 'result') {
+                    hasSentData.current = false;
+                    setSubmissionStatus('idle');
+                }
+            }, [gameState, currentRoundIdx, score, selectedLevel, studentName, tieBreakerScore]);
+
             // Handlers
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (studentName.trim()) {
+                    setGameState('levelSelect');
+                }
+            };
+
             const handleLevelSelect = (level) => {
                 setSelectedLevel(level);
                 setGameState('welcome');
                 setScore(0);
+                setTieBreakerScore(0); // Reset TB score
                 setCurrentRoundIdx(0);
                 setCurrentQIdx(0);
             };
@@ -136,7 +201,13 @@
             const handleAnswer = (val) => {
                 const isCorrect = val.toString().toLowerCase().trim() === currentQ.a.toString().toLowerCase().trim();
                 if (isCorrect) {
-                    setScore(s => s + 10);
+                    const points = currentRound.points;
+                    setScore(s => s + points);
+                    
+                    if (currentRoundIdx === 3) {
+                        setTieBreakerScore(s => s + points);
+                    }
+                    
                     setFeedback('correct');
                 } else {
                     setFeedback('wrong');
@@ -148,16 +219,12 @@
                     if (currentQIdx + 1 < currentRound.questions.length) {
                         setCurrentQIdx(c => c + 1);
                     } else {
-                        // End of current round logic
-                        // If Round 3 (index 2) just finished, go to Pre Tie Breaker
                         if (currentRoundIdx === 2) {
                             setGameState('preTieBreaker');
                         }
-                        // If Round 4 (index 3) just finished, go to Result
                         else if (currentRoundIdx === 3) {
                             setGameState('result');
                         }
-                        // Otherwise (R1, R2), go to next round
                         else {
                             setCurrentRoundIdx(c => c + 1);
                             setCurrentQIdx(0);
@@ -176,16 +243,65 @@
                 setSelectedLevel(null);
             };
 
+            // --- LOGIN SCREEN ---
+            if (gameState === 'login') {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-slate-950 bg-grid font-sans">
+                         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-cyan-950/20 pointer-events-none"></div>
+                         <div className="z-10 w-full max-w-lg text-center">
+                            
+                            <img src="IMG_7876.PNG" alt="School Logo" className="h-32 mx-auto mb-8 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+
+                            <div className="bg-slate-900/80 backdrop-blur border border-slate-700 p-8 md:p-12 shadow-2xl rounded-2xl relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-600"></div>
+                                
+                                <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">SYSTEM LOGIN</h1>
+                                <p className="text-slate-400 mb-8 font-mono text-sm">PLEASE IDENTIFY YOURSELF</p>
+
+                                <form onSubmit={handleLogin} className="space-y-6">
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span className="text-slate-500"><Icons.User /></span>
+                                        </div>
+                                        <input 
+                                            type="text" 
+                                            value={studentName}
+                                            onChange={(e) => setStudentName(e.target.value)}
+                                            className="block w-full pl-12 pr-3 py-4 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white placeholder-slate-600 font-mono text-lg transition-all" 
+                                            placeholder="ENTER YOUR NAME..." 
+                                            required
+                                            autoFocus
+                                        />
+                                    </div>
+                                    
+                                    <button type="submit" className="w-full group relative px-8 py-4 bg-cyan-600 overflow-hidden rounded-lg hover:bg-cyan-500 transition-all duration-300">
+                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
+                                        <span className="relative text-xl font-bold font-mono tracking-widest text-white">
+                                            ACCESS SYSTEM >
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                         </div>
+                    </div>
+                );
+            }
+
             // --- LEVEL SELECTION ---
             if (gameState === 'levelSelect') {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-slate-950 bg-grid font-sans">
                          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-cyan-950/20 pointer-events-none"></div>
-                         <div className="z-10 w-full max-w-5xl text-center">
-                            
-                            {/* LOGO ADDED HERE */}
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-24 md:h-32 mx-auto mb-6 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+                         
+                         <div className="absolute top-4 right-4 md:top-8 md:right-8 z-20">
+                             <div className="bg-slate-900/80 backdrop-blur border border-cyan-500/30 px-4 py-2 rounded-full flex items-center gap-2">
+                                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                 <span className="text-cyan-400 font-mono text-sm">STUDENT: {studentName.toUpperCase()}</span>
+                             </div>
+                         </div>
 
+                         <div className="z-10 w-full max-w-5xl text-center">
+                            <img src="IMG_7876.PNG" alt="School Logo" className="h-24 md:h-32 mx-auto mb-6 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
                             <div className="inline-flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur border border-cyan-500/30 rounded-full mb-8">
                                 <Icons.Grid />
                                 <span className="ml-3 font-mono text-cyan-400 tracking-widest">SYSTEM_LOGIN // SELECT_LEVEL</span>
@@ -212,12 +328,10 @@
                     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-slate-950">
                         <div className="absolute inset-0 z-0 opacity-10 bg-grid"></div>
                         <div className="z-10 flex flex-col items-center">
-                            
-                            {/* LOGO ADDED HERE (Replaces Zap Icon) */}
                             <img src="IMG_7876.PNG" alt="School Logo" className="h-32 md:h-40 mb-6 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
-
                             <h1 className="text-5xl md:text-7xl font-bold text-center mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{selectedLevel} COMPETITION</h1>
                             <div className="h-1 w-32 bg-cyan-500 mb-6"></div>
+                            <p className="text-slate-400 mb-2 text-center max-w-md font-mono">STUDENT: {studentName.toUpperCase()}</p>
                             <p className="text-slate-400 mb-12 text-center max-w-md font-mono">// 3 Rounds: Easy, Medium, Hard.<br/>// Bonus: Tie Breaker.</p>
                             <div className="flex gap-4">
                                 <button onClick={goHome} className="px-8 py-4 border border-slate-700 text-slate-400 hover:text-white hover:border-white transition font-mono uppercase tracking-widest">&lt; Abort</button>
@@ -241,6 +355,11 @@
                             <div className="text-cyan-400 mb-6 animate-pulse scale-150"><Icon /></div>
                             <h2 className="text-xl font-mono text-cyan-300 mb-2 tracking-widest border-b border-cyan-500/30 pb-2 w-full">{selectedLevel} // MODULE {currentRound.id}</h2>
                             <h1 className="text-5xl md:text-7xl font-black mb-8 font-sans tracking-tight">{currentRound.title}</h1>
+                            
+                            <div className="mb-8 font-mono text-cyan-400 text-lg border border-cyan-500/30 px-4 py-2 bg-slate-900/50 rounded-lg inline-block">
+                                POINTS PER QUESTION: {currentRound.points}
+                            </div>
+                            
                             <button onClick={startRound} className="bg-white text-slate-950 font-bold py-4 px-16 hover:scale-105 transition font-mono uppercase tracking-widest">[ EXECUTE ]</button>
                         </div>
                     </div>
@@ -259,7 +378,7 @@
                             
                             <div className="bg-slate-950 p-6 border border-slate-800 mb-8">
                                 <p className="text-cyan-500 text-sm mb-2 uppercase tracking-widest">Current Standing</p>
-                                <div className="text-6xl font-bold text-white">{score} <span className="text-xl text-slate-600">PTS</span></div>
+                                <div className="text-6xl font-bold text-white">{score} <span className="text-xl text-slate-600">/ 90 PTS</span></div>
                             </div>
                             
                             <p className="text-slate-300 mb-8 max-w-md mx-auto">You have completed Easy, Medium, and Hard rounds. Do you wish to proceed to the Tie Breaker round?</p>
@@ -275,10 +394,8 @@
 
             // --- RESULTS ---
             if (gameState === 'result') {
-                const totalQ = activeGameData.reduce((acc, r) => acc + r.questions.length, 0);
-                const maxScore = totalQ * 10; 
-                // Note: Max score is dynamic depending on if they did tie breaker or not, but showing potential total is fine.
-                const percentage = Math.round((score / maxScore) * 100);
+                const maxPossibleScore = currentRoundIdx === 3 ? 100 : 90;
+                const percentage = Math.round((score / maxPossibleScore) * 100);
                 
                 let message = "";
                 let colorClass = "";
@@ -293,12 +410,30 @@
                         <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-8 md:p-12 shadow-2xl text-center max-w-lg w-full relative z-10">
                             <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-cyan-500 -mt-2 -ml-2"></div>
                             <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-cyan-500 -mb-2 -mr-2"></div>
-                            <h1 className="text-4xl font-bold mb-8 text-white tracking-tight">DIAGNOSTIC COMPLETE</h1>
+                            
+                            {/* STATUS INDICATOR */}
+                            <div className="absolute top-4 right-4 flex items-center gap-2">
+                                {submissionStatus === 'sending' && <span className="text-yellow-400 animate-pulse font-mono text-xs flex items-center gap-1"><Icons.Wifi /> TRANSMITTING...</span>}
+                                {submissionStatus === 'success' && <span className="text-green-400 font-mono text-xs flex items-center gap-1"><Icons.CheckCircle /> DATA UPLOADED</span>}
+                                {submissionStatus === 'error' && <span className="text-red-400 font-mono text-xs flex items-center gap-1"><Icons.WifiOff /> UPLOAD FAILED</span>}
+                            </div>
+
+                            <h1 className="text-4xl font-bold mb-4 text-white tracking-tight">DIAGNOSTIC COMPLETE</h1>
+                            <p className="text-cyan-400 font-mono mb-8">REPORT FOR: {studentName.toUpperCase()}</p>
+
                             <div className="mb-8 bg-slate-950 p-6 border border-slate-800">
                                 <p className="text-cyan-500 font-mono text-sm mb-2">FINAL PERFORMANCE METRICS</p>
                                 <div className="text-7xl font-bold text-white mb-4 font-mono">{score}</div>
                                 <div className="text-sm text-slate-500 uppercase tracking-widest">Total Points Accumulated</div>
                             </div>
+                            
+                            {currentRoundIdx === 3 && (
+                                <div className="mb-8 bg-purple-900/20 p-4 border border-purple-500/30 rounded">
+                                    <p className="text-purple-400 font-mono text-xs mb-1 uppercase">Tie Breaker Module</p>
+                                    <div className="text-2xl font-bold text-white">{tieBreakerScore} <span className="text-sm text-slate-400">/ 10 PTS</span></div>
+                                </div>
+                            )}
+
                             <p className={`text-xl font-bold mb-8 font-mono ${colorClass}`}>{message}</p>
                             <div className="flex gap-3">
                                 <button onClick={() => window.location.reload()} className="flex-1 bg-slate-800 border border-slate-600 hover:border-cyan-500 text-cyan-400 py-4 hover:bg-slate-700 transition font-mono flex items-center justify-center gap-2"><Icons.Zap /> RETRY</button>
@@ -322,6 +457,10 @@
                              <div className={`w-2 h-2 rounded-full animate-pulse ${score > 0 ? 'bg-green-500' : 'bg-cyan-500'}`}></div>
                              <span className="text-cyan-500 tracking-widest text-sm md:text-base">{selectedLevel} :: {currentRound.title.toUpperCase()}</span>
                          </div>
+                         
+                         {/* Name in HUD */}
+                         <div className="hidden lg:block text-slate-500 text-sm">STUDENT: {studentName.toUpperCase()}</div>
+
                          <div className="flex items-center gap-6">
                              <div className="hidden md:flex flex-col items-end">
                                  <span className="text-[10px] text-slate-500 uppercase">Current Score</span>
