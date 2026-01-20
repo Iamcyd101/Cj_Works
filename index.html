@@ -51,7 +51,6 @@
         const { useState, useEffect, useRef } = React;
 
         // --- CONFIGURATION ---
-        // PRODUCTION Webhook URL (Updated as requested)
         const WEBHOOK_URL = "https://calixtojohnn.app.n8n.cloud/webhook/4cdadfc8-2591-431f-9d34-c12f5f318fcc";
 
         // --- Icons (Inline SVGs for reliability) ---
@@ -74,42 +73,148 @@
         };
 
         // --- LEVEL DATA CONFIGURATION ---
+        // Scoring: R1(4pts x5=20) + R2(6pts x5=30) + R3(8pts x5=40) = 90. TB(5pts x2=10) = 100 Total.
         const levelsData = {
             "K2": [
-                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "Count: 🍎🍎", options: ["1", "2", "3"], a: "2", type: "mcq" }, { q: "Which is SMALLER?", options: ["🐭 Mouse", "🐘 Elephant"], a: "🐭 Mouse", type: "mcq" }] },
-                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "1 + 2 = ?", a: "3", type: "input" }, { q: "Complete: 1, 2, __, 4", a: "3", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "3 + 2 = ?", a: "5", type: "input" }, { q: "Pattern: A, B, A, B, __", a: "A", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "I have 2 legs. I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" }, { q: "5 - 4 = ?", a: "1", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
+                    { q: "Count the red apples: 🍎🍎", options: ["1", "2", "3"], a: "2", type: "mcq" },
+                    { q: "Compare the two animals. Which animal is smaller in real life?", options: ["🐭 Mouse", "🐘 Elephant"], a: "🐭 Mouse", type: "mcq" },
+                    { q: "Count the bananas carefully. How many bananas are there? 🍌🍌🍌", options: ["2", "3", "4"], a: "3", type: "mcq" },
+                    { q: "Which number is the biggest?", options: ["5", "2", "1"], a: "5", type: "mcq" },
+                    { q: "Count the stars: ⭐⭐⭐⭐", options: ["3", "4", "5"], a: "4", type: "mcq" }
+                ]},
+                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
+                    { q: "If you have 1 cookie and you get 2 more, how many cookies do you have?", a: "3", type: "input" },
+                    { q: "Look at the number sequence: 1, 2, __, 4. What number is missing?", a: "3", type: "input" },
+                    { q: "Look at the pattern: Red 🔴, Blue 🔵, Red 🔴, Blue 🔵. What comes next?", options: ["🔴 Red", "🔵 Blue"], a: "🔴 Red", type: "mcq" },
+                    { q: "Calculate the sum: 1 + 1 = ?", a: "2", type: "input" },
+                    { q: "What comes after the number 5?", a: "6", type: "input" }
+                ]},
+                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
+                    { q: "You have 3 toys. Your friend gives you 2 more toys. How many toys do you have in total?", a: "5", type: "input" },
+                    { q: "Follow the pattern: A, B, A, B. What letter comes next?", a: "A", type: "input" },
+                    { q: "Calculate: 5 - 1 = ?", a: "4", type: "input" },
+                    { q: "You have 4 candies. You eat 2. How many are left?", a: "2", type: "input" },
+                    { q: "Which shape has 4 sides?", options: ["Triangle", "Square", "Circle"], a: "Square", type: "mcq" }
+                ]},
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                    { q: "I am an animal with 2 legs and I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" },
+                    { q: "Calculate: 5 - 4 = ?", a: "1", type: "input" }
+                ]}
             ],
             "P1": [
-                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "2 + 3 = ?", a: "5", type: "input" }, { q: "Which is MAX?", options: ["5", "9", "2"], a: "9", type: "mcq" }] },
-                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "10 - 4 = ?", a: "6", type: "input" }, { q: "2, 4, 6, __", a: "8", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Tom has 5 apples. Gives 2 away. Left?", a: "3", type: "input" }, { q: "12 + 5 = ?", a: "17", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "15 - 8 = ?", a: "7", type: "input" }, { q: "Shape with 3 sides?", a: "Triangle", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
+                    { q: "What is the sum of 2 plus 3?", a: "5", type: "input" },
+                    { q: "Look at the numbers: 5, 9, and 2. Which number is the Largest?", options: ["5", "9", "2"], a: "9", type: "mcq" },
+                    { q: "Complete the counting: 1, 2, 3, __. What number comes next?", a: "4", type: "input" },
+                    { q: "Write the number for the word 'Ten'.", a: "10", type: "input" },
+                    { q: "Calculate: 4 + 4 = ?", a: "8", type: "input" }
+                ]},
+                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
+                    { q: "What is 10 minus 4?", a: "6", type: "input" },
+                    { q: "Skip counting by 2s: 2, 4, 6, __. What is the next number?", a: "8", type: "input" },
+                    { q: "Look at the numbers: 10, 1, and 5. Which number is the Smallest?", options: ["10", "1", "5"], a: "1", type: "mcq" },
+                    { q: "Find the missing number: 5 + __ = 10", a: "5", type: "input" },
+                    { q: "Which shape is round?", options: ["Square", "Triangle", "Circle"], a: "Circle", type: "mcq" }
+                ]},
+                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
+                    { q: "Tom has 5 apples. He gives 2 apples away to his friend. How many apples does Tom have left?", a: "3", type: "input" },
+                    { q: "Calculate the sum: 12 + 5 = ?", a: "17", type: "input" },
+                    { q: "Calculate the difference: 20 - 10 = ?", a: "10", type: "input" },
+                    { q: "Find the missing number in the pattern: 10, 20, 30, __.", a: "40", type: "input" },
+                    { q: "There are 3 birds on a tree. 2 more fly in. How many birds are there now?", a: "5", type: "input" }
+                ]},
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                    { q: "Calculate: 15 - 8 = ?", a: "7", type: "input" },
+                    { q: "Which shape has exactly 3 sides?", a: "Triangle", type: "input" }
+                ]}
             ],
             "P2": [
-                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "20 + 30 = ?", a: "50", type: "input" }, { q: "5 x 2 = ?", a: "10", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "100 - 45 = ?", a: "55", type: "input" }, { q: "4 x 5 = ?", a: "20", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "$1.50 + $0.50 = ?", a: "2.00", type: "input" }, { q: "Days in 2 weeks?", a: "14", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Half of 50?", a: "25", type: "input" }, { q: "3 x 3 + 1 = ?", a: "10", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
+                    { q: "Calculate: 20 + 30 = ?", a: "50", type: "input" },
+                    { q: "Calculate: 5 × 2 = ?", a: "10", type: "input" },
+                    { q: "Calculate: 10 + 10 + 10 = ?", a: "30", type: "input" },
+                    { q: "Calculate: 100 - 10 = ?", a: "90", type: "input" },
+                    { q: "Which number is even?", options: ["3", "7", "8"], a: "8", type: "mcq" }
+                ]},
+                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
+                    { q: "Calculate: 100 - 45 = ?", a: "55", type: "input" },
+                    { q: "Calculate: 4 × 5 = ?", a: "20", type: "input" },
+                    { q: "What is the value of the digit 5 in the number 54?", options: ["5", "50", "500"], a: "50", type: "mcq" },
+                    { q: "Complete the pattern: 2, 4, 8, 16, __.", a: "32", type: "input" },
+                    { q: "What is 10 more than 85?", a: "95", type: "input" }
+                ]},
+                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
+                    { q: "If you have $1.50 and you add $0.50, how much money do you have in total?", a: "2.00", type: "input" },
+                    { q: "How many total days are there in 2 weeks?", a: "14", type: "input" },
+                    { q: "Calculate: 3 × 10 = ?", a: "30", type: "input" },
+                    { q: "Tom has 3 bags. There are 5 balls in each bag. How many balls are there in total?", a: "15", type: "input" },
+                    { q: "Find the missing number: 50 - __ = 25", a: "25", type: "input" }
+                ]},
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                    { q: "What is half of the number 50?", a: "25", type: "input" },
+                    { q: "Solve this equation: (3 × 3) + 1 = ?", a: "10", type: "input" }
+                ]}
             ],
             "P3": [
-                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "300 + 200 = ?", a: "500", type: "input" }, { q: "8 x 5 = ?", a: "40", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "45 ÷ 5 = ?", a: "9", type: "input" }, { q: "Perimeter of sq side 5?", a: "20", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "12 x 12 = ?", a: "144", type: "input" }, { q: "150cm = __ m?", a: "1.5", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" }, { q: "250g x 4 = __ kg?", a: "1", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
+                    { q: "Calculate: 300 + 200 = ?", a: "500", type: "input" },
+                    { q: "Calculate: 8 × 5 = ?", a: "40", type: "input" },
+                    { q: "Calculate: 100 ÷ 2 = ?", a: "50", type: "input" },
+                    { q: "Calculate: 7 × 7 = ?", a: "49", type: "input" },
+                    { q: "Calculate: 500 - 100 = ?", a: "400", type: "input" }
+                ]},
+                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
+                    { q: "Calculate: 45 ÷ 5 = ?", a: "9", type: "input" },
+                    { q: "What is the perimeter of a square if one side is 5 meters long?", a: "20", type: "input" },
+                    { q: "Calculate: 6 × 6 = ?", a: "36", type: "input" },
+                    { q: "If it is 12:00 now, what time will it be in 30 minutes?", options: ["12:30", "1:00", "11:30"], a: "12:30", type: "mcq" },
+                    { q: "What is the value of the digit 5 in the number 543?", options: ["5", "50", "500"], a: "500", type: "mcq" }
+                ]},
+                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
+                    { q: "Calculate: 12 × 12 = ?", a: "144", type: "input" },
+                    { q: "Convert: 150 centimeters is equal to how many meters?", a: "1.5", type: "input" },
+                    { q: "What is half of 20?", a: "10", type: "input" },
+                    { q: "Find the area of a rectangle with length 4cm and width 3cm.", a: "12", type: "input" },
+                    { q: "Calculate: (10 × 2) + 5 = ?", a: "25", type: "input" }
+                ]},
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                    { q: "Add the fractions: 1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" },
+                    { q: "Convert: 250g multiplied by 4 equals how many kilograms?", a: "1", type: "input" }
+                ]}
             ],
             "P4": [
-                { id: 1, title: "Round 1: Easy", points: 10, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [{ q: "0.5 + 0.2 = ?", a: "0.7", type: "input" }, { q: "Angle of right angle?", a: "90", type: "input" }] },
-                { id: 2, title: "Round 2: Medium", points: 15, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [{ q: "Factors of 6: 1, 2, 3, __", a: "6", type: "input" }, { q: "Area: 6m x 4m?", a: "24", type: "input" }] },
-                { id: 3, title: "Round 3: Hard", points: 20, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [{ q: "Train: 2h @ 80km/h. Dist?", a: "160", type: "input" }, { q: "1/4 of 100?", a: "25", type: "input" }] },
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [{ q: "Simplest form: 5/10?", a: "1/2", type: "input" }, { q: "Degrees in triangle?", a: "180", type: "input" }] }
+                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
+                    { q: "Calculate: 0.5 + 0.2 = ?", a: "0.7", type: "input" },
+                    { q: "How many degrees are in a right angle?", a: "90", type: "input" },
+                    { q: "What is 50% of 100?", a: "50", type: "input" },
+                    { q: "Calculate: 48 ÷ 6 = ?", a: "8", type: "input" },
+                    { q: "Calculate: 0.5 + 0.5 = ?", a: "1", type: "input" }
+                ]},
+                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
+                    { q: "List the factors of 6: 1, 2, 3, and __?", a: "6", type: "input" },
+                    { q: "Calculate the area of a rectangle with length 6m and width 4m.", a: "24", type: "input" },
+                    { q: "Calculate: 0.1 + 0.01 = ?", options: ["0.11", "0.101", "0.2"], a: "0.11", type: "mcq" },
+                    { q: "What is the angle of a square corner?", a: "90", type: "input" },
+                    { q: "Find the perimeter of a rectangle with sides 5cm and 3cm.", a: "16", type: "input" }
+                ]},
+                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
+                    { q: "A train travels for 2 hours at a speed of 80 km/h. What is the total distance traveled?", a: "160", type: "input" },
+                    { q: "What is 1/4 of 100?", a: "25", type: "input" },
+                    { q: "Find the perimeter of a rectangle with length 5 and width 2.", a: "14", type: "input" },
+                    { q: "If a train leaves at 10:00 and the trip takes 2 hours and 30 minutes, when does it arrive?", options: ["12:30", "12:00", "1:30"], a: "12:30", type: "mcq" },
+                    { q: "Calculate: (50 ÷ 2) + 10 = ?", a: "35", type: "input" }
+                ]},
+                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                    { q: "What is the simplest form of the fraction 5/10?", options: ["1/2", "2/1", "5"], a: "1/2", type: "mcq" },
+                    { q: "How many degrees are in a triangle?", a: "180", type: "input" }
+                ]}
             ]
         };
 
         function App() {
             // States
-            // gameState options: 'login', 'levelSelect', 'welcome', 'roundIntro', 'playing', 'preTieBreaker', 'result'
+            // gameState options: 'login', 'levelSelect', 'welcome', 'roundIntro', 'playing', 'postRound2', 'preTieBreaker', 'result'
             const [gameState, setGameState] = useState('login'); 
             const [studentName, setStudentName] = useState("");
             const [selectedLevel, setSelectedLevel] = useState(null);
@@ -119,8 +224,7 @@
             const [tieBreakerScore, setTieBreakerScore] = useState(0);
             const [inputVal, setInputVal] = useState("");
             const [feedback, setFeedback] = useState(null);
-            // New state for submission status
-            const [submissionStatus, setSubmissionStatus] = useState('idle'); // idle, sending, success, error
+            const [submissionStatus, setSubmissionStatus] = useState('idle'); 
             const hasSentData = useRef(false);
 
             // Derived State
@@ -134,20 +238,24 @@
                     hasSentData.current = true; // Prevent double send
                     setSubmissionStatus('sending');
 
-                    const maxPossibleScore = currentRoundIdx === 3 ? 100 : 90;
-                    const tieBreakerStatus = currentRoundIdx === 3 ? "Played" : "Skipped";
+                    let maxPossibleScore = 100;
+                    if (currentRoundIdx === 1) maxPossibleScore = 50; // Stopped after Round 2
+                    else if (currentRoundIdx === 2) maxPossibleScore = 90; // Stopped after Round 3 (skipped TB)
+
+                    let tieBreakerStatus = "Skipped";
+                    if (currentRoundIdx === 3) tieBreakerStatus = "Played";
+                    if (currentRoundIdx === 1) tieBreakerStatus = "N/A"; // Didn't reach it
                     
                     const data = {
                         studentName,
                         selectedLevel,
-                        score, // This is total score
+                        score, 
                         maxPossibleScore,
                         tieBreakerStatus,
                         tieBreakerScore: currentRoundIdx === 3 ? tieBreakerScore : 0,
                         timestamp: new Date().toISOString()
                     };
 
-                    // Send data to n8n webhook (Using the specific URL provided)
                     fetch(WEBHOOK_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -166,7 +274,6 @@
                         console.error("Webhook error:", err);
                     });
                 }
-                // Reset ref if we go back to login/level select
                 if (gameState !== 'result') {
                     hasSentData.current = false;
                     setSubmissionStatus('idle');
@@ -185,15 +292,22 @@
                 setSelectedLevel(level);
                 setGameState('welcome');
                 setScore(0);
-                setTieBreakerScore(0); // Reset TB score
+                setTieBreakerScore(0); 
                 setCurrentRoundIdx(0);
                 setCurrentQIdx(0);
             };
 
             const startGame = () => setGameState('roundIntro');
             const startRound = () => setGameState('playing');
+            
+            const startRound3 = () => {
+                setCurrentRoundIdx(2); // Round 3 is index 2
+                setCurrentQIdx(0);
+                setGameState('roundIntro');
+            };
+
             const startTieBreaker = () => {
-                setCurrentRoundIdx(3); // Index 3 is Round 4
+                setCurrentRoundIdx(3); // Tie Breaker is index 3
                 setCurrentQIdx(0);
                 setGameState('roundIntro');
             };
@@ -219,13 +333,18 @@
                     if (currentQIdx + 1 < currentRound.questions.length) {
                         setCurrentQIdx(c => c + 1);
                     } else {
-                        if (currentRoundIdx === 2) {
+                        // End of Round Logic
+                        if (currentRoundIdx === 1) { // End of Round 2
+                            setGameState('postRound2');
+                        }
+                        else if (currentRoundIdx === 2) { // End of Round 3
                             setGameState('preTieBreaker');
                         }
-                        else if (currentRoundIdx === 3) {
+                        else if (currentRoundIdx === 3) { // End of Tie Breaker
                             setGameState('result');
                         }
                         else {
+                            // End of Round 1, go to Round 2 intro
                             setCurrentRoundIdx(c => c + 1);
                             setCurrentQIdx(0);
                             setGameState('roundIntro');
@@ -301,11 +420,13 @@
                          </div>
 
                          <div className="z-10 w-full max-w-5xl text-center">
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-24 md:h-32 mx-auto mb-6 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+                            <img src="IMG_7876.PNG" alt="School Logo" className="h-24 md:h-32 mx-auto mb-10 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+                            
                             <div className="inline-flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur border border-cyan-500/30 rounded-full mb-8">
                                 <Icons.Grid />
-                                <span className="ml-3 font-mono text-cyan-400 tracking-widest">SYSTEM_LOGIN // SELECT_LEVEL</span>
+                                <span className="ml-3 font-mono text-cyan-400 tracking-widest">SYSTEM LOGIN • SELECT LEVEL</span>
                             </div>
+
                             <h1 className="text-5xl md:text-7xl font-black text-white mb-12 tracking-tight drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">MISSION SELECT</h1>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                 {Object.keys(levelsData).map((level) => (
@@ -332,7 +453,7 @@
                             <h1 className="text-5xl md:text-7xl font-bold text-center mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{selectedLevel} COMPETITION</h1>
                             <div className="h-1 w-32 bg-cyan-500 mb-6"></div>
                             <p className="text-slate-400 mb-2 text-center max-w-md font-mono">STUDENT: {studentName.toUpperCase()}</p>
-                            <p className="text-slate-400 mb-12 text-center max-w-md font-mono">// 3 Rounds: Easy, Medium, Hard.<br/>// Bonus: Tie Breaker.</p>
+                            <p className="text-slate-400 mb-12 text-center max-w-md font-mono">3 Rounds: Easy, Medium, Hard.<br/>Bonus: Tie Breaker.</p>
                             <div className="flex gap-4">
                                 <button onClick={goHome} className="px-8 py-4 border border-slate-700 text-slate-400 hover:text-white hover:border-white transition font-mono uppercase tracking-widest">&lt; Abort</button>
                                 <button onClick={startGame} className="group relative px-10 py-4 bg-cyan-600 overflow-hidden hover:bg-cyan-500 transition-all duration-300 animate-glow">
@@ -352,8 +473,9 @@
                         <div className={`absolute inset-0 bg-gradient-to-br ${currentRound.color} opacity-20`}></div>
                         <div className="absolute inset-0 bg-grid opacity-20"></div>
                         <div className="relative z-10 p-12 bg-slate-950/80 backdrop-blur-xl border-y-2 border-cyan-500/50 flex flex-col items-center shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-2xl w-full text-center">
-                            <div className="text-cyan-400 mb-6 animate-pulse scale-150"><Icon /></div>
-                            <h2 className="text-xl font-mono text-cyan-300 mb-2 tracking-widest border-b border-cyan-500/30 pb-2 w-full">{selectedLevel} // MODULE {currentRound.id}</h2>
+                            <img src="IMG_7876.PNG" alt="School Logo" className="h-20 mb-6 object-contain" />
+                            
+                            <h2 className="text-xl font-mono text-cyan-300 mb-2 tracking-widest border-b border-cyan-500/30 pb-2 w-full">{selectedLevel} : {currentRound.title.toUpperCase()}</h2>
                             <h1 className="text-5xl md:text-7xl font-black mb-8 font-sans tracking-tight">{currentRound.title}</h1>
                             
                             <div className="mb-8 font-mono text-cyan-400 text-lg border border-cyan-500/30 px-4 py-2 bg-slate-900/50 rounded-lg inline-block">
@@ -361,6 +483,32 @@
                             </div>
                             
                             <button onClick={startRound} className="bg-white text-slate-950 font-bold py-4 px-16 hover:scale-105 transition font-mono uppercase tracking-widest">[ EXECUTE ]</button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // --- POST ROUND 2 SCREEN ---
+            if (gameState === 'postRound2') {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 relative font-mono">
+                        <div className="absolute inset-0 bg-grid opacity-20"></div>
+                        <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-12 shadow-2xl text-center max-w-2xl w-full relative z-10">
+                            <div className="text-blue-400 mb-4 flex justify-center"><Icons.Brain /></div>
+                            <h1 className="text-4xl font-bold mb-4 text-white">ROUND 2 COMPLETE</h1>
+                            <p className="text-slate-400 mb-8">Modules 1 & 2 Finished.</p>
+                            
+                            <div className="bg-slate-950 p-6 border border-slate-800 mb-8">
+                                <p className="text-cyan-500 text-sm mb-2 uppercase tracking-widest">Current Score</p>
+                                <div className="text-6xl font-bold text-white">{score} <span className="text-xl text-slate-600">/ 50 PTS</span></div>
+                            </div>
+                            
+                            <p className="text-slate-300 mb-8 max-w-md mx-auto">You can choose to end the exam now and submit your score, or proceed to the Hard Round (Module 3).</p>
+                            
+                            <div className="flex flex-col md:flex-row gap-4 justify-center">
+                                <button onClick={() => setGameState('result')} className="px-8 py-4 border border-slate-600 text-slate-400 hover:text-white hover:bg-slate-800 transition uppercase tracking-widest">End & Show Result</button>
+                                <button onClick={startRound3} className="px-8 py-4 bg-blue-600 text-white hover:bg-blue-500 transition uppercase tracking-widest shadow-[0_0_20px_rgba(37,99,235,0.5)] animate-pulse">Proceed to Round 3</button>
+                            </div>
                         </div>
                     </div>
                 );
@@ -394,7 +542,10 @@
 
             // --- RESULTS ---
             if (gameState === 'result') {
-                const maxPossibleScore = currentRoundIdx === 3 ? 100 : 90;
+                let maxPossibleScore = 100;
+                if (currentRoundIdx === 1) maxPossibleScore = 50; 
+                else if (currentRoundIdx === 2) maxPossibleScore = 90;
+
                 const percentage = Math.round((score / maxPossibleScore) * 100);
                 
                 let message = "";
@@ -418,7 +569,9 @@
                                 {submissionStatus === 'error' && <span className="text-red-400 font-mono text-xs flex items-center gap-1"><Icons.WifiOff /> UPLOAD FAILED</span>}
                             </div>
 
-                            <h1 className="text-4xl font-bold mb-4 text-white tracking-tight">DIAGNOSTIC COMPLETE</h1>
+                            <img src="IMG_7876.PNG" alt="School Logo" className="h-20 mx-auto mb-6 object-contain" />
+
+                            <h1 className="text-4xl font-bold mb-4 text-white tracking-tight">COMPLETE</h1>
                             <p className="text-cyan-400 font-mono mb-8">REPORT FOR: {studentName.toUpperCase()}</p>
 
                             <div className="mb-8 bg-slate-950 p-6 border border-slate-800">
@@ -434,7 +587,6 @@
                                 </div>
                             )}
 
-                            <p className={`text-xl font-bold mb-8 font-mono ${colorClass}`}>{message}</p>
                             <div className="flex gap-3">
                                 <button onClick={() => window.location.reload()} className="flex-1 bg-slate-800 border border-slate-600 hover:border-cyan-500 text-cyan-400 py-4 hover:bg-slate-700 transition font-mono flex items-center justify-center gap-2"><Icons.Zap /> RETRY</button>
                                 <button onClick={goHome} className="flex-1 bg-cyan-700 border border-cyan-500 text-white py-4 hover:bg-cyan-600 transition font-mono flex items-center justify-center gap-2"><Icons.Home /> LEVELS</button>
@@ -452,10 +604,11 @@
                     <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none"></div>
                     
                     {/* Top HUD */}
-                    <div className="w-full h-16 bg-slate-900 border-b border-slate-700 flex justify-between items-center px-6 z-10">
+                    <div className="w-full h-20 bg-slate-900 border-b border-slate-700 flex justify-between items-center px-6 z-10">
                          <div className="flex items-center gap-4">
+                             <img src="IMG_7876.PNG" alt="School Logo" className="h-10 object-contain" />
                              <div className={`w-2 h-2 rounded-full animate-pulse ${score > 0 ? 'bg-green-500' : 'bg-cyan-500'}`}></div>
-                             <span className="text-cyan-500 tracking-widest text-sm md:text-base">{selectedLevel} :: {currentRound.title.toUpperCase()}</span>
+                             <span className="text-cyan-500 tracking-widest text-sm md:text-base">{selectedLevel} : {currentRound.title.toUpperCase()}</span>
                          </div>
                          
                          {/* Name in HUD */}
@@ -503,7 +656,8 @@
                                     {currentQ.options.map((opt, idx) => (
                                         <button key={idx} onClick={() => handleAnswer(opt)} disabled={feedback !== null} className="group relative bg-slate-800 border border-slate-600 hover:border-cyan-500 hover:bg-slate-700/50 py-4 px-6 transition-all duration-200 text-lg text-left">
                                             <div className="absolute inset-y-0 left-0 w-1 bg-transparent group-hover:bg-cyan-500 transition-colors"></div>
-                                            <span className="text-cyan-500 mr-3 opacity-50 group-hover:opacity-100">0{idx+1} //</span> <span className="text-white">{opt}</span>
+                                            {/* CHANGED: Use A, B, C for labels */}
+                                            <span className="text-cyan-500 mr-3 opacity-50 group-hover:opacity-100 font-bold">{String.fromCharCode(65 + idx)}.</span> <span className="text-white">{opt}</span>
                                         </button>
                                     ))}
                                 </div>
