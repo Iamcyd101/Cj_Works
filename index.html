@@ -101,7 +101,6 @@
         };
 
         // --- LEVEL DATA CONFIGURATION ---
-        // Scoring: R1(4pts x5=20) + R2(6pts x5=30) + R3(8pts x5=40) = 90. TB(2pts x5=10) = 100 Total.
         const levelsData = {
             "K2": [
                 { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
@@ -126,11 +125,11 @@
                     { q: "Which shape has 4 sides?", options: ["Triangle", "Square", "Circle"], a: "Square", type: "mcq" }
                 ]},
                 { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "I am an animal with 2 legs and I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" },
-                    { q: "Calculate: 5 - 4 = ?", a: "1", type: "input" },
-                    { q: "Which is cold?", options: ["Ice Cream", "Fire"], a: "Ice Cream", type: "mcq" },
-                    { q: "Calculate: 2 + 2 = ?", a: "4", type: "input" },
-                    { q: "How many legs does a dog have?", a: "4", type: "input" }
+                    { q: "I have 5 birds. 2 fly away, but 1 comes back. How many birds are there now?", a: "4", type: "input" },
+                    { q: "Look at the pattern: 🔼 🔵 🔵 🔼 🔵 __? What is next?", options: ["🔼", "🔵"], a: "🔵", type: "mcq" },
+                    { q: "I am a number. I am more than 3 but less than 5. What am I?", a: "4", type: "input" },
+                    { q: "How many legs do 2 ducks have in total?", a: "4", type: "input" },
+                    { q: "Calculate: 10 - 5 + 1 = ?", a: "6", type: "input" }
                 ]}
             ],
             "P1": [
@@ -156,11 +155,11 @@
                     { q: "There are 3 birds on a tree. 2 more fly in. How many birds are there now?", a: "5", type: "input" }
                 ]},
                 { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "Calculate: 15 - 8 = ?", a: "7", type: "input" },
-                    { q: "Which shape has exactly 3 sides?", a: "Triangle", type: "input" },
-                    { q: "Calculate: 10 + 10 = ?", a: "20", type: "input" },
-                    { q: "Which number is greater?", options: ["15", "51"], a: "51", type: "mcq" },
-                    { q: "Count backwards: 10, 9, 8, __?", a: "7", type: "input" }
+                    { q: "I am a number. If you add 5 to me, I become 12. What number am I?", a: "7", type: "input" },
+                    { q: "A box has 4 corners. How many corners do 2 boxes have?", a: "8", type: "input" },
+                    { q: "Calculate: 10 + 10 - 5 = ?", a: "15", type: "input" },
+                    { q: "Find the odd number in this list: 2, 4, 7, 8.", options: ["2", "7", "8"], a: "7", type: "mcq" },
+                    { q: "Count backwards: 20, 18, 16, __. What comes next?", a: "14", type: "input" }
                 ]}
             ],
             "P2": [
@@ -186,11 +185,11 @@
                     { q: "Find the missing number: 50 - __ = 25", a: "25", type: "input" }
                 ]},
                 { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "What is half of the number 50?", a: "25", type: "input" },
-                    { q: "Solve this equation: (3 × 3) + 1 = ?", a: "10", type: "input" },
-                    { q: "Calculate: 200 + 300 = ?", a: "500", type: "input" },
-                    { q: "How many minutes are in 1 hour?", a: "60", type: "input" },
-                    { q: "Calculate: 6 x 3 = ?", a: "18", type: "input" }
+                    { q: "I am a number. If you double me, I become 24. What am I?", a: "12", type: "input" },
+                    { q: "There are 5 bikes and 1 car. How many wheels are there in total?", a: "14", type: "input" },
+                    { q: "Find the missing digit: 1_5 + 20 = 145", a: "2", type: "input" },
+                    { q: "It is 2:30. What time was it 1 hour ago?", options: ["3:30", "1:30", "12:30"], a: "1:30", type: "mcq" },
+                    { q: "Calculate: 3 × 3 + 3 × 2 = ?", a: "15", type: "input" }
                 ]}
             ],
             "P3": [
@@ -216,11 +215,11 @@
                     { q: "Calculate: (10 × 2) + 5 = ?", a: "25", type: "input" }
                 ]},
                 { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "Add the fractions: 1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" },
-                    { q: "Convert: 250g multiplied by 4 equals how many kilograms?", a: "1", type: "input" },
-                    { q: "Calculate: 50 x 5 = ?", a: "250", type: "input" },
-                    { q: "How many sides does a hexagon have?", a: "6", type: "input" },
-                    { q: "Calculate: 81 ÷ 9 = ?", a: "9", type: "input" }
+                    { q: "A square has a perimeter of 40cm. What is the length of one side?", a: "10", type: "input" },
+                    { q: "If 3 pens cost $6, how much do 5 pens cost?", a: "10", type: "input" },
+                    { q: "Calculate: 100 - 25 - 25 - 10 = ?", a: "40", type: "input" },
+                    { q: "Find the next number in the sequence: 1, 2, 4, 8, 16, __?", a: "32", type: "input" },
+                    { q: "How many hours are there in 3 days?", a: "72", type: "input" }
                 ]}
             ],
             "P4": [
