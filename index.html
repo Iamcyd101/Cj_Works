@@ -101,6 +101,7 @@
         };
 
         // --- LEVEL DATA CONFIGURATION ---
+        // Scoring: R1(4pts x5=20) + R2(6pts x5=30) + R3(8pts x5=40) = 90. TB(2pts x5=10) = 100 Total.
         const levelsData = {
             "K2": [
                 { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
@@ -124,9 +125,12 @@
                     { q: "You have 4 candies. You eat 2. How many are left?", a: "2", type: "input" },
                     { q: "Which shape has 4 sides?", options: ["Triangle", "Square", "Circle"], a: "Square", type: "mcq" }
                 ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
                     { q: "I am an animal with 2 legs and I can fly. What am I?", options: ["Cat", "Bird", "Fish"], a: "Bird", type: "mcq" },
-                    { q: "Calculate: 5 - 4 = ?", a: "1", type: "input" }
+                    { q: "Calculate: 5 - 4 = ?", a: "1", type: "input" },
+                    { q: "Which is cold?", options: ["Ice Cream", "Fire"], a: "Ice Cream", type: "mcq" },
+                    { q: "Calculate: 2 + 2 = ?", a: "4", type: "input" },
+                    { q: "How many legs does a dog have?", a: "4", type: "input" }
                 ]}
             ],
             "P1": [
@@ -151,9 +155,12 @@
                     { q: "Find the missing number in the pattern: 10, 20, 30, __.", a: "40", type: "input" },
                     { q: "There are 3 birds on a tree. 2 more fly in. How many birds are there now?", a: "5", type: "input" }
                 ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
                     { q: "Calculate: 15 - 8 = ?", a: "7", type: "input" },
-                    { q: "Which shape has exactly 3 sides?", a: "Triangle", type: "input" }
+                    { q: "Which shape has exactly 3 sides?", a: "Triangle", type: "input" },
+                    { q: "Calculate: 10 + 10 = ?", a: "20", type: "input" },
+                    { q: "Which number is greater?", options: ["15", "51"], a: "51", type: "mcq" },
+                    { q: "Count backwards: 10, 9, 8, __?", a: "7", type: "input" }
                 ]}
             ],
             "P2": [
@@ -178,9 +185,12 @@
                     { q: "Tom has 3 bags. There are 5 balls in each bag. How many balls are there in total?", a: "15", type: "input" },
                     { q: "Find the missing number: 50 - __ = 25", a: "25", type: "input" }
                 ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
                     { q: "What is half of the number 50?", a: "25", type: "input" },
-                    { q: "Solve this equation: (3 × 3) + 1 = ?", a: "10", type: "input" }
+                    { q: "Solve this equation: (3 × 3) + 1 = ?", a: "10", type: "input" },
+                    { q: "Calculate: 200 + 300 = ?", a: "500", type: "input" },
+                    { q: "How many minutes are in 1 hour?", a: "60", type: "input" },
+                    { q: "Calculate: 6 x 3 = ?", a: "18", type: "input" }
                 ]}
             ],
             "P3": [
@@ -205,9 +215,12 @@
                     { q: "Find the area of a rectangle with length 4cm and width 3cm.", a: "12", type: "input" },
                     { q: "Calculate: (10 × 2) + 5 = ?", a: "25", type: "input" }
                 ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
                     { q: "Add the fractions: 1/2 + 1/4 = ?", options: ["3/4", "1/2", "1/8"], a: "3/4", type: "mcq" },
-                    { q: "Convert: 250g multiplied by 4 equals how many kilograms?", a: "1", type: "input" }
+                    { q: "Convert: 250g multiplied by 4 equals how many kilograms?", a: "1", type: "input" },
+                    { q: "Calculate: 50 x 5 = ?", a: "250", type: "input" },
+                    { q: "How many sides does a hexagon have?", a: "6", type: "input" },
+                    { q: "Calculate: 81 ÷ 9 = ?", a: "9", type: "input" }
                 ]}
             ],
             "P4": [
@@ -232,9 +245,12 @@
                     { q: "If a train leaves at 10:00 and the trip takes 2 hours and 30 minutes, when does it arrive?", options: ["12:30", "12:00", "1:30"], a: "12:30", type: "mcq" },
                     { q: "Calculate: (50 ÷ 2) + 10 = ?", a: "35", type: "input" }
                 ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 5, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
+                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
                     { q: "What is the simplest form of the fraction 5/10?", options: ["1/2", "2/1", "5"], a: "1/2", type: "mcq" },
-                    { q: "How many degrees are in a triangle?", a: "180", type: "input" }
+                    { q: "How many degrees are in a triangle?", a: "180", type: "input" },
+                    { q: "What fraction is equal to 0.25?", options: ["1/2", "1/4", "3/4"], a: "1/4", type: "mcq" },
+                    { q: "Calculate: 10 × 10 = ?", a: "100", type: "input" },
+                    { q: "Find the perimeter of a square with side 4cm.", a: "16", type: "input" }
                 ]}
             ]
         };
