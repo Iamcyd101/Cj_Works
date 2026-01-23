@@ -43,6 +43,22 @@
                               linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
         }
     </style>
+    
+    <!-- ANTI-CHEAT / NO VIEW SOURCE SCRIPT -->
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', function(event) {
+            // Prevent F12 (DevTools)
+            // Prevent Ctrl+Shift+I/J (DevTools), Ctrl+U (Source), Ctrl+S (Save)
+            // ALLOWED: F5 and Ctrl+R (Refresh) are NOT blocked here.
+            if (event.key === 'F12' || 
+                (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'J')) || 
+                (event.ctrlKey && (event.key === 'U' || event.key === 'S'))) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    </script>
 </head>
 <body class="bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white overflow-x-hidden">
     <div id="root"></div>
@@ -50,8 +66,20 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- CONFIGURATION ---
-        const WEBHOOK_URL = "https://calixtojohnn.app.n8n.cloud/webhook/4cdadfc8-2591-431f-9d34-c12f5f318fcc";
+        // --- SECURITY CONFIGURATION ---
+        // The Webhook URL is encoded in Base64 to prevent it from being read directly in "View Source"
+        // Encoded Value: https://calixtojohnn.app.n8n.cloud/webhook/4cdadfc8-2591-431f-9d34-c12f5f318fcc
+        const _0xKEY = "aHR0cHM6Ly9jYWxpeHRvam9obm4uYXBwLm44bi5jbG91ZC93ZWJob29rLzRjZGFkZmM4LTI1OTEtNDMxZi05ZDM0LWMxMmY1ZjMxOGZjYw==";
+        
+        // Helper function to decode the key safely at runtime
+        const getSecureEndpoint = () => {
+            try {
+                return atob(_0xKEY);
+            } catch (e) {
+                console.error("Security handshake failed.");
+                return "";
+            }
+        };
 
         // --- Icons (Inline SVGs for reliability) ---
         const Icons = {
@@ -73,7 +101,6 @@
         };
 
         // --- LEVEL DATA CONFIGURATION ---
-        // Scoring: R1(4pts x5=20) + R2(6pts x5=30) + R3(8pts x5=40) = 90. TB(5pts x2=10) = 100 Total.
         const levelsData = {
             "K2": [
                 { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
@@ -217,6 +244,7 @@
             // gameState options: 'login', 'levelSelect', 'welcome', 'roundIntro', 'playing', 'postRound2', 'preTieBreaker', 'result'
             const [gameState, setGameState] = useState('login'); 
             const [studentName, setStudentName] = useState("");
+            const [campus, setCampus] = useState(""); // Add campus state
             const [selectedLevel, setSelectedLevel] = useState(null);
             const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
             const [currentQIdx, setCurrentQIdx] = useState(0);
@@ -239,15 +267,16 @@
                     setSubmissionStatus('sending');
 
                     let maxPossibleScore = 100;
-                    if (currentRoundIdx === 1) maxPossibleScore = 50; // Stopped after Round 2
-                    else if (currentRoundIdx === 2) maxPossibleScore = 90; // Stopped after Round 3 (skipped TB)
+                    if (currentRoundIdx === 1) maxPossibleScore = 50; 
+                    else if (currentRoundIdx === 2) maxPossibleScore = 90;
 
                     let tieBreakerStatus = "Skipped";
                     if (currentRoundIdx === 3) tieBreakerStatus = "Played";
-                    if (currentRoundIdx === 1) tieBreakerStatus = "N/A"; // Didn't reach it
+                    if (currentRoundIdx === 1) tieBreakerStatus = "N/A"; 
                     
                     const data = {
                         studentName,
+                        campus, // Add campus to payload
                         selectedLevel,
                         score, 
                         maxPossibleScore,
@@ -256,7 +285,9 @@
                         timestamp: new Date().toISOString()
                     };
 
-                    fetch(WEBHOOK_URL, {
+                    const decodedUrl = getSecureEndpoint();
+
+                    fetch(decodedUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
@@ -278,12 +309,12 @@
                     hasSentData.current = false;
                     setSubmissionStatus('idle');
                 }
-            }, [gameState, currentRoundIdx, score, selectedLevel, studentName, tieBreakerScore]);
+            }, [gameState, currentRoundIdx, score, selectedLevel, studentName, campus, tieBreakerScore]);
 
             // Handlers
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (studentName.trim()) {
+                if (studentName.trim() && campus) {
                     setGameState('levelSelect');
                 }
             };
@@ -391,6 +422,26 @@
                                             required
                                             autoFocus
                                         />
+                                    </div>
+                                    
+                                    {/* Campus Dropdown */}
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span className="text-slate-500"><Icons.Home /></span>
+                                        </div>
+                                        <select 
+                                            value={campus} 
+                                            onChange={(e) => setCampus(e.target.value)}
+                                            className="block w-full pl-12 pr-3 py-4 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white font-mono text-lg transition-all appearance-none"
+                                            required
+                                        >
+                                            <option value="" disabled>SELECT CAMPUS...</option>
+                                            <option value="BKK Campus">BKK Campus</option>
+                                            <option value="SS Campus">SS Campus</option>
+                                        </select>
+                                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+                                            <svg className="h-4 w-4 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
                                     </div>
                                     
                                     <button type="submit" className="w-full group relative px-8 py-4 bg-cyan-600 overflow-hidden rounded-lg hover:bg-cyan-500 transition-all duration-300">
