@@ -223,7 +223,7 @@
         #upload-status { font-size: 0.95rem; margin-top: 15px; font-weight: bold; color: #666; }
 
         /* --- MODERN PDF STYLES --- */
-        #pdf-export-container { display: none; background: white; font-family: 'Segoe UI', sans-serif; color: #333; width: 800px; box-sizing: border-box; margin: 0 auto; }
+        #pdf-export-container { display: none; background: white; font-family: 'Segoe UI', sans-serif; color: #333; width: 816px; box-sizing: border-box; position: relative; margin: 0; padding: 0; }
         .pdf-header-bar { background-color: var(--primary); color: white; padding: 30px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 5px solid var(--secondary); }
         .pdf-logo { max-height: 80px; width: auto; background-color: transparent; }
         .pdf-title-wrapper { text-align: right; flex-grow: 1; display: flex; flex-direction: column; align-items: flex-end; }
@@ -1073,6 +1073,9 @@
         // Remove emojis safely
         // Replaces emojis with the word "picture" for audio
         let safeText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, " picture ");
+        
+        // Convert underscores to "blank" to avoid spelling it out
+        safeText = safeText.replace(/_+/g, " blank ");
 
         const utterance = new SpeechSynthesisUtterance(safeText);
         utterance.rate = 0.9; 
@@ -1380,7 +1383,11 @@
             verdictBox.querySelector('.pdf-verdict-title').style.color = "#e53935";
         }
         
-        // Temporarily show container to generate PDF, then hide
+        // Safely hide the animated background right before rendering
+        const scenery = document.querySelector('.scenery-wrapper');
+        if (scenery) scenery.style.display = 'none';
+
+        // Show container for capture
         element.style.display = 'block';
         
         const opt = {
@@ -1388,15 +1395,18 @@
             filename:     `Result_${studentName.replace(/\s+/g, '_')}_${currentLevel}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, scrollY: 0, useCORS: true },
-            jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+            jsPDF:        { unit: 'pt', format: 'letter', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
             element.style.display = 'none';
+            // Restore background after generation
+            if (scenery) scenery.style.display = 'block';
         }).catch(err => {
             console.error("PDF Failed:", err);
             alert("PDF Download Failed. Please check the console for details.");
             element.style.display = 'none';
+            if (scenery) scenery.style.display = 'block';
         });
     }
 
