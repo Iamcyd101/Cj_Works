@@ -3,749 +3,1404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Competition - Tech Edition</title>
-    
-    <!-- React & ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: JetBrains Mono for Tech feel -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
+    <title>Vision Bridge International Academy - Placement Test</title>
+    <!-- Import html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Custom Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        :root {
+            /* Theme: VBIA Official Logo Colors */
+            --primary: #054b60; /* Deep Teal/Blue from the outer ring and shield */
+            --secondary: #e51c24; /* Flame Red from the center */
+            --accent: #d32f2f; /* Alert Red */
+            --success: #2e7d32; /* Success Green */
+            --card: #ffffff;
+            --text: #333333;
         }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.8); }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-user-select: none; /* Prevent text selection */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow-x: hidden;
+            background-color: #87CEEB; /* Fallback Sky Blue */
         }
-        .animate-glow { animation: pulse-glow 2s infinite; }
+
+        /* --- ANIMATED SCENERY BACKGROUND --- */
+        .scenery-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background: linear-gradient(to bottom, #4DB8FF 0%, #E0F6FF 60%, #CDEBCA 100%);
+        }
+
+        /* The Sun */
+        .sun {
+            position: absolute;
+            top: 8%; right: 15%;
+            width: 90px; height: 90px;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 50px 20px rgba(255, 215, 0, 0.4);
+            animation: pulseSun 4s infinite alternate ease-in-out;
+        }
+
+        /* Moving Clouds */
+        .cloud {
+            position: absolute;
+            left: -250px; /* Start entirely off-screen to the left */
+            opacity: 0.9;
+            filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.5));
+            animation: floatCloud 60s linear infinite; 
+            will-change: transform; /* Smooth rendering */
+        }
         
-        /* Grid background animation */
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+        /* Negative animation delays make them appear on-screen immediately on load */
+        .c1 { width: 160px; top: 12%; animation-duration: 55s; animation-delay: -15s; }
+        .c2 { width: 120px; top: 28%; animation-duration: 70s; animation-delay: -45s; opacity: 0.7; }
+        .c3 { width: 200px; top: 8%;  animation-duration: 45s; animation-delay: -30s; }
+        .c4 { width: 140px; top: 22%; animation-duration: 65s; animation-delay: -60s; opacity: 0.8; }
+
+        /* Airplane (Horizontal Flight) */
+        .airplane {
+            position: absolute;
+            top: 20%; right: -100px;
+            width: 60px; height: 60px;
+            animation: flyPlane 25s linear infinite;
+            animation-delay: 5s;
+            opacity: 0.85;
+        }
+        .airplane svg {
+            transform: rotate(-90deg); /* Points the airplane perfectly horizontal (Leftward) */
+        }
+
+        /* Birds */
+        .birds {
+            position: absolute;
+            top: 25%; left: -100px;
+            display: flex; gap: 10px;
+            animation: flyBirds 30s linear infinite;
+            animation-delay: 2s;
+        }
+        .bird { width: 25px; height: 25px; }
+
+        /* Mountains */
+        .mountains {
+            position: absolute; bottom: 15%; width: 100%; height: 35vh;
+            display: flex; align-items: flex-end; justify-content: center;
+        }
+        .mountain {
+            position: absolute; bottom: 0;
+            width: 0; height: 0;
+            border-left: 20vw solid transparent;
+            border-right: 20vw solid transparent;
+        }
+        .m1 { border-bottom: 30vh solid #81C784; left: -5vw; z-index: 1; }
+        .m2 { border-bottom: 40vh solid #66BB6A; left: 25vw; z-index: 2; border-left-width: 25vw; border-right-width: 25vw;}
+        .m3 { border-bottom: 25vh solid #4CAF50; right: -10vw; z-index: 1; border-left-width: 25vw; border-right-width: 25vw;}
+
+        /* Ground */
+        .ground {
+            position: absolute; bottom: 0; width: 100%; height: 18%;
+            background: linear-gradient(to bottom, #8BC34A, #388E3C);
+            z-index: 3;
+            border-top: 4px solid #689F38;
+        }
+
+        /* Scene Elements (Trees Only) */
+        .scene-element { position: absolute; z-index: 4; }
+        .tree { width: 40px; height: 50px; bottom: 16%; }
+        
+        /* Keyframes */
+        @keyframes pulseSun { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(1.05); opacity: 1; } }
+        @keyframes flyPlane { 0% { right: -100px; } 100% { right: 110vw; } }
+        @keyframes flyBirds { 0% { left: -100px; transform: translateY(0); } 25% { transform: translateY(-15px); } 50% { transform: translateY(0); } 75% { transform: translateY(15px); } 100% { left: 110vw; transform: translateY(0); } }
+        @keyframes floatCloud { 0% { transform: translateX(0); } 100% { transform: translateX(calc(100vw + 500px)); } }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            background: rgba(255, 255, 255, 0.94); /* Semi-transparent white */
+            backdrop-filter: blur(12px); /* Glassmorphism effect */
+            -webkit-backdrop-filter: blur(12px);
+            width: 95%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            border-top: 8px solid var(--primary);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            margin: 20px 0;
+            position: relative;
+            z-index: 10; /* Keep above scenery */
+        }
+
+        .logo-area { margin-bottom: 25px; }
+        .logo-area img { max-height: 140px; width: auto; }
+
+        h1 { color: var(--primary); margin-bottom: 5px; font-weight: 800; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { color: #555; font-size: 1.1rem; margin-top: 0; font-weight: 500; }
+        p { color: var(--text); line-height: 1.6; font-size: 1.05rem; }
+
+        /* Input Fields */
+        .input-group { margin: 20px 0; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--primary); font-size: 1rem; }
+        .input-group input, .input-group select, .input-group textarea { 
+            width: 100%; padding: 14px; border: 2px solid #d1d9e0; border-radius: 8px; font-size: 1rem; box-sizing: border-box; 
+            background-color: #ffffff; font-family: inherit; transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(5, 75, 96, 0.1); outline: none;
+        }
+
+        /* Level Grid */
+        .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; margin-top: 25px; }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary); color: white; border: none; padding: 14px 28px; font-size: 1rem; border-radius: 8px;
+            cursor: pointer; transition: background 0.2s, transform 0.1s; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn:hover { background-color: #033240; transform: translateY(-2px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Audio Control Buttons */
+        .audio-controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .btn-speak {
+            border: none; padding: 10px 18px; font-size: 0.95rem; font-weight: bold; border-radius: 20px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.1s, filter 0.2s;
+        }
+        .btn-speak:active { transform: scale(0.96); }
+        .btn-story { background-color: var(--secondary); color: white; }
+        .btn-story:hover { filter: brightness(0.9); }
+        .btn-read-q { background-color: #e6f0f2; color: var(--primary); border: 1px solid var(--primary); }
+        .btn-read-q:hover { background-color: #d2e1e6; }
+
+        .btn-option {
+            display: block; width: 100%; background: white; color: var(--text); border: 2px solid #e0e0e0; margin: 12px 0;
+            text-align: left; padding: 16px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; font-weight: 500;
+        }
+        .btn-option:hover { border-color: var(--primary); background: #f8fafb; transform: translateX(5px); }
+        .btn-option.selected { background-color: var(--primary); color: white; border-color: var(--primary); transform: translateX(5px); }
+        
+        /* Assessor Grading Buttons */
+        .grading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; padding: 20px; background: #f8fafb; border-radius: 10px; border: 2px dashed #b0c4cc; }
+        .grading-grid::before { content: "Assessor Grading Area 📋"; grid-column: 1 / -1; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
+        .btn-grade { padding: 14px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 0.95rem; transition: opacity 0.2s; }
+        .btn-grade:hover { opacity: 0.9; }
+        .grade-100 { background-color: #2e7d32; } .grade-80 { background-color: #7cb342; } .grade-60 { background-color: #fdd835; color: #333; } .grade-40 { background-color: #fb8c00; } .grade-20 { background-color: #e53935; } .grade-0 { background-color: #424242; }   
+        
+        /* Speaking Question List */
+        .speaking-list { text-align: left; margin: 15px auto; padding: 20px; font-size: 1.15rem; color: #333; list-style-type: none; max-width: 90%; background: #f8fafb; border-radius: 8px; border-left: 5px solid var(--primary); }
+        .speaking-list li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+        .speaking-list li::before { content: "➢"; position: absolute; left: 0; top: 0; color: var(--secondary); font-weight: bold; }
+
+        /* Screens */
+        .screen { display: none; }
+        .active { display: block; animation: fadeIn 0.4s ease-out; }
+
+        /* Progress Bar */
+        .progress-container { width: 100%; background-color: #e0e0e0; border-radius: 6px; margin-bottom: 25px; height: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.4s ease-out; }
+
+        /* Results */
+        .score-card { background: #ffffff; padding: 30px; border-radius: 12px; margin: 25px 0; text-align: left; border: 2px solid #e0e0e0; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; font-size: 1rem; color: #555; }
+        .pass { color: var(--success); font-weight: 800; font-size: 1.6rem; }
+        .fail { color: var(--accent); font-weight: 800; font-size: 1.6rem; }
+        .subject-badge { display: inline-block; padding: 6px 14px; border-radius: 6px; background: var(--primary); color: white; font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .sub-score-list { list-style: none; padding: 0; margin: 10px 0 20px 0; padding-left: 15px; border-left: 3px solid var(--secondary); }
+        .sub-score-list li { font-size: 0.95rem; color: #444; margin-bottom: 6px; }
+        #upload-status { font-size: 0.95rem; margin-top: 15px; font-weight: bold; color: #666; }
+
+        /* --- MODERN PDF STYLES --- */
+        #pdf-export-container { display: none; background: white; font-family: 'Segoe UI', sans-serif; color: #333; width: 800px; box-sizing: border-box; margin: 0 auto; }
+        .pdf-header-bar { background-color: var(--primary); color: white; padding: 30px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 5px solid var(--secondary); }
+        .pdf-logo { max-height: 80px; width: auto; background-color: transparent; }
+        .pdf-title-wrapper { text-align: right; flex-grow: 1; display: flex; flex-direction: column; align-items: flex-end; }
+        .pdf-title-wrapper h1 { color: white; margin: 0; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
+        .pdf-title-wrapper p { color: rgba(255,255,255,0.9); margin: 5px 0 0; font-size: 14px; }
+        .pdf-body { padding: 40px; }
+        .pdf-info-grid { display: table; width: 100%; margin-bottom: 20px; }
+        .pdf-info-row { display: table-row; }
+        .pdf-info-cell { display: table-cell; width: 50%; padding-bottom: 20px; vertical-align: top; }
+        .pdf-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; font-weight: 600; }
+        .pdf-value { font-size: 18px; font-weight: bold; color: #222; }
+        .pdf-divider { border-bottom: 1px solid #e0e0e0; margin-bottom: 30px; width: 100%; display: block; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .pdf-table th { text-align: left; color: #666; font-weight: 600; border-bottom: 2px solid #eee; padding: 12px 10px; font-size: 13px; text-transform: uppercase; }
+        .pdf-table td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; font-size: 16px; color: #444; }
+        .pdf-table .total-row td { border-top: 2px solid var(--primary); border-bottom: none; font-size: 20px; font-weight: 800; color: var(--primary); padding-top: 20px; }
+        .pdf-sub-row td { padding: 5px 10px 5px 30px; font-size: 14px; color: #666; border-bottom: none; }
+        .pdf-verdict-container { margin-top: 40px; text-align: center; }
+        .pdf-verdict-badge { display: block; padding: 20px; color: #333; font-size: 16px; line-height: 1.5; }
+        .pdf-verdict-title { font-size: 24px; font-weight: bold; color: var(--success); display: block; margin-bottom: 5px; }
+        .pdf-verdict-subtitle { font-size: 16px; color: #555; }
+        .pdf-footer { margin-top: 60px; padding-top: 20px; display: flex; justify-content: space-between; font-size: 11px; color: #aaa; }
+        .signature-line { width: 200px; border-top: 1px solid #333; margin-top: 40px; padding-top: 5px; font-weight: bold; color: #333; text-align: center; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media print {
+            .scenery-wrapper { display: none !important; }
+            .container { box-shadow: none; border: none; margin: 0; padding: 0; width: 100%; max-width: 100%; background: white; }
+            body { background: white; }
+            button { display: none !important; }
         }
     </style>
-    
-    <!-- ANTI-CHEAT / NO VIEW SOURCE SCRIPT -->
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function(event) {
-            // Prevent F12 (DevTools)
-            // Prevent Ctrl+Shift+I/J (DevTools), Ctrl+U (Source), Ctrl+S (Save)
-            // ALLOWED: F5 and Ctrl+R (Refresh) are NOT blocked here.
-            if (event.key === 'F12' || 
-                (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'J')) || 
-                (event.ctrlKey && (event.key === 'U' || event.key === 'S'))) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        });
-    </script>
 </head>
-<body class="bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white overflow-x-hidden">
-    <div id="root"></div>
+<body oncontextmenu="return false;">
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+<!-- SCENERY BACKGROUND WRAPPER -->
+<div class="scenery-wrapper">
+    <!-- Sky Elements -->
+    <div class="sun"></div>
+    
+    <!-- SVG Clouds immediately visible -->
+    <div class="cloud c1">
+        <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    </div>
+    <div class="cloud c2">
+        <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    </div>
+    <div class="cloud c3">
+        <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    </div>
+    <div class="cloud c4">
+        <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    </div>
+    
+    <!-- Airplane (SVG) -->
+    <div class="airplane">
+        <svg viewBox="0 0 24 24" fill="#ffffff" style="filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));">
+            <path d="M21,16V14L13,9V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V9L2,14V16L10,13.5V19L8,20.5V22L11.5,21L15,22V20.5L13,19V13.5L21,16Z" />
+        </svg>
+    </div>
 
-        // --- SECURITY CONFIGURATION ---
-        // The Webhook URL is encoded in Base64 to prevent it from being read directly in "View Source"
-        // Encoded Value: https://calixtojohnn.app.n8n.cloud/webhook/4cdadfc8-2591-431f-9d34-c12f5f318fcc
-        const _0xKEY = "aHR0cHM6Ly9jYWxpeHRvam9obm4uYXBwLm44bi5jbG91ZC93ZWJob29rLzRjZGFkZmM4LTI1OTEtNDMxZi05ZDM0LWMxMmY1ZjMxOGZjYw==";
+    <!-- Birds -->
+    <div class="birds">
+        <div class="bird"><svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M2 14c5-3 8-1 10 2 2-3 5-5 10-2"/></svg></div>
+        <div class="bird" style="margin-top: 15px;"><svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M2 14c5-3 8-1 10 2 2-3 5-5 10-2"/></svg></div>
+        <div class="bird" style="margin-top: 5px; margin-left: 5px;"><svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"><path d="M2 14c5-3 8-1 10 2 2-3 5-5 10-2"/></svg></div>
+    </div>
+
+    <!-- Mountains -->
+    <div class="mountains">
+        <div class="mountain m1"></div>
+        <div class="mountain m2"></div>
+        <div class="mountain m3"></div>
+    </div>
+
+    <!-- Ground & Landscape Details -->
+    <div class="ground"></div>
+
+    <!-- Landscape SVG Assets placed absolutely (Trees Only) -->
+    <div class="scene-element tree" style="left: 8%;">
+        <svg viewBox="0 0 24 24" fill="#1B5E20"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#5D4037"/></svg>
+    </div>
+    <div class="scene-element tree" style="left: 28%; bottom: 19%; transform: scale(0.7);">
+        <svg viewBox="0 0 24 24" fill="#2E7D32"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#795548"/></svg>
+    </div>
+    <div class="scene-element tree" style="right: 12%;">
+        <svg viewBox="0 0 24 24" fill="#1B5E20"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#5D4037"/></svg>
+    </div>
+    <div class="scene-element tree" style="right: 30%; bottom: 19%; transform: scale(0.7);">
+        <svg viewBox="0 0 24 24" fill="#388E3C"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#795548"/></svg>
+    </div>
+    <div class="scene-element tree" style="left: 18%; bottom: 14%; transform: scale(1.1);">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#5D4037"/></svg>
+    </div>
+    <div class="scene-element tree" style="left: 38%; bottom: 17%; transform: scale(0.8);">
+        <svg viewBox="0 0 24 24" fill="#2E7D32"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#795548"/></svg>
+    </div>
+    <div class="scene-element tree" style="right: 22%; bottom: 15%; transform: scale(0.9);">
+        <svg viewBox="0 0 24 24" fill="#388E3C"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#5D4037"/></svg>
+    </div>
+    <div class="scene-element tree" style="right: 42%; bottom: 18%; transform: scale(0.6);">
+        <svg viewBox="0 0 24 24" fill="#1B5E20"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#795548"/></svg>
+    </div>
+    <div class="scene-element tree" style="left: 48%; bottom: 13%; transform: scale(1.2);">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M11,21V16H8L12,9L16,16H13V21H11M12,2L8,9H16L12,2Z" /><rect x="11" y="16" width="2" height="6" fill="#5D4037"/></svg>
+    </div>
+</div>
+
+<!-- MAIN TEST CONTAINER -->
+<div class="container">
+    <div class="logo-area">
+        <!-- Official School Logo -->
+        <img src="VBIA_LOGO.PNG" id="main-logo" alt="Vision Bridge International Academy Logo" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Screen 1: Registration -->
+    <div id="registration-screen" class="screen active">
+        <h1>Vision Bridge International Academy</h1>
+        <h2>Digital Placement Test</h2>
+        <p>Please enter the candidate and assessor details to begin.</p>
         
-        // Helper function to decode the key safely at runtime
-        const getSecureEndpoint = () => {
-            try {
-                return atob(_0xKEY);
-            } catch (e) {
-                console.error("Security handshake failed.");
-                return "";
-            }
-        };
+        <div class="input-group">
+            <label for="student-name">Student Name:</label>
+            <input type="text" id="student-name" placeholder="Enter Full Name" required>
+        </div>
+        <div class="input-group">
+            <label for="assessor-name">Assessor Name:</label>
+            <input type="text" id="assessor-name" placeholder="Enter Teacher/Assessor Name" required>
+        </div>
+        
+        <!-- CAMPUS DROPDOWN -->
+        <div class="input-group">
+            <label for="campus-select">Campus:</label>
+            <select id="campus-select" required>
+                <option value="" disabled selected>-- Select Campus --</option>
+                <option value="BKK Campus">BKK Campus</option>
+                <option value="Sen Sok Campus">Sen Sok Campus</option>
+                <option value="Campus 3">Campus 3</option>
+            </select>
+        </div>
 
-        // --- Icons (Inline SVGs for reliability) ---
-        const Icons = {
-            Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-            Brain: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
-            BookOpen: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
-            Crown: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
-            CheckCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
-            XCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
-            ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-            Lightbulb: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-1 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
-            Home: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-            Grid: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
-            Corner: () => <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12V2H12" /><path d="M28 2H38V12" /><path d="M38 28V38H28" /><path d="M12 38H2V28" /></svg>,
-            Lock: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
-            User: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-            Wifi: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
-            WifiOff: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-        };
+        <div id="error-msg"></div>
 
-        // --- LEVEL DATA CONFIGURATION ---
-        const levelsData = {
-            "K2": [
-                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
-                    { q: "Count the red apples: 🍎🍎", options: ["1", "2", "3"], a: "2", type: "mcq" },
-                    { q: "Compare the two animals. Which animal is smaller in real life?", options: ["🐭 Mouse", "🐘 Elephant"], a: "🐭 Mouse", type: "mcq" },
-                    { q: "Count the bananas carefully. How many bananas are there? 🍌🍌🍌", options: ["2", "3", "4"], a: "3", type: "mcq" },
-                    { q: "Which number is the biggest?", options: ["5", "2", "1"], a: "5", type: "mcq" },
-                    { q: "Count the stars: ⭐⭐⭐⭐", options: ["3", "4", "5"], a: "4", type: "mcq" }
-                ]},
-                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
-                    { q: "If you have 1 cookie and you get 2 more, how many cookies do you have?", a: "3", type: "input" },
-                    { q: "Look at the number sequence: 1, 2, __, 4. What number is missing?", a: "3", type: "input" },
-                    { q: "Look at the pattern: Red 🔴, Blue 🔵, Red 🔴, Blue 🔵. What comes next?", options: ["🔴 Red", "🔵 Blue"], a: "🔴 Red", type: "mcq" },
-                    { q: "Calculate the sum: 1 + 1 = ?", a: "2", type: "input" },
-                    { q: "What comes after the number 5?", a: "6", type: "input" }
-                ]},
-                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
-                    { q: "You have 3 toys. Your friend gives you 2 more toys. How many toys do you have in total?", a: "5", type: "input" },
-                    { q: "Follow the pattern: A, B, A, B. What letter comes next?", a: "A", type: "input" },
-                    { q: "Calculate: 5 - 1 = ?", a: "4", type: "input" },
-                    { q: "You have 4 candies. You eat 2. How many are left?", a: "2", type: "input" },
-                    { q: "Which shape has 4 sides?", options: ["Triangle", "Square", "Circle"], a: "Square", type: "mcq" }
-                ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "I have 5 birds. 2 fly away, but 1 comes back. How many birds are there now?", a: "4", type: "input" },
-                    { q: "Look at the pattern: 🔼 🔵 🔵 🔼 🔵 __? What is next?", options: ["🔼", "🔵"], a: "🔵", type: "mcq" },
-                    { q: "I am a number. I am more than 3 but less than 5. What am I?", a: "4", type: "input" },
-                    { q: "How many legs do 2 ducks have in total?", a: "4", type: "input" },
-                    { q: "Calculate: 10 - 5 + 1 = ?", a: "6", type: "input" }
-                ]}
-            ],
-            "P1": [
-                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
-                    { q: "What is the sum of 2 plus 3?", a: "5", type: "input" },
-                    { q: "Look at the numbers: 5, 9, and 2. Which number is the Largest?", options: ["5", "9", "2"], a: "9", type: "mcq" },
-                    { q: "Complete the counting: 1, 2, 3, __. What number comes next?", a: "4", type: "input" },
-                    { q: "Write the number for the word 'Ten'.", a: "10", type: "input" },
-                    { q: "Calculate: 4 + 4 = ?", a: "8", type: "input" }
-                ]},
-                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
-                    { q: "What is 10 minus 4?", a: "6", type: "input" },
-                    { q: "Skip counting by 2s: 2, 4, 6, __. What is the next number?", a: "8", type: "input" },
-                    { q: "Look at the numbers: 10, 1, and 5. Which number is the Smallest?", options: ["10", "1", "5"], a: "1", type: "mcq" },
-                    { q: "Find the missing number: 5 + __ = 10", a: "5", type: "input" },
-                    { q: "Which shape is round?", options: ["Square", "Triangle", "Circle"], a: "Circle", type: "mcq" }
-                ]},
-                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
-                    { q: "Tom has 5 apples. He gives 2 apples away to his friend. How many apples does Tom have left?", a: "3", type: "input" },
-                    { q: "Calculate the sum: 12 + 5 = ?", a: "17", type: "input" },
-                    { q: "Calculate the difference: 20 - 10 = ?", a: "10", type: "input" },
-                    { q: "Find the missing number in the pattern: 10, 20, 30, __.", a: "40", type: "input" },
-                    { q: "There are 3 birds on a tree. 2 more fly in. How many birds are there now?", a: "5", type: "input" }
-                ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "I am a number. If you add 5 to me, I become 12. What number am I?", a: "7", type: "input" },
-                    { q: "A box has 4 corners. How many corners do 2 boxes have?", a: "8", type: "input" },
-                    { q: "Calculate: 10 + 10 - 5 = ?", a: "15", type: "input" },
-                    { q: "Find the odd number in this list: 2, 4, 7, 8.", options: ["2", "7", "8"], a: "7", type: "mcq" },
-                    { q: "Count backwards: 20, 18, 16, __. What comes next?", a: "14", type: "input" }
-                ]}
-            ],
-            "P2": [
-                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
-                    { q: "Calculate: 20 + 30 = ?", a: "50", type: "input" },
-                    { q: "Calculate: 5 × 2 = ?", a: "10", type: "input" },
-                    { q: "Calculate: 10 + 10 + 10 = ?", a: "30", type: "input" },
-                    { q: "Calculate: 100 - 10 = ?", a: "90", type: "input" },
-                    { q: "Which number is even?", options: ["3", "7", "8"], a: "8", type: "mcq" }
-                ]},
-                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
-                    { q: "Calculate: 100 - 45 = ?", a: "55", type: "input" },
-                    { q: "Calculate: 4 × 5 = ?", a: "20", type: "input" },
-                    { q: "What is the value of the digit 5 in the number 54?", options: ["5", "50", "500"], a: "50", type: "mcq" },
-                    { q: "Complete the pattern: 2, 4, 8, 16, __.", a: "32", type: "input" },
-                    { q: "What is 10 more than 85?", a: "95", type: "input" }
-                ]},
-                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
-                    { q: "If you have $1.50 and you add $0.50, how much money do you have in total?", a: "2.00", type: "input" },
-                    { q: "How many total days are there in 2 weeks?", a: "14", type: "input" },
-                    { q: "Calculate: 3 × 10 = ?", a: "30", type: "input" },
-                    { q: "Tom has 3 bags. There are 5 balls in each bag. How many balls are there in total?", a: "15", type: "input" },
-                    { q: "Find the missing number: 50 - __ = 25", a: "25", type: "input" }
-                ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "I am a number. If you double me, I become 24. What am I?", a: "12", type: "input" },
-                    { q: "There are 5 bikes and 1 car. How many wheels are there in total?", a: "14", type: "input" },
-                    { q: "Find the missing digit: 1_5 + 20 = 145", a: "2", type: "input" },
-                    { q: "It is 2:30. What time was it 1 hour ago?", options: ["3:30", "1:30", "12:30"], a: "1:30", type: "mcq" },
-                    { q: "Calculate: 3 × 3 + 3 × 2 = ?", a: "15", type: "input" }
-                ]}
-            ],
-            "P3": [
-                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
-                    { q: "Calculate: 300 + 200 = ?", a: "500", type: "input" },
-                    { q: "Calculate: 8 × 5 = ?", a: "40", type: "input" },
-                    { q: "Calculate: 100 ÷ 2 = ?", a: "50", type: "input" },
-                    { q: "Calculate: 7 × 7 = ?", a: "49", type: "input" },
-                    { q: "Calculate: 500 - 100 = ?", a: "400", type: "input" }
-                ]},
-                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
-                    { q: "Calculate: 45 ÷ 5 = ?", a: "9", type: "input" },
-                    { q: "What is the perimeter of a square if one side is 5 meters long?", a: "20", type: "input" },
-                    { q: "Calculate: 6 × 6 = ?", a: "36", type: "input" },
-                    { q: "If it is 12:00 now, what time will it be in 30 minutes?", options: ["12:30", "1:00", "11:30"], a: "12:30", type: "mcq" },
-                    { q: "What is the value of the digit 5 in the number 543?", options: ["5", "50", "500"], a: "500", type: "mcq" }
-                ]},
-                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
-                    { q: "Calculate: 12 × 12 = ?", a: "144", type: "input" },
-                    { q: "Convert: 150 centimeters is equal to how many meters?", a: "1.5", type: "input" },
-                    { q: "What is half of 20?", a: "10", type: "input" },
-                    { q: "Find the area of a rectangle with length 4cm and width 3cm.", a: "12", type: "input" },
-                    { q: "Calculate: (10 × 2) + 5 = ?", a: "25", type: "input" }
-                ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "A square has a perimeter of 40cm. What is the length of one side?", a: "10", type: "input" },
-                    { q: "If 3 pens cost $6, how much do 5 pens cost?", a: "10", type: "input" },
-                    { q: "Calculate: 100 - 25 - 25 - 10 = ?", a: "40", type: "input" },
-                    { q: "Find the next number in the sequence: 1, 2, 4, 8, 16, __?", a: "32", type: "input" },
-                    { q: "How many hours are there in 3 days?", a: "72", type: "input" }
-                ]}
-            ],
-            "P4": [
-                { id: 1, title: "Round 1: Easy", points: 4, color: "from-green-500 to-emerald-700", icon: Icons.Zap, questions: [
-                    { q: "Calculate: 0.5 + 0.2 = ?", a: "0.7", type: "input" },
-                    { q: "How many degrees are in a right angle?", a: "90", type: "input" },
-                    { q: "What is 50% of 100?", a: "50", type: "input" },
-                    { q: "Calculate: 48 ÷ 6 = ?", a: "8", type: "input" },
-                    { q: "Calculate: 0.5 + 0.5 = ?", a: "1", type: "input" }
-                ]},
-                { id: 2, title: "Round 2: Medium", points: 6, color: "from-blue-500 to-indigo-700", icon: Icons.Brain, questions: [
-                    { q: "List the factors of 6: 1, 2, 3, and __?", a: "6", type: "input" },
-                    { q: "Calculate the area of a rectangle with length 6m and width 4m.", a: "24", type: "input" },
-                    { q: "Calculate: 0.1 + 0.01 = ?", options: ["0.11", "0.101", "0.2"], a: "0.11", type: "mcq" },
-                    { q: "What is the angle of a square corner?", a: "90", type: "input" },
-                    { q: "Find the perimeter of a rectangle with sides 5cm and 3cm.", a: "16", type: "input" }
-                ]},
-                { id: 3, title: "Round 3: Hard", points: 8, color: "from-orange-500 to-red-700", icon: Icons.BookOpen, questions: [
-                    { q: "A train travels for 2 hours at a speed of 80 km/h. What is the total distance traveled?", a: "160", type: "input" },
-                    { q: "What is 1/4 of 100?", a: "25", type: "input" },
-                    { q: "Find the perimeter of a rectangle with length 5 and width 2.", a: "14", type: "input" },
-                    { q: "If a train leaves at 10:00 and the trip takes 2 hours and 30 minutes, when does it arrive?", options: ["12:30", "12:00", "1:30"], a: "12:30", type: "mcq" },
-                    { q: "Calculate: (50 ÷ 2) + 10 = ?", a: "35", type: "input" }
-                ]},
-                { id: 4, title: "Round 4: Tie Breaker", points: 2, color: "from-purple-600 to-fuchsia-800", icon: Icons.Crown, questions: [
-                    { q: "What is the simplest form of the fraction 5/10?", options: ["1/2", "2/1", "5"], a: "1/2", type: "mcq" },
-                    { q: "How many degrees are in a triangle?", a: "180", type: "input" },
-                    { q: "What fraction is equal to 0.25?", options: ["1/2", "1/4", "3/4"], a: "1/4", type: "mcq" },
-                    { q: "Calculate: 10 × 10 = ?", a: "100", type: "input" },
-                    { q: "Find the perimeter of a square with side 4cm.", a: "16", type: "input" }
-                ]}
-            ]
-        };
+        <button class="btn" onclick="goToLevelSelection()" style="width: 100%; margin-top: 15px;">Continue ➡️</button>
+    </div>
 
-        function App() {
-            // States
-            // gameState options: 'login', 'levelSelect', 'welcome', 'roundIntro', 'playing', 'postRound2', 'preTieBreaker', 'result'
-            const [gameState, setGameState] = useState('login'); 
-            const [studentName, setStudentName] = useState("");
-            const [campus, setCampus] = useState(""); // Add campus state
-            const [selectedLevel, setSelectedLevel] = useState(null);
-            const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
-            const [currentQIdx, setCurrentQIdx] = useState(0);
-            const [score, setScore] = useState(0);
-            const [tieBreakerScore, setTieBreakerScore] = useState(0);
-            const [inputVal, setInputVal] = useState("");
-            const [feedback, setFeedback] = useState(null);
-            const [submissionStatus, setSubmissionStatus] = useState('idle'); 
-            const hasSentData = useRef(false);
+    <!-- Screen 2: Level Selection -->
+    <div id="level-screen" class="screen">
+        <h1>Select Level</h1>
+        <p>Which grade level is <span id="display-student-name" style="font-weight:bold; color:var(--primary)">the student</span> applying for?</p>
+        <div class="level-grid" id="level-buttons">
+            <!-- Buttons generated by JS -->
+        </div>
+        <br>
+        <button class="btn" style="background:#999; font-size: 0.9rem;" onclick="location.reload()">⬅️ Back</button>
+    </div>
 
-            // Derived State
-            const activeGameData = selectedLevel ? levelsData[selectedLevel] : [];
-            const currentRound = activeGameData[currentRoundIdx];
-            const currentQ = currentRound ? currentRound.questions[currentQIdx] : null;
-
-            // --- WEBHOOK EFFECT ---
-            useEffect(() => {
-                if (gameState === 'result' && !hasSentData.current) {
-                    hasSentData.current = true; // Prevent double send
-                    setSubmissionStatus('sending');
-
-                    let maxPossibleScore = 100;
-                    if (currentRoundIdx === 1) maxPossibleScore = 50; 
-                    else if (currentRoundIdx === 2) maxPossibleScore = 90;
-
-                    let tieBreakerStatus = "Skipped";
-                    if (currentRoundIdx === 3) tieBreakerStatus = "Played";
-                    if (currentRoundIdx === 1) tieBreakerStatus = "N/A"; 
-                    
-                    const data = {
-                        studentName,
-                        campus, // Add campus to payload
-                        selectedLevel,
-                        score, 
-                        maxPossibleScore,
-                        tieBreakerStatus,
-                        tieBreakerScore: currentRoundIdx === 3 ? tieBreakerScore : 0,
-                        timestamp: new Date().toISOString()
-                    };
-
-                    const decodedUrl = getSecureEndpoint();
-
-                    fetch(decodedUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            setSubmissionStatus('success');
-                        } else {
-                            setSubmissionStatus('error');
-                            console.error("Webhook responded with:", response.status);
-                        }
-                    })
-                    .catch(err => {
-                        setSubmissionStatus('error');
-                        console.error("Webhook error:", err);
-                    });
-                }
-                if (gameState !== 'result') {
-                    hasSentData.current = false;
-                    setSubmissionStatus('idle');
-                }
-            }, [gameState, currentRoundIdx, score, selectedLevel, studentName, campus, tieBreakerScore]);
-
-            // Handlers
-            const handleLogin = (e) => {
-                e.preventDefault();
-                if (studentName.trim() && campus) {
-                    setGameState('levelSelect');
-                }
-            };
-
-            const handleLevelSelect = (level) => {
-                setSelectedLevel(level);
-                setGameState('welcome');
-                setScore(0);
-                setTieBreakerScore(0); 
-                setCurrentRoundIdx(0);
-                setCurrentQIdx(0);
-            };
-
-            const startGame = () => setGameState('roundIntro');
-            const startRound = () => setGameState('playing');
+    <!-- Screen 3: Quiz -->
+    <div id="quiz-screen" class="screen">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="subject-badge" id="subject-badge">Subject</div>
+        
+        <!-- Audio Controls -->
+        <div class="audio-controls">
+            <!-- Story Button: Shows ONLY if isStory=true -->
+            <button id="btn-listen-story" class="btn-speak btn-story" style="display:none;" onclick="playListeningStory()">🔊 Listen to Story</button>
             
-            const startRound3 = () => {
-                setCurrentRoundIdx(2); // Round 3 is index 2
-                setCurrentQIdx(0);
-                setGameState('roundIntro');
-            };
+            <!-- Read Question Button: Shows for ALL questions -->
+            <button id="btn-read-question" class="btn-speak btn-read-q" onclick="speakQuestionText()">🗣️ Read Question</button>
+        </div>
 
-            const startTieBreaker = () => {
-                setCurrentRoundIdx(3); // Tie Breaker is index 3
-                setCurrentQIdx(0);
-                setGameState('roundIntro');
-            };
+        <h3 id="question-text" style="font-size: 1.4rem; margin: 15px 0; color: var(--primary);">Question text...</h3>
+        
+        <!-- Display for Reading/Writing Prompts -->
+        <div id="prompt-display" style="font-size: 1.2rem; color: #444; margin-bottom: 25px; padding: 15px; background: #f8fafb; border-left: 4px solid var(--secondary); border-radius: 4px; display:none; font-weight: 500;"></div>
 
-            const handleAnswer = (val) => {
-                const isCorrect = val.toString().toLowerCase().trim() === currentQ.a.toString().toLowerCase().trim();
-                if (isCorrect) {
-                    const points = currentRound.points;
-                    setScore(s => s + points);
-                    
-                    if (currentRoundIdx === 3) {
-                        setTieBreakerScore(s => s + points);
-                    }
-                    
-                    setFeedback('correct');
-                } else {
-                    setFeedback('wrong');
-                }
-                
-                setTimeout(() => {
-                    setFeedback(null);
-                    setInputVal("");
-                    if (currentQIdx + 1 < currentRound.questions.length) {
-                        setCurrentQIdx(c => c + 1);
-                    } else {
-                        // End of Round Logic
-                        if (currentRoundIdx === 1) { // End of Round 2
-                            setGameState('postRound2');
-                        }
-                        else if (currentRoundIdx === 2) { // End of Round 3
-                            setGameState('preTieBreaker');
-                        }
-                        else if (currentRoundIdx === 3) { // End of Tie Breaker
-                            setGameState('result');
-                        }
-                        else {
-                            // End of Round 1, go to Round 2 intro
-                            setCurrentRoundIdx(c => c + 1);
-                            setCurrentQIdx(0);
-                            setGameState('roundIntro');
-                        }
-                    }
-                }, 2500);
-            };
+        <!-- Speaking List Display -->
+        <ul id="speaking-display" class="speaking-list" style="display:none;">
+            <!-- Injected by JS -->
+        </ul>
 
-            const handleKey = (e) => {
-                if (e.key === 'Enter') handleAnswer(inputVal);
-            }
+        <!-- Writing Input (Visible to student in Writing Section) -->
+        <div id="writing-container" style="display:none; text-align:left;">
+            <div class="input-group">
+                <label>Student Answer:</label>
+                <textarea id="writing-input" rows="6" placeholder="Student types here..."></textarea>
+            </div>
+        </div>
 
-            const goHome = () => {
-                setGameState('levelSelect');
-                setSelectedLevel(null);
-            };
+        <!-- MCQ Options -->
+        <div id="options-container">
+            <!-- Options generated by JS -->
+        </div>
 
-            // --- LOGIN SCREEN ---
-            if (gameState === 'login') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-slate-950 bg-grid font-sans">
-                         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-cyan-950/20 pointer-events-none"></div>
-                         <div className="z-10 w-full max-w-lg text-center">
-                            
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-32 mx-auto mb-8 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+        <!-- Assessor Grading Buttons (Hidden by default) -->
+        <div id="assessor-grading-container" class="grading-grid" style="display:none;">
+            <button class="btn-grade grade-100" onclick="gradeAssessorTask(100)">Excellent (100%)</button>
+            <button class="btn-grade grade-80" onclick="gradeAssessorTask(80)">Good (80%)</button>
+            <button class="btn-grade grade-60" onclick="gradeAssessorTask(60)">Average (60%)</button>
+            <button class="btn-grade grade-40" onclick="gradeAssessorTask(40)">Below Avg (40%)</button>
+            <button class="btn-grade grade-20" onclick="gradeAssessorTask(20)">Needs Support (20%)</button>
+            <button class="btn-grade grade-0" onclick="gradeAssessorTask(0)">No Response (0%)</button>
+        </div>
 
-                            <div className="bg-slate-900/80 backdrop-blur border border-slate-700 p-8 md:p-12 shadow-2xl rounded-2xl relative overflow-hidden">
-                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-600"></div>
-                                
-                                <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">SYSTEM LOGIN</h1>
-                                <p className="text-slate-400 mb-8 font-mono text-sm">PLEASE IDENTIFY YOURSELF</p>
+        <br>
+        <button class="btn" id="next-btn" style="display:none; width: 100%; margin-top: 15px;" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
 
-                                <form onSubmit={handleLogin} className="space-y-6">
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span className="text-slate-500"><Icons.User /></span>
-                                        </div>
-                                        <input 
-                                            type="text" 
-                                            value={studentName}
-                                            onChange={(e) => setStudentName(e.target.value)}
-                                            className="block w-full pl-12 pr-3 py-4 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white placeholder-slate-600 font-mono text-lg transition-all" 
-                                            placeholder="ENTER YOUR NAME..." 
-                                            required
-                                            autoFocus
-                                        />
-                                    </div>
-                                    
-                                    {/* Campus Dropdown */}
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span className="text-slate-500"><Icons.Home /></span>
-                                        </div>
-                                        <select 
-                                            value={campus} 
-                                            onChange={(e) => setCampus(e.target.value)}
-                                            className="block w-full pl-12 pr-3 py-4 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white font-mono text-lg transition-all appearance-none"
-                                            required
-                                        >
-                                            <option value="" disabled>SELECT CAMPUS...</option>
-                                            <option value="BKK Campus">BKK Campus</option>
-                                            <option value="SS Campus">SS Campus</option>
-                                        </select>
-                                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                                            <svg className="h-4 w-4 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="submit" className="w-full group relative px-8 py-4 bg-cyan-600 overflow-hidden rounded-lg hover:bg-cyan-500 transition-all duration-300">
-                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
-                                        <span className="relative text-xl font-bold font-mono tracking-widest text-white">
-                                            ACCESS SYSTEM >
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
-                         </div>
-                    </div>
-                );
-            }
+    <!-- Screen 4: Results -->
+    <div id="result-screen" class="screen">
+        <h1>Assessment Report</h1>
+        <p>Placement Test Results</p>
+        
+        <!-- Visual Score Card -->
+        <div class="score-card" id="screen-score-card">
+            <div class="info-row">
+                <span><strong>Student:</strong> <span id="res-student"></span></span>
+                <span><strong>Assessor:</strong> <span id="res-assessor"></span></span>
+            </div>
+            <div class="info-row">
+                <span><strong>Campus:</strong> <span id="res-campus"></span></span>
+                <span><strong>Level:</strong> <span id="res-level"></span></span>
+            </div>
+            <div class="info-row" style="border:none; padding-bottom:0;">
+                <span><strong>Date:</strong> <span id="res-date"></span></span>
+            </div>
+            <hr style="border:1px solid #eee; margin:20px 0;">
+            <h3 style="color:var(--primary); margin-top:0;">Score Breakdown:</h3>
+            <p><strong>🇬🇧 English Total (50%):</strong> <span id="score-eng">0</span>%</p>
+            <ul class="sub-score-list">
+                <li>Listening & Grammar: <span id="score-eng-mcq">0</span>%</li>
+                <li>Reading Aloud: <span id="score-eng-read">0</span>%</li>
+                <li>Writing: <span id="score-eng-write">0</span>%</li>
+                <li>Speaking: <span id="score-eng-speak">0</span>%</li>
+            </ul>
+            <p><strong>🧮 Math (30%):</strong> <span id="score-math">0</span>%</p>
+            <p><strong>🔬 Science (20%):</strong> <span id="score-sci">0</span>%</p>
+            <hr style="border:1px solid #eee; margin:20px 0;">
+            <h2 style="color:var(--primary); text-align:center; font-size: 2rem; margin-bottom: 0;">Final Score: <span id="final-score">0</span>/100</h2>
+        </div>
 
-            // --- LEVEL SELECTION ---
-            if (gameState === 'levelSelect') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-slate-950 bg-grid font-sans">
-                         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-cyan-950/20 pointer-events-none"></div>
-                         
-                         <div className="absolute top-4 right-4 md:top-8 md:right-8 z-20">
-                             <div className="bg-slate-900/80 backdrop-blur border border-cyan-500/30 px-4 py-2 rounded-full flex items-center gap-2">
-                                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                 <span className="text-cyan-400 font-mono text-sm">STUDENT: {studentName.toUpperCase()}</span>
-                             </div>
-                         </div>
+        <div id="final-verdict" style="margin-bottom: 25px;"></div>
+        
+        <!-- Webhook Status Indicator -->
+        <div id="upload-status"></div>
+        <br>
+        
+        <!-- Download PDF Button -->
+        <button class="btn" style="background: var(--secondary); width: 100%; margin-bottom: 15px;" onclick="downloadPDF()">Download PDF Report 📥</button>
+        
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn" style="flex: 1; font-size: 0.95rem; padding: 12px;" onclick="location.reload()">Start New 🔄</button>
+            <button class="btn" style="flex: 1; background: #333; font-size: 0.95rem; padding: 12px;" onclick="window.print()">Print 🖨️</button>
+        </div>
+    </div>
+</div>
 
-                         <div className="z-10 w-full max-w-5xl text-center">
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-24 md:h-32 mx-auto mb-10 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
-                            
-                            <div className="inline-flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur border border-cyan-500/30 rounded-full mb-8">
-                                <Icons.Grid />
-                                <span className="ml-3 font-mono text-cyan-400 tracking-widest">SYSTEM LOGIN • SELECT LEVEL</span>
-                            </div>
+<!-- MODERN PDF TEMPLATE -->
+<div id="pdf-export-container">
+    <div class="pdf-header-bar">
+        <img src="VBIA_LOGO.PNG" class="pdf-logo" alt="VBIA Logo">
+        <div class="pdf-title-wrapper">
+            <h1>Vision Bridge International Academy</h1>
+            <p>Official Digital Placement Report</p>
+        </div>
+    </div>
 
-                            <h1 className="text-5xl md:text-7xl font-black text-white mb-12 tracking-tight drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">MISSION SELECT</h1>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                {Object.keys(levelsData).map((level) => (
-                                    <button key={level} onClick={() => handleLevelSelect(level)} className="group relative bg-slate-900/80 backdrop-blur border border-slate-700 hover:border-cyan-400 p-8 rounded-none skew-x-[-6deg] transition-all duration-300 hover:transform hover:scale-105 hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-slate-500 group-hover:border-cyan-400 transition-colors"></div>
-                                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-slate-500 group-hover:border-cyan-400 transition-colors"></div>
-                                        <div className="text-4xl font-bold text-slate-300 group-hover:text-white mb-2 font-mono skew-x-[6deg]">{level}</div>
-                                        <div className="text-xs text-cyan-600 group-hover:text-cyan-400 font-mono tracking-widest skew-x-[6deg]">CLASS_MODULE</div>
-                                    </button>
-                                ))}
-                            </div>
-                         </div>
-                    </div>
-                );
-            }
-
-            // --- WELCOME ---
-            if (gameState === 'welcome') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-slate-950">
-                        <div className="absolute inset-0 z-0 opacity-10 bg-grid"></div>
-                        <div className="z-10 flex flex-col items-center">
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-32 md:h-40 mb-6 object-contain animate-float drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
-                            <h1 className="text-5xl md:text-7xl font-bold text-center mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">{selectedLevel} COMPETITION</h1>
-                            <div className="h-1 w-32 bg-cyan-500 mb-6"></div>
-                            <p className="text-slate-400 mb-2 text-center max-w-md font-mono">STUDENT: {studentName.toUpperCase()}</p>
-                            <p className="text-slate-400 mb-12 text-center max-w-md font-mono">3 Rounds: Easy, Medium, Hard.<br/>Bonus: Tie Breaker.</p>
-                            <div className="flex gap-4">
-                                <button onClick={goHome} className="px-8 py-4 border border-slate-700 text-slate-400 hover:text-white hover:border-white transition font-mono uppercase tracking-widest">&lt; Abort</button>
-                                <button onClick={startGame} className="group relative px-10 py-4 bg-cyan-600 overflow-hidden hover:bg-cyan-500 transition-all duration-300 animate-glow">
-                                    <span className="relative z-10 text-xl font-bold font-mono tracking-widest text-white uppercase">Initialize ></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- ROUND INTRO ---
-            if (gameState === 'roundIntro') {
-                const Icon = currentRound.icon;
-                return (
-                    <div className={`min-h-screen flex flex-col items-center justify-center text-white p-4 relative overflow-hidden`}>
-                        <div className={`absolute inset-0 bg-gradient-to-br ${currentRound.color} opacity-20`}></div>
-                        <div className="absolute inset-0 bg-grid opacity-20"></div>
-                        <div className="relative z-10 p-12 bg-slate-950/80 backdrop-blur-xl border-y-2 border-cyan-500/50 flex flex-col items-center shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-2xl w-full text-center">
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-20 mb-6 object-contain" />
-                            
-                            <h2 className="text-xl font-mono text-cyan-300 mb-2 tracking-widest border-b border-cyan-500/30 pb-2 w-full">{selectedLevel} : {currentRound.title.toUpperCase()}</h2>
-                            <h1 className="text-5xl md:text-7xl font-black mb-8 font-sans tracking-tight">{currentRound.title}</h1>
-                            
-                            <div className="mb-8 font-mono text-cyan-400 text-lg border border-cyan-500/30 px-4 py-2 bg-slate-900/50 rounded-lg inline-block">
-                                POINTS PER QUESTION: {currentRound.points}
-                            </div>
-                            
-                            <button onClick={startRound} className="bg-white text-slate-950 font-bold py-4 px-16 hover:scale-105 transition font-mono uppercase tracking-widest">[ EXECUTE ]</button>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- POST ROUND 2 SCREEN ---
-            if (gameState === 'postRound2') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 relative font-mono">
-                        <div className="absolute inset-0 bg-grid opacity-20"></div>
-                        <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-12 shadow-2xl text-center max-w-2xl w-full relative z-10">
-                            <div className="text-blue-400 mb-4 flex justify-center"><Icons.Brain /></div>
-                            <h1 className="text-4xl font-bold mb-4 text-white">ROUND 2 COMPLETE</h1>
-                            <p className="text-slate-400 mb-8">Modules 1 & 2 Finished.</p>
-                            
-                            <div className="bg-slate-950 p-6 border border-slate-800 mb-8">
-                                <p className="text-cyan-500 text-sm mb-2 uppercase tracking-widest">Current Score</p>
-                                <div className="text-6xl font-bold text-white">{score} <span className="text-xl text-slate-600">/ 50 PTS</span></div>
-                            </div>
-                            
-                            <p className="text-slate-300 mb-8 max-w-md mx-auto">You can choose to end the exam now and submit your score, or proceed to the Hard Round (Module 3).</p>
-                            
-                            <div className="flex flex-col md:flex-row gap-4 justify-center">
-                                <button onClick={() => setGameState('result')} className="px-8 py-4 border border-slate-600 text-slate-400 hover:text-white hover:bg-slate-800 transition uppercase tracking-widest">End & Show Result</button>
-                                <button onClick={startRound3} className="px-8 py-4 bg-blue-600 text-white hover:bg-blue-500 transition uppercase tracking-widest shadow-[0_0_20px_rgba(37,99,235,0.5)] animate-pulse">Proceed to Round 3</button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- PRE TIE BREAKER SCREEN ---
-            if (gameState === 'preTieBreaker') {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 relative font-mono">
-                        <div className="absolute inset-0 bg-grid opacity-20"></div>
-                        <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-12 shadow-2xl text-center max-w-2xl w-full relative z-10">
-                            <div className="text-yellow-400 mb-4 flex justify-center"><Icons.Lock /></div>
-                            <h1 className="text-4xl font-bold mb-4 text-white">MAIN ROUNDS COMPLETE</h1>
-                            <p className="text-slate-400 mb-8">Score Checkpoint Reached.</p>
-                            
-                            <div className="bg-slate-950 p-6 border border-slate-800 mb-8">
-                                <p className="text-cyan-500 text-sm mb-2 uppercase tracking-widest">Current Standing</p>
-                                <div className="text-6xl font-bold text-white">{score} <span className="text-xl text-slate-600">/ 90 PTS</span></div>
-                            </div>
-                            
-                            <p className="text-slate-300 mb-8 max-w-md mx-auto">You have completed Easy, Medium, and Hard rounds. Do you wish to proceed to the Tie Breaker round?</p>
-                            
-                            <div className="flex flex-col md:flex-row gap-4 justify-center">
-                                <button onClick={() => setGameState('result')} className="px-8 py-4 border border-slate-600 text-slate-400 hover:text-white hover:bg-slate-800 transition uppercase tracking-widest">End & Show Result</button>
-                                <button onClick={startTieBreaker} className="px-8 py-4 bg-purple-600 text-white hover:bg-purple-500 transition uppercase tracking-widest shadow-[0_0_20px_rgba(147,51,234,0.5)] animate-pulse">Proceed to Tie Breaker</button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // --- RESULTS ---
-            if (gameState === 'result') {
-                let maxPossibleScore = 100;
-                if (currentRoundIdx === 1) maxPossibleScore = 50; 
-                else if (currentRoundIdx === 2) maxPossibleScore = 90;
-
-                const percentage = Math.round((score / maxPossibleScore) * 100);
-                
-                let message = "";
-                let colorClass = "";
-                if (percentage >= 90) { message = "SYSTEM OPTIMIZED: GOLD STATUS"; colorClass = "text-yellow-400"; }
-                else if (percentage >= 70) { message = "HIGH EFFICIENCY: SILVER STATUS"; colorClass = "text-slate-300"; }
-                else if (percentage >= 50) { message = "OPERATIONAL: BRONZE STATUS"; colorClass = "text-orange-400"; }
-                else { message = "SYSTEM ERROR: RECALIBRATION NEEDED"; colorClass = "text-red-400"; }
-
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 relative">
-                        <div className="absolute inset-0 bg-grid opacity-10"></div>
-                        <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-8 md:p-12 shadow-2xl text-center max-w-lg w-full relative z-10">
-                            <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-cyan-500 -mt-2 -ml-2"></div>
-                            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-cyan-500 -mb-2 -mr-2"></div>
-                            
-                            {/* STATUS INDICATOR */}
-                            <div className="absolute top-4 right-4 flex items-center gap-2">
-                                {submissionStatus === 'sending' && <span className="text-yellow-400 animate-pulse font-mono text-xs flex items-center gap-1"><Icons.Wifi /> TRANSMITTING...</span>}
-                                {submissionStatus === 'success' && <span className="text-green-400 font-mono text-xs flex items-center gap-1"><Icons.CheckCircle /> DATA UPLOADED</span>}
-                                {submissionStatus === 'error' && <span className="text-red-400 font-mono text-xs flex items-center gap-1"><Icons.WifiOff /> UPLOAD FAILED</span>}
-                            </div>
-
-                            <img src="IMG_7876.PNG" alt="School Logo" className="h-20 mx-auto mb-6 object-contain" />
-
-                            <h1 className="text-4xl font-bold mb-4 text-white tracking-tight">COMPLETE</h1>
-                            <p className="text-cyan-400 font-mono mb-8">REPORT FOR: {studentName.toUpperCase()}</p>
-
-                            <div className="mb-8 bg-slate-950 p-6 border border-slate-800">
-                                <p className="text-cyan-500 font-mono text-sm mb-2">FINAL PERFORMANCE METRICS</p>
-                                <div className="text-7xl font-bold text-white mb-4 font-mono">{score}</div>
-                                <div className="text-sm text-slate-500 uppercase tracking-widest">Total Points Accumulated</div>
-                            </div>
-                            
-                            {currentRoundIdx === 3 && (
-                                <div className="mb-8 bg-purple-900/20 p-4 border border-purple-500/30 rounded">
-                                    <p className="text-purple-400 font-mono text-xs mb-1 uppercase">Tie Breaker Module</p>
-                                    <div className="text-2xl font-bold text-white">{tieBreakerScore} <span className="text-sm text-slate-400">/ 10 PTS</span></div>
-                                </div>
-                            )}
-
-                            <div className="flex gap-3">
-                                <button onClick={() => window.location.reload()} className="flex-1 bg-slate-800 border border-slate-600 hover:border-cyan-500 text-cyan-400 py-4 hover:bg-slate-700 transition font-mono flex items-center justify-center gap-2"><Icons.Zap /> RETRY</button>
-                                <button onClick={goHome} className="flex-1 bg-cyan-700 border border-cyan-500 text-white py-4 hover:bg-cyan-600 transition font-mono flex items-center justify-center gap-2"><Icons.Home /> LEVELS</button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            const Icon = currentRound.icon;
-
-            // --- PLAYING STATE ---
-            return (
-                <div className="min-h-screen bg-slate-950 flex flex-col relative overflow-hidden font-mono">
-                    <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none"></div>
-                    
-                    {/* Top HUD */}
-                    <div className="w-full h-20 bg-slate-900 border-b border-slate-700 flex justify-between items-center px-6 z-10">
-                         <div className="flex items-center gap-4">
-                             <img src="IMG_7876.PNG" alt="School Logo" className="h-10 object-contain" />
-                             <div className={`w-2 h-2 rounded-full animate-pulse ${score > 0 ? 'bg-green-500' : 'bg-cyan-500'}`}></div>
-                             <span className="text-cyan-500 tracking-widest text-sm md:text-base">{selectedLevel} : {currentRound.title.toUpperCase()}</span>
-                         </div>
-                         
-                         {/* Name in HUD */}
-                         <div className="hidden lg:block text-slate-500 text-sm">STUDENT: {studentName.toUpperCase()}</div>
-
-                         <div className="flex items-center gap-6">
-                             <div className="hidden md:flex flex-col items-end">
-                                 <span className="text-[10px] text-slate-500 uppercase">Current Score</span>
-                                 <span className="text-xl text-white font-bold leading-none">{score.toString().padStart(4, '0')}</span>
-                             </div>
-                             <div className="px-3 py-1 bg-slate-800 border border-slate-600 text-slate-300 text-sm">Q-{currentQIdx + 1}/{currentRound.questions.length}</div>
-                         </div>
-                    </div>
-
-                    {/* Main Area */}
-                    <div className="flex-grow flex flex-col items-center justify-center relative p-4 z-0">
-                        {feedback && (
-                            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md transition-all duration-300">
-                                <div className={`mb-6 transform scale-150 ${feedback === 'correct' ? 'text-emerald-400' : 'text-red-500'}`}>
-                                    {feedback === 'correct' ? <Icons.CheckCircle /> : <Icons.XCircle />}
-                                </div>
-                                <h2 className={`text-3xl font-bold mb-2 ${feedback === 'correct' ? 'text-emerald-400' : 'text-red-500'}`}>{feedback === 'correct' ? 'CORRECT' : 'INCORRECT'}</h2>
-                                <div className="mt-4 p-6 border-y border-slate-700 bg-slate-900/50 text-center w-full max-w-lg">
-                                    <span className="text-slate-500 text-sm uppercase tracking-widest block mb-2">Correct Answer</span>
-                                    <span className="text-3xl md:text-4xl text-white font-bold">{currentQ.a}</span>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="w-full max-w-4xl flex flex-col items-center">
-                            <div className="w-full flex justify-between text-slate-700 mb-2 opacity-50"><Icons.Corner /><div className="transform rotate-90"><Icons.Corner /></div></div>
-                            <div className="text-center py-10 w-full relative">
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-slate-500 transform scale-[5]"><Icon /></div>
-                                <h2 className="relative z-10 text-4xl md:text-6xl font-bold text-white leading-tight drop-shadow-lg font-sans">{currentQ.q}</h2>
-                            </div>
-                            <div className="w-full flex justify-between text-slate-700 mt-2 opacity-50"><div className="transform -rotate-90"><Icons.Corner /></div><div className="transform rotate-180"><Icons.Corner /></div></div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Input */}
-                    <div className="w-full bg-slate-900 border-t border-slate-700 p-6 md:p-10 z-10">
-                        <div className="max-w-3xl mx-auto">
-                            {currentQ.type === 'mcq' ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {currentQ.options.map((opt, idx) => (
-                                        <button key={idx} onClick={() => handleAnswer(opt)} disabled={feedback !== null} className="group relative bg-slate-800 border border-slate-600 hover:border-cyan-500 hover:bg-slate-700/50 py-4 px-6 transition-all duration-200 text-lg text-left">
-                                            <div className="absolute inset-y-0 left-0 w-1 bg-transparent group-hover:bg-cyan-500 transition-colors"></div>
-                                            {/* CHANGED: Use A, B, C for labels */}
-                                            <span className="text-cyan-500 mr-3 opacity-50 group-hover:opacity-100 font-bold">{String.fromCharCode(65 + idx)}.</span> <span className="text-white">{opt}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="flex gap-0 border border-slate-600 hover:border-cyan-500 transition-colors bg-slate-950">
-                                    <div className="px-4 py-4 bg-slate-800 border-r border-slate-700 flex items-center text-cyan-500">>_</div>
-                                    <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} onKeyDown={handleKey} disabled={feedback !== null} className="flex-grow bg-transparent px-6 py-4 text-2xl outline-none text-white placeholder-slate-700 font-bold" placeholder="INPUT_VALUE..." autoFocus />
-                                    <button onClick={() => handleAnswer(inputVal)} disabled={!inputVal || feedback !== null} className="px-8 bg-cyan-700 text-white hover:bg-cyan-600 disabled:bg-slate-800 disabled:text-slate-600 transition-colors font-bold uppercase tracking-wider">Enter</button>
-                                </div>
-                            )}
-                            <div className="mt-4 flex justify-between items-center text-xs md:text-sm font-mono text-slate-500 h-6">
-                                <span>STATUS: WAITING_FOR_INPUT...</span>
-                                {currentQ.hint && <span className="text-yellow-600 flex items-center gap-2 animate-pulse">WARN: {currentQ.hint}</span>}
-                            </div>
-                        </div>
-                    </div>
+    <div class="pdf-body">
+        <!-- Modern Grid Layout for Info -->
+        <div class="pdf-info-grid">
+            <div class="pdf-info-row">
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Candidate Name</span>
+                    <span class="pdf-value" id="pdf-student">Student Name</span>
                 </div>
-            );
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Campus</span>
+                    <span class="pdf-value" id="pdf-campus">Campus Name</span>
+                </div>
+            </div>
+            <div class="pdf-info-row">
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Assessment Date</span>
+                    <span class="pdf-value" id="pdf-date">Date</span>
+                </div>
+                <div class="pdf-info-cell">
+                    <span class="pdf-label">Assessed By</span>
+                    <span class="pdf-value" id="pdf-assessor">Teacher Name</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIVIDER LINE -->
+        <div class="pdf-divider"></div>
+
+        <!-- Clean Score Table -->
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Subject Area</th>
+                    <th>Weight</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🇬🇧 English Language (Total)</td>
+                    <td>50%</td>
+                    <td id="pdf-eng-score">0%</td>
+                </tr>
+                <!-- Sub rows for English -->
+                <tr class="pdf-sub-row">
+                    <td colspan="3">
+                        • Listening & Grammar: <span id="pdf-eng-mcq">0</span>%<br>
+                        • Reading Aloud: <span id="pdf-eng-read">0</span>%<br>
+                        • Writing: <span id="pdf-eng-write">0</span>%<br>
+                        • Speaking: <span id="pdf-eng-speak">0</span>%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>🧮 Mathematics</td>
+                    <td>30%</td>
+                    <td id="pdf-math-score">0%</td>
+                </tr>
+                <tr>
+                    <td>🔬 Science</td>
+                    <td>20%</td>
+                    <td id="pdf-sci-score">0%</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">FINAL WEIGHTED SCORE</td>
+                    <td id="pdf-final-score">0/100</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Verdict Badge -->
+        <div class="pdf-verdict-container">
+            <div id="pdf-verdict-box" class="pdf-verdict-badge">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+
+        <!-- Footer / Signature -->
+        <div class="pdf-footer">
+            <div>
+                <div class="signature-line">Assessor Signature</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Disable right click to limit view source casually
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // --- DATABASE WITH LISTENING & WRITING (K2 - P6) ---
+    const quizData = {
+        "K2": {
+            "English": {
+                story: "The cat is sitting on the soft mat. It is a big, orange cat. The cat is sleeping because it is tired. The cat is happy.",
+                questions: [
+                    { q: "Where is the cat?", options: ["On the mat", "In the box", "Under the table", "On the chair"], ans: 0, isStory: true },
+                    { q: "How does the cat feel?", options: ["Sad", "Happy", "Angry", "Sleepy"], ans: 1, isStory: true },
+                    { q: "Which letter starts the word 'Apple'?", options: ["B", "A", "C", "D"], ans: 1 },
+                    { q: "Look at the picture of a 🐱. What is it?", options: ["Dog", "Cat", "Cow", "Pig"], ans: 1 },
+                    { q: "Which word rhymes with 'Bat'?", options: ["Car", "Hat", "Dog", "Sun"], ans: 1 },
+                    { q: "'The ball is _____ the box.' (Ball inside)", options: ["in", "on", "under", "up"], ans: 0 },
+                    { q: "Choose the action word (verb):", options: ["Blue", "Run", "Boy", "Happy"], ans: 1 },
+                    { q: "Which word is a color?", options: ["Three", "Red", "Table", "Go"], ans: 1 },
+                    { q: "Complete the word: D_G 🐶", options: ["A", "O", "I", "E"], ans: 1 },
+                    { q: "Which is the capital letter 'm'?", options: ["M", "n", "w", "z"], ans: 0 },
+                    { q: "Which one is small?", options: ["Elephant", "Ant", "House", "Tree"], ans: 1 }, 
+                    { q: "One cat, two ______?", options: ["Cat", "Cats", "Cates", "Kat"], ans: 1 } 
+                ],
+                writingPrompt: "Write your name (Assessor Grades).",
+                readingPrompt: "Read aloud: 'The dog runs fast.'",
+                speakingQuestions: [
+                    "What is your name?",
+                    "How old are you?",
+                    "What color do you like?"
+                ]
+            },
+            "Math": [
+                { q: "Count the stars: ★ ★ ★", options: ["2", "4", "3", "5"], ans: 2 },
+                { q: "What is 2 + 2?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "Which shape is round?", options: ["Square", "Triangle", "Circle", "Star"], ans: 2 },
+                { q: "Which number is missing? 1, 2, __, 4", options: ["3", "5", "6", "0"], ans: 0 },
+                { q: "Which object is bigger?", options: ["An Elephant", "An Ant", "A Mouse", "A Bee"], ans: 0 },
+                { q: "How many fingers are on one hand?", options: ["4", "5", "10", "2"], ans: 1 },
+                { q: "5 - 1 = ?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "Which number is Ten?", options: ["01", "10", "100", "1"], ans: 1 },
+                { q: "Which shape has 3 sides?", options: ["Circle", "Triangle", "Square", "Star"], ans: 1 }, 
+                { q: "1 + 1 + 1 = ?", options: ["2", "3", "4", "1"], ans: 1 } 
+            ],
+            "Science": [
+                { q: "Is a dog a living thing?", options: ["Yes", "No"], ans: 0 },
+                { q: "We use our eyes to:", options: ["Hear", "See", "Smell", "Touch"], ans: 1 },
+                { q: "Where do fish live?", options: ["In the sky", "In the water", "In a tree", "On the grass"], ans: 1 },
+                { q: "Which one is hot?", options: ["Ice Cream", "Fire", "Snow", "Water"], ans: 1 },
+                { q: "A bird has:", options: ["Wings", "Hands", "Fins", "Wheels"], ans: 0 },
+                { q: "What falls from the sky?", options: ["Rocks", "Rain", "Trees", "Cars"], ans: 1 },
+                { q: "When do we sleep?", options: ["At night", "At breakfast", "At lunch", "At school"], ans: 0 },
+                { q: "A baby chicken is called a:", options: ["Puppy", "Chick", "Kitten", "Calf"], ans: 1 }
+            ]
+        },
+        "P1": {
+            "English": {
+                story: "Tom has a big, shiny red ball. He goes to the park every Saturday to play with his dog, Rex. Rex loves to run fast and catch the ball.",
+                questions: [
+                    { q: "What does Tom have?", options: ["A blue car", "A red ball", "A green hat", "A yellow bike"], ans: 1, isStory: true },
+                    { q: "Where does Tom go?", options: ["To the school", "To the park", "To the shop", "To home"], ans: 1, isStory: true },
+                    { q: "Who is Rex?", options: ["His cat", "His bird", "His dog", "His friend"], ans: 2, isStory: true },
+                    { q: "The cat is sleeping _____ the bed.", options: ["on", "happy", "run", "fast"], ans: 0 },
+                    { q: "Which word rhymes with 'Cat'?", options: ["Dog", "Hat", "Ball", "Fish"], ans: 1 },
+                    { q: "Choose the correct sentence.", options: ["I has a book.", "I have a book.", "I having books.", "Me has book."], ans: 1 },
+                    { q: "What is the plural of 'Apple'?", options: ["Apple", "Apples", "Applez", "Appless"], ans: 1 },
+                    { q: "Which word is a verb (action word)?", options: ["Red", "Jump", "Big", "Table"], ans: 1 },
+                    { q: "'She _____ a teacher.'", options: ["are", "is", "am", "be"], ans: 1 },
+                    { q: "Choose the opposite of 'Big'.", options: ["Large", "Small", "Tall", "Fat"], ans: 1 },
+                    { q: "Which word needs a capital letter?", options: ["cat", "monday", "run", "blue"], ans: 1 },
+                    { q: "The book is _____ the table.", options: ["under", "happy", "running", "fast"], ans: 0 }, 
+                    { q: "My sister is a girl. _____ is nice.", options: ["He", "She", "It", "They"], ans: 1 } 
+                ],
+                writingPrompt: "Write about your favorite toy.",
+                readingPrompt: "Read aloud: 'I like to play with my friends.'",
+                speakingQuestions: [
+                    "What is your favorite toy?",
+                    "Do you have any pets?",
+                    "What do you like to do at school?"
+                ]
+            },
+            "Math": [
+                { q: "What is 5 + 4?", options: ["8", "9", "10", "7"], ans: 1 },
+                { q: "Which number is smaller than 10?", options: ["12", "20", "8", "15"], ans: 2 },
+                { q: "If you have 3 apples and buy 2 more, how many do you have?", options: ["4", "5", "6", "1"], ans: 1 },
+                { q: "Which shape has 3 sides?", options: ["Square", "Circle", "Triangle", "Star"], ans: 2 },
+                { q: "What number comes next? 10, 20, 30, ___", options: ["35", "40", "50", "25"], ans: 1 },
+                { q: "Write 'Sixteen' as a number.", options: ["60", "61", "16", "06"], ans: 2 },
+                { q: "15 - 5 = ?", options: ["10", "20", "11", "5"], ans: 0 },
+                { q: "Which object is heavy?", options: ["A feather", "A truck", "A pencil", "A leaf"], ans: 1 },
+                { q: "10 + 10 = ?", options: ["10", "20", "30", "100"], ans: 1 }, 
+                { q: "Count backwards: 5, 4, 3, __", options: ["1", "2", "6", "0"], ans: 1 } 
+            ],
+            "Science": [
+                { q: "What do humans need to live?", options: ["Candy", "Toys", "Water", "TV"], ans: 2 },
+                { q: "Which one is a plant?", options: ["Rose", "Rock", "Rabbit", "Rain"], ans: 0 },
+                { q: "Which animal lives in water?", options: ["Cat", "Fish", "Bird", "Lion"], ans: 1 },
+                { q: "We use our nose to:", options: ["See", "Hear", "Smell", "Walk"], ans: 2 },
+                { q: "Is a stone a living thing?", options: ["Yes", "No"], ans: 1 },
+                { q: "The sun gives us:", options: ["Water", "Light", "Air", "Food"], ans: 1 },
+                { q: "Which animal eats only plants?", options: ["Lion", "Rabbit", "Tiger", "Shark"], ans: 1 },
+                { q: "A car is made of:", options: ["Paper", "Metal", "Water", "Leaves"], ans: 1 }
+            ]
+        },
+        "P2": {
+            "English": {
+                story: "Sarah goes to the zoo with her family. First, she sees a big grey elephant eating green grass. Then, she walks to see the tall giraffes eating leaves from the top of the trees. It is a fun day.",
+                questions: [
+                    { q: "Where does Sarah go?", options: ["To school", "To the park", "To the zoo", "To the shop"], ans: 2, isStory: true },
+                    { q: "What is the elephant eating?", options: ["Meat", "Grass", "Ice cream", "Leaves"], ans: 1, isStory: true },
+                    { q: "Which animal is tall?", options: ["Elephant", "Ant", "Giraffe", "Cat"], ans: 2, isStory: true },
+                    { q: "What is the past tense of 'Run'?", options: ["Runned", "Running", "Ran", "Runs"], ans: 2 },
+                    { q: "Find the Adjective: 'The big red car.'", options: ["Car", "The", "Red", "Is"], ans: 2 },
+                    { q: "'They _____ playing football yesterday.'", options: ["was", "were", "are", "is"], ans: 1 },
+                    { q: "Which word is a noun (thing)?", options: ["Quickly", "Sing", "School", "Hot"], ans: 2 },
+                    { q: "Choose the opposite of 'Happy'.", options: ["Glad", "Sad", "Fun", "Play"], ans: 1 },
+                    { q: "'I _____ to the park.' (Present Continuous)", options: ["am going", "go", "gone", "went"], ans: 0 },
+                    { q: "Which word is spelled correctly?", options: ["Freind", "Friend", "Frend", "Frind"], ans: 1 },
+                    { q: "A person who flies a plane is a:", options: ["Driver", "Pilot", "Chef", "Teacher"], ans: 1 },
+                    { q: "I like ice cream _____ cake.", options: ["and", "but", "so", "because"], ans: 0 }, 
+                    { q: "Yesterday, I _____ an apple.", options: ["eat", "eats", "ate", "eating"], ans: 2 } 
+                ],
+                writingPrompt: "Write about your favorite animal.",
+                readingPrompt: "Read aloud: 'The elephant has a long trunk. It likes to eat peanuts.'",
+                speakingQuestions: [
+                    "Tell me about your family.",
+                    "What is your favorite animal and why?",
+                    "What did you do yesterday?"
+                ]
+            },
+            "Math": [
+                { q: "What is 100 + 50?", options: ["105", "150", "500", "115"], ans: 1 },
+                { q: "How many minutes are in one hour?", options: ["30", "100", "60", "24"], ans: 2 },
+                { q: "What is 3 x 5?", options: ["8", "12", "15", "10"], ans: 2 },
+                { q: "Which number is Even?", options: ["3", "7", "8", "11"], ans: 2 },
+                { q: "Bob has 20 candies. He gives away 5. How many are left?", options: ["10", "15", "25", "12"], ans: 1 },
+                { q: "What comes next? 2, 4, 6, 8, __", options: ["9", "10", "12", "11"], ans: 1 },
+                { q: "How many sides does a rectangle have?", options: ["3", "4", "5", "6"], ans: 1 },
+                { q: "What is half of 10?", options: ["2", "5", "4", "6"], ans: 1 },
+                { q: "50 - 25 = ?", options: ["20", "25", "30", "15"], ans: 1 }, 
+                { q: "2 x 10 = ?", options: ["12", "20", "22", "10"], ans: 1 } 
+            ],
+            "Science": [
+                { q: "The sun gives us light and ______?", options: ["Water", "Heat", "Rain", "Sound"], ans: 1 },
+                { q: "Which material is waterproof?", options: ["Paper", "Plastic", "Tissue", "Sponge"], ans: 1 },
+                { q: "A baby frog is called a:", options: ["Puppy", "Kitten", "Tadpole", "Calf"], ans: 2 },
+                { q: "Which food is healthy?", options: ["Chips", "Apple", "Soda", "Cake"], ans: 1 },
+                { q: "Shadows are made when light is:", options: ["Blocked", "Hot", "Bright", "Fast"], ans: 0 },
+                { q: "Which animal lives in a hive?", options: ["Dog", "Bee", "Bird", "Cat"], ans: 1 },
+                { q: "Paper is made from:", options: ["Plastic", "Wood (Trees)", "Metal", "Sand"], ans: 1 },
+                { q: "To grow, a plant needs water and:", options: ["Sugar", "Sunlight", "Juice", "Milk"], ans: 1 }
+            ]
+        },
+        "P3": {
+             "English": {
+                story: "Every morning, Jack wakes up at 6 AM when his alarm rings. First, he brushes his teeth until they are clean. Then, he eats a healthy breakfast of toast and eggs. Finally, he walks to school with his best friends.",
+                questions: [
+                    { q: "When does Jack wake up?", options: ["7 AM", "6 AM", "8 AM", "5 AM"], ans: 1, isStory: true },
+                    { q: "What does Jack eat?", options: ["Toast and eggs", "Pizza", "Rice", "Soup"], ans: 0, isStory: true },
+                    { q: "How does he go to school?", options: ["By bus", "By car", "He walks", "He runs"], ans: 2, isStory: true },
+                    { q: "Which sentence uses a comma correctly?", options: ["I like, apples", "I like apples, bananas, and pears.", "I like apples bananas,", "I, like apples"], ans: 1 },
+                    { q: "Choose the adverb: 'She sings loudly.'", options: ["She", "Sings", "Loudly", "Song"], ans: 2 },
+                    { q: "What is the opposite of 'Create'?", options: ["Build", "Destroy", "Make", "Draw"], ans: 1 },
+                    { q: "'I _____ to the shop tomorrow.'", options: ["went", "will go", "gone", "going"], ans: 1 },
+                    { q: "Which word is spelled correctly?", options: ["Becuse", "Becuase", "Because", "Beacuse"], ans: 2 },
+                    { q: "'The children _____ happy with their toys.'", options: ["was", "were", "is", "be"], ans: 1 },
+                    { q: "What is a 'Biography'?", options: ["Dragon story", "Story about a person's life", "Poem", "Recipe"], ans: 1 },
+                    { q: "Choose the correct pronoun: 'Tom is my friend. _____ is nice.'", options: ["She", "He", "It", "They"], ans: 1 },
+                    { q: "She is taller _____ her brother.", options: ["then", "than", "that", "this"], ans: 1 }, 
+                    { q: "We _____ playing football now.", options: ["is", "am", "are", "be"], ans: 2 } 
+                ],
+                writingPrompt: "Describe your morning routine.",
+                readingPrompt: "Read aloud: 'We walk to school every morning. The sun is shining bright today. My friends are walking with me.'",
+                speakingQuestions: [
+                    "What do you do in the morning before school?",
+                    "What is your favorite subject and why?",
+                    "Describe your best friend."
+                ]
+            },
+            "Math": [
+                { q: "What is 24 divided by 4?", options: ["5", "6", "8", "12"], ans: 1 },
+                { q: "Write the number: Three hundred and fifty-two.", options: ["352", "30052", "325", "532"], ans: 0 },
+                { q: "What is half of 50?", options: ["20", "25", "30", "15"], ans: 1 },
+                { q: "What is 120 - 45?", options: ["85", "75", "65", "80"], ans: 1 },
+                { q: "How many cm in 1 meter?", options: ["10", "100", "1000", "50"], ans: 1 },
+                { q: "9 x 9 = ?", options: ["18", "81", "99", "72"], ans: 1 },
+                { q: "What is 1/4 of 20?", options: ["4", "5", "10", "2"], ans: 1 },
+                { q: "A square has 4 sides. How many sides do 2 squares have?", options: ["6", "8", "10", "12"], ans: 1 },
+                { q: "200 + 300 + 50 = ?", options: ["530", "550", "2350", "505"], ans: 1 }, 
+                { q: "Which month comes after June?", options: ["May", "August", "July", "April"], ans: 2 } 
+            ],
+            "Science": [
+                { q: "What part of the plant absorbs water?", options: ["Leaves", "Flower", "Roots", "Stem"], ans: 2 },
+                { q: "Which animal lays eggs?", options: ["Dog", "Cat", "Chicken", "Cow"], ans: 2 },
+                { q: "Magnets attract which metal?", options: ["Gold", "Iron", "Aluminum", "Copper"], ans: 1 },
+                { q: "What do lungs help us do?", options: ["Eat", "Breathe", "Think", "Walk"], ans: 1 },
+                { q: "Solids, Liquids, and _____ are states of matter.", options: ["Water", "Ice", "Gas", "Air"], ans: 2 },
+                { q: "Which animal is a reptile?", options: ["Frog", "Snake", "Eagle", "Bear"], ans: 1 },
+                { q: "Friction makes moving things:", options: ["Go faster", "Slow down", "Fly", "Bounce"], ans: 1 },
+                { q: "Sound is caused by:", options: ["Vibrations", "Light", "Heat", "Water"], ans: 0 }
+            ]
+        },
+        "P4": {
+             "English": {
+                story: "Football is a very popular sport all over the world. To be a good player, you need to be fast, strong, and smart. Players practice every single day to improve their skills. Most importantly, they must learn to work together as a team to win the game.",
+                questions: [
+                    { q: "What do players need?", options: ["Sleepy", "Fast and strong", "Quiet", "Loud"], ans: 1, isStory: true },
+                    { q: "How often do they practice?", options: ["Every week", "Every day", "Every month", "Never"], ans: 1, isStory: true },
+                    { q: "What is most important to win?", options: ["Running fast", "Being strong", "Working together", "Buying new shoes"], ans: 2, isStory: true },
+                    { q: "'I haven't seen him _____ last week.'", options: ["for", "since", "from", "by"], ans: 1 },
+                    { q: "Which word is a synonym for 'Happy'?", options: ["Sad", "Angry", "Joyful", "Tired"], ans: 2 },
+                    { q: "Subject: 'The teacher gave the students a test.'", options: ["The teacher", "Gave", "A test", "The students"], ans: 0 },
+                    { q: "'He is the _____ boy in the class.'", options: ["tall", "taller", "tallest", "most tall"], ans: 2 },
+                    { q: "Choose the correct homophone: 'I can _____ the ocean.'", options: ["sea", "see", "saw", "seen"], ans: 1 },
+                    { q: "'The car was driven _____ my father.'", options: ["with", "by", "from", "at"], ans: 1 },
+                    { q: "Which word is a conjunction?", options: ["Because", "House", "Run", "Slowly"], ans: 0 },
+                    { q: "'I am interested _____ learning math.'", options: ["on", "in", "at", "for"], ans: 1 },
+                    { q: "The movie was very _____.", options: ["excite", "excited", "exciting", "excites"], ans: 2 }, 
+                    { q: "We ate dinner _____ we watched TV.", options: ["before", "during", "so", "but"], ans: 0 } 
+                ],
+                writingPrompt: "What is your favorite sport?",
+                readingPrompt: "Read aloud: 'Teamwork is very important in sports. Players must help each other to win. Practice makes the team get better daily. Everyone is happy when they score a goal.'",
+                speakingQuestions: [
+                    "What sport or game do you like to play?",
+                    "Why is teamwork important?",
+                    "Tell me about a time you helped someone."
+                ]
+            },
+            "Math": [
+                { q: "What is 7 x 8?", options: ["54", "56", "48", "64"], ans: 1 },
+                { q: "Perimeter of square with side 5cm?", options: ["10cm", "20cm", "25cm", "15cm"], ans: 1 },
+                { q: "Which fraction is the same as 0.5?", options: ["1/4", "1/2", "3/4", "1/10"], ans: 1 },
+                { q: "Round 456 to the nearest 100.", options: ["400", "450", "460", "500"], ans: 3 },
+                { q: "What is 15.5 + 4.5?", options: ["19.0", "20.0", "20.5", "19.5"], ans: 1 },
+                { q: "120 divided by 10 = ?", options: ["10", "12", "1200", "20"], ans: 1 },
+                { q: "Which angle is 90 degrees?", options: ["Acute", "Right Angle", "Obtuse", "Straight"], ans: 1 },
+                { q: "Value of digit 4 in 4,520?", options: ["4", "4000", "400", "40"], ans: 1 },
+                { q: "What is 1/3 of 15?", options: ["3", "5", "6", "10"], ans: 1 }, 
+                { q: "25 x 4 = ?", options: ["50", "75", "100", "125"], ans: 2 } 
+            ],
+            "Science": [
+                { q: "What happens when water freezes?", options: ["Gas", "Solid (Ice)", "Disappears", "Hot"], ans: 1 },
+                { q: "Which one conducts electricity?", options: ["Wood", "Metal", "Plastic", "Rubber"], ans: 1 },
+                { q: "The process where water turns into vapor is:", options: ["Condensation", "Evaporation", "Precipitation", "Melting"], ans: 1 },
+                { q: "Sound travels fastest through:", options: ["Air", "Water", "Solids", "Vacuum"], ans: 2 },
+                { q: "Which animal is a predator?", options: ["Rabbit", "Lion", "Deer", "Mouse"], ans: 1 },
+                { q: "Which planet is closest to the Sun?", options: ["Earth", "Mercury", "Jupiter", "Mars"], ans: 1 },
+                { q: "A circuit needs a power source, like a:", options: ["Battery", "Bulb", "Wire", "Switch"], ans: 0 },
+                { q: "Teeth are used for:", options: ["Breathing", "Digestion (Chewing)", "Circulation", "Thinking"], ans: 1 }
+            ]
+        },
+        "P5": {
+             "English": {
+                story: "The solar system is a fascinating place with eight unique planets orbiting the Sun. Mercury is the closest planet to the Sun, but Venus is actually the hottest because of its thick clouds. Earth is special because it is the only planet known to have water and support life.",
+                questions: [
+                    { q: "Which planet is hottest?", options: ["Mercury", "Earth", "Mars", "Venus"], ans: 3, isStory: true },
+                    { q: "How many planets are there?", options: ["7", "8", "9", "10"], ans: 1, isStory: true },
+                    { q: "Why is Earth special?", options: ["It is hot", "It has rings", "It has life", "It is small"], ans: 2, isStory: true },
+                    { q: "'If I had known, I _____ called you.'", options: ["will have", "would have", "can have", "shall have"], ans: 1 },
+                    { q: "Choose the correct spelling.", options: ["Neccessary", "Necessary", "Neccesary", "Necessery"], ans: 1 },
+                    { q: "'The book was written _____ JK Rowling.'", options: ["from", "by", "with", "of"], ans: 1 },
+                    { q: "Choose the prefix to make 'Agree' negative.", options: ["Un-", "Dis-", "Mis-", "Im-"], ans: 1 },
+                    { q: "Which sentence is in the Passive Voice?", options: ["The cat ate food", "The food was eaten by the cat", "Cat is eating", "Cat will eat"], ans: 1 },
+                    { q: "'She accused him _____ stealing the money.'", options: ["of", "for", "with", "on"], ans: 0 },
+                    { q: "Identify the preposition: 'The cat jumped over the fence.'", options: ["Jumped", "Over", "Cat", "Fence"], ans: 1 },
+                    { q: "'Neither John _____ Mary came to the party.'", options: ["or", "nor", "and", "but"], ans: 1 },
+                    { q: "He said he _____ hungry.", options: ["is", "was", "were", "are"], ans: 1 }, 
+                    { q: "I look forward to _____ you.", options: ["see", "saw", "seen", "seeing"], ans: 3 } 
+                ],
+                writingPrompt: "Write a fact about space.",
+                readingPrompt: "Read aloud: 'Earth is the only planet known to have life. It has vast oceans and green forests. We must protect our environment from pollution. Recycling plastic helps keep our world clean. Let us work together to save the planet.'",
+                speakingQuestions: [
+                    "If you could travel to space, where would you go?",
+                    "Why is it important to learn about science?",
+                    "Describe your favorite book or movie."
+                ]
+            },
+            "Math": [
+                { q: "What is 12 squared?", options: ["24", "144", "120", "100"], ans: 1 },
+                { q: "Solve for x: 2x + 4 = 14", options: ["10", "5", "7", "2"], ans: 1 },
+                { q: "Area of a rectangle with length 6m and width 4m.", options: ["10m²", "24m²", "20m²", "12m²"], ans: 1 },
+                { q: "Simplify the fraction: 8/12", options: ["4/6", "2/3", "3/4", "1/2"], ans: 1 },
+                { q: "What is 10% of 500?", options: ["10", "50", "100", "5"], ans: 1 },
+                { q: "LCM of 4 and 6?", options: ["24", "12", "10", "2"], ans: 1 },
+                { q: "Convert 0.75 to a percentage.", options: ["7.5%", "75%", "0.75%", "750%"], ans: 1 },
+                { q: "How many degrees are in a triangle?", options: ["90", "180", "360", "100"], ans: 1 },
+                { q: "0.5 + 0.25 = ?", options: ["0.30", "0.75", "0.80", "0.55"], ans: 1 }, 
+                { q: "Which number is prime?", options: ["4", "9", "7", "10"], ans: 2 } 
+            ],
+            "Science": [
+                { q: "Which force pulls objects to Earth?", options: ["Friction", "Magnetism", "Gravity", "Tension"], ans: 2 },
+                { q: "The Earth orbits around the ______?", options: ["Moon", "Sun", "Mars", "Stars"], ans: 1 },
+                { q: "Which organ pumps blood?", options: ["Brain", "Lungs", "Heart", "Stomach"], ans: 2 },
+                { q: "Light travels in:", options: ["Curved lines", "Straight lines", "Zigzags", "Circles"], ans: 1 },
+                { q: "Photosynthesis requires sunlight, water, and:", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Sugar"], ans: 1 },
+                { q: "Which part of the cell controls its activity?", options: ["Cell Wall", "Nucleus", "Cytoplasm", "Membrane"], ans: 1 },
+                { q: "When light bounces off a mirror, it is called:", options: ["Refraction", "Reflection", "Absorption", "Dispersion"], ans: 1 },
+                { q: "What protects the brain?", options: ["Ribcage", "Skull", "Spine", "Pelvis"], ans: 1 }
+            ]
+        },
+        "P6": {
+             "English": {
+                story: "Climate change is one of the most serious issues facing our world today. It is largely caused by the increase of greenhouse gases like carbon dioxide in the atmosphere, which trap heat. To help fix this problem, people can reduce waste, use renewable energy like solar power, and plant more trees to clean the air.",
+                questions: [
+                    { q: "What causes climate change?", options: ["Trees", "Recycling", "Greenhouse gases", "Energy"], ans: 2, isStory: true },
+                    { q: "What traps the heat?", options: ["Greenhouse gases", "Water", "Trees", "Wind"], ans: 0, isStory: true },
+                    { q: "How can people help?", options: ["Use more plastic", "Plant trees", "Drive more cars", "Burn trash"], ans: 1, isStory: true },
+                    { q: "'If it rains, we _____ inside.'", options: ["Stay", "Will stay", "Would stay", "Stayed"], ans: 1 },
+                    { q: "'He asked me where _____ going.'", options: ["was I", "I was", "am I", "I am"], ans: 1 },
+                    { q: "What does 'Optimistic' mean?", options: ["Sad", "Hopeful/Positive", "Angry", "Confused"], ans: 1 },
+                    { q: "Which of these is a metaphor?", options: ["Brave as a lion", "Time is a thief", "Leaves danced", "Snap, crackle, pop"], ans: 1 },
+                    { q: "Identify the conjunction: 'I wanted to go, but I was tired.'", options: ["Wanted", "But", "Was", "Tired"], ans: 1 },
+                    { q: "'The manager, _____ I spoke to, was very helpful.'", options: ["who", "whom", "which", "that"], ans: 1 },
+                    { q: "'She is used to _____ early.'", options: ["wake up", "waking up", "woke up", "wakes up"], ans: 1 },
+                    { q: "Choose the correct synonym for 'Difficult'.", options: ["Facile", "Arduous", "Simple", "Plain"], ans: 1 },
+                    { q: "He denied _____ the money.", options: ["steal", "to steal", "stealing", "stole"], ans: 2 }, 
+                    { q: "I wish I _____ richer.", options: ["am", "was", "were", "be"], ans: 2 } 
+                ],
+                writingPrompt: "Why should we protect nature?",
+                readingPrompt: "Read aloud: 'Renewable energy helps reduce pollution in our cities. Solar power comes from the bright sun above. Wind turbines use the wind to make electricity. These clean sources do not harm the air. We must use energy wisely to help nature. A clean planet is a healthy place for us.'",
+                speakingQuestions: [
+                    "What do you think is the biggest problem in the world today?",
+                    "How can we help the environment?",
+                    "What are your goals for the future?"
+                ]
+            },
+            "Math": [
+                { q: "Calculate 3 + 4 x 5", options: ["35", "23", "20", "60"], ans: 1 },
+                { q: "What is the value of Pi roughly?", options: ["3.00", "3.14", "3.41", "2.14"], ans: 1 },
+                { q: "What is the sum of angles in a triangle?", options: ["90", "180", "360", "100"], ans: 1 },
+                { q: "If 3x = 15, what is x?", options: ["3", "5", "12", "45"], ans: 1 },
+                { q: "Convert 1.5kg to grams.", options: ["150g", "1500g", "15000g", "1050g"], ans: 1 },
+                { q: "Probability of flipping a coin and getting Heads?", options: ["1/4", "1/2", "1/3", "1/1"], ans: 1 },
+                { q: "Solve: -5 + 8 = ?", options: ["-3", "3", "-13", "13"], ans: 1 },
+                { q: "Calculate the volume of a cube with side 3cm.", options: ["9cm³", "27cm³", "18cm³", "12cm³"], ans: 1 },
+                { q: "25% of 200 is:", options: ["25", "50", "75", "100"], ans: 1 }, 
+                { q: "Square root of 64?", options: ["6", "7", "8", "9"], ans: 2 } 
+            ],
+            "Science": [
+                { q: "What is the chemical symbol for Oxygen?", options: ["Ox", "O2", "H2O", "Co2"], ans: 1 },
+                { q: "Which energy comes from the sun?", options: ["Kinetic", "Solar", "Potential", "Chemical"], ans: 1 },
+                { q: "In a food chain, what eats a producer?", options: ["Carnivore", "Herbivore", "Decomposer", "Predator"], ans: 1 },
+                { q: "An object in motion stays in motion unless acted on by a force. This is:", options: ["Gravity", "Inertia", "Friction", "Speed"], ans: 1 },
+                { q: "Acid turns litmus paper:", options: ["Blue", "Red", "Green", "Yellow"], ans: 1 },
+                { q: "Which planet has rings?", options: ["Mars", "Saturn", "Venus", "Mercury"], ans: 1 },
+                { q: "Water boils at:", options: ["50°C", "100°C", "90°C", "120°C"], ans: 1 },
+                { q: "What carries oxygen in our blood?", options: ["White blood cells", "Red blood cells", "Platelets", "Plasma"], ans: 1 }
+            ]
+        }
+    };
+
+    // --- VARIABLES ---
+    let currentLevel = "";
+    let flatQuestions = [];
+    let currentQIndex = 0;
+    
+    // Scores
+    let scores = { English: 0, Math: 0, Science: 0 };
+    let maxScores = { English: 0, Math: 0, Science: 0 };
+    
+    // Assessor scores for English sub-components
+    let englishComponents = {
+        mcqScore: 0,
+        mcqMax: 0,
+        readingScorePct: 0, // Percentage
+        writingScorePct: 0,  // Percentage
+        speakingScorePct: 0 // Percentage
+    };
+
+    let selectedOption = null;
+    let studentName = "";
+    let assessorName = "";
+    let selectedCampus = "";
+    let studentWriting = ""; // Capture student text
+
+    function init() {
+        const btnContainer = document.getElementById("level-buttons");
+        Object.keys(quizData).forEach(level => {
+            let btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = level;
+            btn.onclick = () => startQuiz(level);
+            btnContainer.appendChild(btn);
+        });
+    }
+
+    // New Function to handle Registration
+    function goToLevelSelection() {
+        const sName = document.getElementById("student-name").value;
+        const aName = document.getElementById("assessor-name").value;
+        const campus = document.getElementById("campus-select").value;
+        const errorDiv = document.getElementById('error-msg');
+
+        if (sName.trim() === "" || aName.trim() === "" || campus === "") {
+            errorDiv.innerText = "Please fill in all candidate details.";
+            errorDiv.style.display = "block";
+            return;
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+        errorDiv.style.display = "none";
+        studentName = sName;
+        assessorName = aName;
+        selectedCampus = campus;
+
+        // Update display on next screen
+        document.getElementById("display-student-name").innerText = studentName;
+
+        document.getElementById("registration-screen").classList.remove("active");
+        document.getElementById("level-screen").classList.add("active");
+    }
+
+    function startQuiz(level) {
+        currentLevel = level;
+        flatQuestions = [];
+        scores = { English: 0, Math: 0, Science: 0 };
+        maxScores = { English: 0, Math: 0, Science: 0 };
+        englishComponents = { mcqScore: 0, mcqMax: 0, readingScorePct: 0, writingScorePct: 0, speakingScorePct: 0 };
+        currentQIndex = 0;
+        studentWriting = "";
+        
+        // Reset Text Area
+        document.getElementById("writing-input").value = "";
+
+        // Build flat array
+        // 1. English MCQs
+        if (quizData[level]["English"]) {
+             const engData = quizData[level]["English"];
+             engData.questions.forEach(q => {
+                 flatQuestions.push({ ...q, subject: "English", type: "mcq", isStory: q.isStory });
+                 maxScores["English"]++; 
+                 englishComponents.mcqMax++;
+             });
+             // Add Reading Task (Assessor Graded)
+             flatQuestions.push({ 
+                 subject: "English", 
+                 type: "assessor_grade", 
+                 subType: "Reading",
+                 prompt: engData.readingPrompt
+             });
+             // Add Writing Task (Student Types + Assessor Graded)
+             flatQuestions.push({ 
+                 subject: "English", 
+                 type: "assessor_grade", 
+                 subType: "Writing",
+                 prompt: engData.writingPrompt
+             });
+             // NEW: Add Speaking Task (Assessor Graded)
+             flatQuestions.push({ 
+                 subject: "English", 
+                 type: "speaking_task", 
+                 subType: "Speaking",
+                 questions: engData.speakingQuestions || ["Default Q1", "Default Q2", "Default Q3"]
+             });
+        }
+        
+        // 2. Math
+        if (quizData[level]["Math"]) {
+            quizData[level]["Math"].forEach(q => {
+                flatQuestions.push({ ...q, subject: "Math", type: "mcq" });
+                maxScores["Math"]++;
+            });
+        }
+
+        // 3. Science
+        if (quizData[level]["Science"]) {
+            quizData[level]["Science"].forEach(q => {
+                flatQuestions.push({ ...q, subject: "Science", type: "mcq" });
+                maxScores["Science"]++;
+            });
+        }
+
+        document.getElementById("level-screen").classList.remove("active");
+        document.getElementById("quiz-screen").classList.add("active");
+        loadQuestion();
+    }
+
+    // Function to read the question text
+    function speakQuestionText() {
+        // Use prompt text if available (for Reading/Writing), otherwise question text
+        let text = "";
+        const promptDisplay = document.getElementById("prompt-display");
+        const speakingDisplay = document.getElementById("speaking-display");
+        
+        if (promptDisplay.style.display !== "none") {
+             text = promptDisplay.innerText.replace("Task: ", "");
+        } else if (speakingDisplay.style.display !== "none") {
+             // For speaking, read the instruction
+             text = "Please answer these questions. " + speakingDisplay.innerText;
+        } else {
+             text = document.getElementById("question-text").innerText;
+        }
+
+        // Remove emojis safely
+        // Replaces emojis with the word "picture" for audio
+        let safeText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, " picture ");
+
+        const utterance = new SpeechSynthesisUtterance(safeText);
+        utterance.rate = 0.9; 
+        window.speechSynthesis.speak(utterance);
+    }
+    
+    // Function for the Story Button
+    function playListeningStory() {
+        const story = quizData[currentLevel]["English"]?.story;
+        if(story) {
+            const utterance = new SpeechSynthesisUtterance(story);
+            utterance.rate = 0.85; 
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function loadQuestion() {
+        if (currentQIndex >= flatQuestions.length) {
+            showResults();
+            return;
+        }
+
+        const qData = flatQuestions[currentQIndex];
+        
+        // Reset UI elements
+        document.getElementById("options-container").style.display = "none";
+        document.getElementById("assessor-grading-container").style.display = "none";
+        document.getElementById("writing-container").style.display = "none"; 
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("btn-listen-story").style.display = "none"; // Hide Story Button
+        document.getElementById("prompt-display").style.display = "none";
+        document.getElementById("speaking-display").style.display = "none"; // Hide Speaking list
+
+        document.getElementById("subject-badge").innerText = qData.subject + " - " + "Step " + (currentQIndex + 1) + " of " + flatQuestions.length;
+        
+        // --- 1. Assessor Grading Task (Reading/Writing) ---
+        if (qData.type === "assessor_grade") {
+            document.getElementById("question-text").innerText = "ASSESSOR GRADING: " + qData.subType;
+            document.getElementById("question-text").style.color = "#e53935"; 
+            
+            document.getElementById("prompt-display").innerText = "Task: " + qData.prompt;
+            document.getElementById("prompt-display").style.display = "block";
+            
+            if (qData.subType === "Writing") {
+                document.getElementById("writing-container").style.display = "block";
+            }
+            
+            document.getElementById("assessor-grading-container").style.display = "grid";
+            
+        // --- 2. Speaking Task ---
+        } else if (qData.type === "speaking_task") {
+            document.getElementById("question-text").innerText = "ASSESSOR GRADING: Speaking";
+            document.getElementById("question-text").style.color = "#e53935";
+            
+            // Build list of questions
+            const listEl = document.getElementById("speaking-display");
+            listEl.innerHTML = "";
+            qData.questions.forEach(q => {
+                const li = document.createElement("li");
+                li.innerText = q;
+                listEl.appendChild(li);
+            });
+            listEl.style.display = "block"; 
+            
+            document.getElementById("assessor-grading-container").style.display = "grid";
+
+        // --- 3. Standard MCQ ---
+        } else {
+            document.getElementById("question-text").innerText = qData.q;
+            document.getElementById("question-text").style.color = "var(--primary)";
+            document.getElementById("options-container").style.display = "block";
+            
+            // LOGIC: Show Listen Story button ONLY if isStory is true
+            if (qData.subject === "English" && qData.isStory === true) {
+                 document.getElementById("btn-listen-story").style.display = "inline-flex";
+            }
+
+            const optContainer = document.getElementById("options-container");
+            optContainer.innerHTML = "";
+            selectedOption = null;
+
+            qData.options.forEach((opt, idx) => {
+                let btn = document.createElement("button");
+                btn.className = "btn-option";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx, btn);
+                optContainer.appendChild(btn);
+            });
+        }
+        
+        const pct = ((currentQIndex) / flatQuestions.length) * 100;
+        document.getElementById("progress-bar").style.width = pct + "%";
+    }
+
+    // Audio stop logic
+    // 1. Stop audio when moving to next question
+    function nextQuestion() {
+        window.speechSynthesis.cancel();
+        
+        const qData = flatQuestions[currentQIndex];
+        if (qData.type === "mcq" && selectedOption === qData.ans) {
+            scores[qData.subject]++;
+            if(qData.subject === "English") {
+                englishComponents.mcqScore++;
+            }
+        }
+        currentQIndex++;
+        loadQuestion();
+    }
+
+    // 2. Stop audio on refresh or page close
+    window.addEventListener('beforeunload', function() {
+        window.speechSynthesis.cancel();
+    });
+
+    function selectOption(index, btnElement) {
+        selectedOption = index;
+        document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("selected"));
+        btnElement.classList.add("selected");
+        document.getElementById("next-btn").style.display = "inline-block";
+    }
+    
+    // Function called by Assessor Buttons
+    function gradeAssessorTask(scorePercentage) {
+        window.speechSynthesis.cancel(); // Also stop audio when assessor grades
+        
+        const qData = flatQuestions[currentQIndex];
+        
+        if (qData.subType === "Reading") {
+            englishComponents.readingScorePct = scorePercentage;
+        } else if (qData.subType === "Writing") {
+            englishComponents.writingScorePct = scorePercentage;
+            const inputVal = document.getElementById("writing-input").value;
+            if(inputVal) studentWriting = inputVal;
+        } else if (qData.subType === "Speaking") {
+            englishComponents.speakingScorePct = scorePercentage;
+        }
+        
+        currentQIndex++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById("quiz-screen").classList.remove("active");
+        document.getElementById("result-screen").classList.add("active");
+        
+        // Populate Date correctly
+        // Force Cambodian format: [Day of Week], [DD]-[Month]-[YYYY]
+        const now = new Date();
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const formattedDate = `${days[now.getDay()]}, ${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+        
+        // Fix: Ensure element exists before setting innerText
+        const dateElement = document.getElementById("res-date");
+        if(dateElement) {
+             dateElement.innerText = formattedDate;
+        }
+        
+        // Fill Details on Screen
+        document.getElementById("res-student").innerText = studentName;
+        document.getElementById("res-assessor").innerText = assessorName;
+        document.getElementById("res-campus").innerText = selectedCampus;
+        document.getElementById("res-level").innerText = currentLevel;
+
+        // --- Calculate English Score (Weighted Average: 25% each) ---
+        let engMcqPct = (englishComponents.mcqScore / englishComponents.mcqMax) * 100 || 0;
+        let finalEngPct = (engMcqPct * 0.25) + 
+                          (englishComponents.readingScorePct * 0.25) + 
+                          (englishComponents.writingScorePct * 0.25) +
+                          (englishComponents.speakingScorePct * 0.25);
+
+        let mathPct = (scores.Math / maxScores.Math) * 100 || 0;
+        let sciPct = (scores.Science / maxScores.Science) * 100 || 0;
+
+        let weightedScore = (finalEngPct * 0.50) + (mathPct * 0.30) + (sciPct * 0.20);
+        weightedScore = Math.round(weightedScore);
+
+        document.getElementById("score-eng").innerText = Math.round(finalEngPct);
+        // Update Breakdown
+        document.getElementById("score-eng-mcq").innerText = Math.round(engMcqPct);
+        document.getElementById("score-eng-read").innerText = Math.round(englishComponents.readingScorePct);
+        document.getElementById("score-eng-write").innerText = Math.round(englishComponents.writingScorePct);
+        document.getElementById("score-eng-speak").innerText = Math.round(englishComponents.speakingScorePct);
+        
+        document.getElementById("score-math").innerText = Math.round(mathPct);
+        document.getElementById("score-sci").innerText = Math.round(sciPct);
+        document.getElementById("final-score").innerText = weightedScore;
+
+        const verdict = document.getElementById("final-verdict");
+        const statusText = weightedScore >= 60 ? "PASSED" : "REVIEW NEEDED";
+
+        if (weightedScore >= 60) {
+            verdict.innerHTML = "<h2 class='pass'>PASSED ✅</h2><p>Excellent! The student is ready for " + currentLevel + ".</p>";
+        } else {
+            verdict.innerHTML = "<h2 class='fail'>REVIEW NEEDED ⚠️</h2><p>The student may need support in English or core subjects.</p>";
+        }
+
+        // --- WEBHOOK INTEGRATION ---
+        const payload = {
+            student_name: studentName,
+            assessor_name: assessorName,
+            campus: selectedCampus,
+            level_applied: currentLevel,
+            date: formattedDate,
+            scores: {
+                english: Math.round(finalEngPct),
+                english_details: {
+                    mcq: Math.round(engMcqPct),
+                    reading: Math.round(englishComponents.readingScorePct),
+                    writing: Math.round(englishComponents.writingScorePct),
+                    speaking: Math.round(englishComponents.speakingScorePct)
+                },
+                math: Math.round(mathPct),
+                science: Math.round(sciPct)
+            },
+            writing_response: studentWriting, 
+            final_score: weightedScore,
+            result: statusText
+        };
+
+        const statusDiv = document.getElementById('upload-status');
+        statusDiv.innerText = "Syncing data to cloud...";
+        statusDiv.style.color = "var(--primary)";
+
+        // Use no-cors mode to bypass browser security restrictions
+        // Content-Type header removed to ensure the request is treated as a "Simple Request"
+        fetch("https://calixtojohnn.app.n8n.cloud/webhook/4cecec6e-b2f2-46c1-98fc-b3b11ccf3932", {
+            method: "POST",
+            mode: "no-cors", 
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            statusDiv.innerText = "✅ Data synced successfully.";
+            statusDiv.style.color = "var(--success)";
+        })
+        .catch(error => {
+            console.warn("Webhook Sync Issue:", error);
+            statusDiv.innerText = "⚠️ Could not sync data. Please screenshot results.";
+            statusDiv.style.color = "var(--accent)";
+        });
+    }
+
+    // --- PDF Download Logic (Updated) ---
+    function downloadPDF() {
+        const element = document.getElementById('pdf-export-container');
+
+        const engPct = document.getElementById("score-eng").innerText;
+        // Get Breakdown Values
+        const engMcqPct = document.getElementById("score-eng-mcq").innerText;
+        const engReadPct = document.getElementById("score-eng-read").innerText;
+        const engWritePct = document.getElementById("score-eng-write").innerText;
+        const engSpeakPct = document.getElementById("score-eng-speak").innerText;
+        
+        const mathPct = document.getElementById("score-math").innerText;
+        const sciPct = document.getElementById("score-sci").innerText;
+        const finalScore = document.getElementById("final-score").innerText;
+        const date = document.getElementById("res-date").innerText;
+        const verdictText = parseInt(finalScore) >= 60 ? "PASSED ✅" : "REVIEW NEEDED ⚠️";
+        
+        // Dynamic Remark Text
+        let verdictSubtitle = "";
+        if (parseInt(finalScore) >= 60) {
+            verdictSubtitle = "Excellent! The student is ready for " + currentLevel + ".";
+        } else {
+            verdictSubtitle = "The student may need support in English or core subjects.";
+        }
+        
+        // Update Grid Values
+        document.getElementById('pdf-student').innerText = studentName;
+        document.getElementById('pdf-campus').innerText = selectedCampus;
+        document.getElementById('pdf-date').innerText = date;
+        document.getElementById('pdf-assessor').innerText = assessorName;
+
+        // Update Scores
+        document.getElementById('pdf-eng-score').innerText = engPct + "%";
+        // Set Breakdown Values in PDF
+        document.getElementById('pdf-eng-mcq').innerText = engMcqPct;
+        document.getElementById('pdf-eng-read').innerText = engReadPct;
+        document.getElementById('pdf-eng-write').innerText = engWritePct;
+        document.getElementById('pdf-eng-speak').innerText = engSpeakPct;
+        
+        document.getElementById('pdf-math-score').innerText = mathPct + "%";
+        document.getElementById('pdf-sci-score').innerText = sciPct + "%";
+        document.getElementById('pdf-final-score').innerText = finalScore + "/100";
+
+        // Update Verdict Box Content
+        const verdictBox = document.getElementById('pdf-verdict-box');
+        verdictBox.innerHTML = `
+            <span class="pdf-verdict-title">${verdictText}</span>
+            <span class="pdf-verdict-subtitle">${verdictSubtitle}</span>
+        `;
+        
+        // Update styling based on Pass/Fail
+        if (parseInt(finalScore) >= 60) {
+            verdictBox.style.backgroundColor = "#e8f5e9"; // Light Green BG
+            verdictBox.style.border = "2px solid #2e7d32";
+            verdictBox.querySelector('.pdf-verdict-title').style.color = "#2e7d32";
+        } else {
+            verdictBox.style.backgroundColor = "#ffebee"; // Light Red BG
+            verdictBox.style.border = "2px solid #e53935";
+            verdictBox.querySelector('.pdf-verdict-title').style.color = "#e53935";
+        }
+        
+        // Temporarily show container to generate PDF, then hide
+        element.style.display = 'block';
+        
+        const opt = {
+            margin:       0,
+            filename:     `Result_${studentName.replace(/\s+/g, '_')}_${currentLevel}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, scrollY: 0, useCORS: true },
+            jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.style.display = 'none';
+        }).catch(err => {
+            console.error("PDF Failed:", err);
+            alert("PDF Download Failed. Please check the console for details.");
+            element.style.display = 'none';
+        });
+    }
+
+    init();
+</script>
 </body>
 </html>
