@@ -40,7 +40,7 @@
             /* Fallback Sky Blue */
         }
 
-
+        /* --- ANIMATED SCENERY BACKGROUND --- */
         .scenery-wrapper {
             position: fixed;
             top: 0;
@@ -264,7 +264,7 @@
             }
         }
 
-
+        /* --- MAIN CONTAINER --- */
         .container {
             background: rgba(255, 255, 255, 0.94);
             /* Semi-transparent white */
@@ -648,7 +648,7 @@
             color: #666;
         }
 
-
+        /* --- MODERN PDF STYLES --- */
         #pdf-export-container {
             display: none;
             background: white;
@@ -1256,9 +1256,10 @@
     </div>
 
     <script>
+        // Disable right click to limit view source casually
         document.addEventListener('contextmenu', event => event.preventDefault());
 
-
+        // --- DATABASE WITH LISTENING & WRITING (K2 - P6) ---
         const quizData = {
             "K2": {
                 "English": {
@@ -1604,12 +1605,12 @@
             }
         };
 
-
+        // --- VARIABLES ---
         let currentLevel = "";
         let flatQuestions = [];
         let currentQIndex = 0;
 
-
+        // Scores
         let scores = { English: 0, Math: 0, Science: 0 };
         let maxScores = { English: 0, Math: 0, Science: 0 };
 
@@ -1639,7 +1640,7 @@
             });
         }
 
-
+        // New Function to handle Registration
         function goToLevelSelection() {
             const sName = document.getElementById("student-name").value;
             const aName = document.getElementById("assessor-name").value;
@@ -1729,7 +1730,7 @@
             loadQuestion();
         }
 
-
+        // Function to read the question text
         function speakQuestionText() {
             // Use prompt text if available (for Reading/Writing), otherwise question text
             let text = "";
@@ -1757,7 +1758,7 @@
             window.speechSynthesis.speak(utterance);
         }
 
-
+        // Function for the Story Button
         function playListeningStory() {
             const story = quizData[currentLevel]["English"]?.story;
             if (story) {
@@ -1846,7 +1847,7 @@
         }
 
         // Audio stop logic
-
+        // 1. Stop audio when moving to next question
         function nextQuestion() {
             window.speechSynthesis.cancel();
 
@@ -1861,7 +1862,7 @@
             loadQuestion();
         }
 
-
+        // 2. Stop audio on refresh or page close
         window.addEventListener('beforeunload', function () {
             window.speechSynthesis.cancel();
         });
@@ -1873,7 +1874,7 @@
             document.getElementById("next-btn").style.display = "inline-block";
         }
 
-
+        // Function called by Assessor Buttons
         function gradeAssessorTask(scorePercentage) {
             window.speechSynthesis.cancel(); // Also stop audio when assessor grades
 
@@ -1978,10 +1979,7 @@
 
             // Use no-cors mode to bypass browser security restrictions
             // Content-Type header removed to ensure the request is treated as a "Simple Request"
-            // Encoded Endpoint (to hide from casual view)
-            const _0x5f2 = "aHR0cHM6Ly9jYWxpeHRvam9obm4uYXBwLm44bi5jbH91ZC93ZWJob29rLzRjZWNlYzZlLWIyZjItNDZjMS05OGZjLWIzYjExY2NmMzkzMg==";
-
-            fetch(atob(_0x5f2), {
+            fetch("https://calixtojohnn.app.n8n.cloud/webhook/4cecec6e-b2f2-46c1-98fc-b3b11ccf3932", {
                 method: "POST",
                 mode: "no-cors",
                 headers: {
@@ -2000,7 +1998,7 @@
                 });
         }
 
-
+        // --- PDF Download Logic (Updated to fix blank and shifting issues) ---
         function downloadPDF() {
             const element = document.getElementById('pdf-export-container');
 
@@ -2103,27 +2101,6 @@
         }
 
         init();
-    </script>
-    <script>
-        // DOMAIN LOCK: Only allow running on calixto-works.com
-        (function () {
-            const allowedDomain = "calixto-works.com";
-            // Allow localhost for testing by developer (remove if needed later)
-            const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-
-            if (!isLocal && !window.location.hostname.endsWith(allowedDomain)) {
-                document.body.innerHTML = `
-                    <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#f0f0f0; color:#333; font-family:sans-serif; text-align:center;">
-                        <div>
-                            <h1 style="color:#d32f2f;">Access Restricted 🔒</h1>
-                            <p>This placement test is protected and can only be accessed via the official website.</p>
-                        </div>
-                    </div>
-                `;
-                // Stop remaining scripts (though init() already ran, this hides the UI)
-                throw new Error("Execution halted: Domain Lock Active.");
-            }
-        })();
     </script>
 </body>
 
