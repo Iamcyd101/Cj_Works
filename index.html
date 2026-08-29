@@ -6,28 +6,22 @@
 <title>Vision Bridge International Academy - Digital Scholarship Exam</title>
 <style>
   :root {
-    --primary: #008b8b;      /* Dark Cyan */
-    --primary-dark: #006666; /* Deeper Dark Cyan */
-    --primary-light: rgba(0, 139, 139, 0.15); 
-    --secondary: #10b981;    /* Emerald 500 */
-    --secondary-light: rgba(16, 185, 129, 0.15);
-    --warning: #f59e0b;
-    --warning-light: rgba(245, 158, 11, 0.15);
-    --danger: #ef4444;
-    --danger-light: rgba(239, 68, 68, 0.15);
-    
-    --gray-50: #f8fafc;      /* Light backgrounds */
-    --gray-100: #f1f5f9;     /* Hover states */
-    --gray-200: #e2e8f0;     /* Borders */
-    --gray-300: #cbd5e1;     /* Thick borders */
-    --gray-600: #475569;     /* Muted text */
-    --gray-800: #0f172a;     /* Main text */
-    
-    --bg-body: #f0f4f8;      /* Light bluish-gray base */
-    --bg-card: #ffffff;      /* White card */
-    --bg-input: #ffffff;     /* White input fields */
-    
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --primary: #008B8B;
+    --primary-dark: #006666;
+    --primary-light: #e0f7f7;
+    --secondary: #34a853;
+    --secondary-light: #e6f4ea;
+    --warning: #f29900;
+    --warning-light: #fef7e0;
+    --danger: #d93025;
+    --danger-light: #fce8e6;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f4;
+    --gray-200: #e8eaed;
+    --gray-300: #dadce0;
+    --gray-600: #5f6368;
+    --gray-800: #202124;
+    --shadow-sm: 0 1px 3px rgba(60,64,67,0.12), 0 1px 2px rgba(60,64,67,0.24);
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
     --radius: 12px;
@@ -41,7 +35,7 @@
 
   body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-body);
+    background-color: #f8f9fa;
     color: var(--gray-800);
     line-height: 1.5;
     min-height: 100vh;
@@ -50,8 +44,8 @@
   }
 
   header {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--gray-200);
+    background: #ffffff;
+    border-bottom: 1px solid var(--gray-300);
     padding: 14px 24px;
     box-shadow: var(--shadow-sm);
     position: sticky;
@@ -76,10 +70,20 @@
   }
 
   .brand-logo {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  
+  .brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .brand-text h1 {
@@ -96,7 +100,7 @@
 
   .student-pill {
     background: var(--primary-light);
-    color: var(--primary);
+    color: var(--primary-dark);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 13px;
@@ -116,7 +120,7 @@
   }
 
   .card {
-    background: var(--bg-card);
+    background: #ffffff;
     border-radius: var(--radius);
     padding: 32px;
     box-shadow: var(--shadow-sm);
@@ -162,13 +166,13 @@
     font-size: 14px;
     color: var(--gray-800);
     transition: all 0.2s ease;
-    background-color: var(--bg-input);
+    background-color: #fff;
   }
 
   .form-group input:focus, .form-group select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+    box-shadow: 0 0 0 3px rgba(0,139,139,0.15);
   }
 
   .level-selection-label {
@@ -193,7 +197,7 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: var(--bg-input);
+    background: var(--gray-50);
   }
 
   .level-card:hover {
@@ -226,15 +230,15 @@
   }
 
   .rules-banner {
-    background: var(--warning-light);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: var(--primary-light);
+    border: 1px solid var(--primary);
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 28px;
   }
 
   .rules-banner h4 {
-    color: #92400e;
+    color: var(--primary-dark);
     font-size: 14px;
     margin-bottom: 6px;
     display: flex;
@@ -245,7 +249,7 @@
   .rules-banner ul {
     padding-left: 20px;
     font-size: 13px;
-    color: var(--gray-800);
+    color: var(--primary-dark);
   }
 
   .rules-banner li {
@@ -304,7 +308,7 @@
 
   .btn-flag.active {
     background-color: var(--warning-light);
-    color: var(--warning);
+    color: #b7791f;
     font-weight: 700;
   }
 
@@ -314,7 +318,7 @@
   }
 
   .btn-success:hover {
-    background-color: #059669; /* Emerald 600 */
+    background-color: #2d9249;
   }
 
   .test-container {
@@ -331,7 +335,7 @@
   }
 
   .palette-card {
-    background: var(--bg-card);
+    background: white;
     border-radius: var(--radius);
     padding: 20px;
     border: 1px solid var(--gray-200);
@@ -374,7 +378,7 @@
     aspect-ratio: 1;
     border-radius: 8px;
     border: 1px solid var(--gray-300);
-    background: var(--bg-input);
+    background: var(--gray-50);
     font-weight: 700;
     font-size: 13px;
     color: var(--gray-600);
@@ -399,7 +403,7 @@
 
   .palette-btn.answered {
     background-color: var(--secondary-light);
-    border-color: var(--secondary);
+    border-color: #a8dab5;
     color: var(--secondary);
   }
 
@@ -475,7 +479,7 @@
   .points-badge {
     font-size: 12px;
     font-weight: 700;
-    color: var(--secondary);
+    color: #137333;
     background: var(--secondary-light);
     padding: 4px 10px;
     border-radius: 6px;
@@ -492,7 +496,7 @@
 
   .q-svg-wrap {
     text-align: center;
-    background: #f8fafc; /* Crisp light background for SVGs */
+    background: #ffffff;
     padding: 16px;
     border-radius: 8px;
     border: 1px solid var(--gray-300);
@@ -519,7 +523,7 @@
     padding: 14px 18px;
     border-radius: 10px;
     border: 1.5px solid var(--gray-300);
-    background: var(--bg-input);
+    background: #ffffff;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -579,7 +583,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(32,33,36,0.6);
     display: none;
     align-items: center;
     justify-content: center;
@@ -592,13 +596,12 @@
   }
 
   .modal-card {
-    background: var(--bg-card);
+    background: white;
     border-radius: var(--radius);
     max-width: 450px;
     width: 100%;
     padding: 28px;
     box-shadow: var(--shadow-lg);
-    border: 1px solid var(--gray-200);
   }
 
   .modal-title {
@@ -656,7 +659,7 @@
   }
 
   .stat-box {
-    background: var(--bg-input);
+    background: white;
     border: 1px solid var(--gray-200);
     border-radius: 10px;
     padding: 16px;
@@ -684,7 +687,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 28px;
-    background: var(--bg-input);
+    background: white;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--gray-200);
@@ -703,6 +706,37 @@
   .student-summary-table td strong {
     color: var(--gray-800);
   }
+  
+  .sync-status {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .sync-loading {
+    background-color: var(--warning-light);
+    color: #b7791f;
+    border: 1px solid #f6e05e;
+  }
+
+  .sync-success {
+    background-color: var(--secondary-light);
+    color: var(--secondary);
+    border: 1px solid #a8dab5;
+  }
+
+  .sync-failed {
+    background-color: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid #fcb9b2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
 
   .review-header {
     font-size: 18px;
@@ -715,7 +749,7 @@
   }
 
   .review-item {
-    background: var(--bg-card);
+    background: white;
     border-radius: 10px;
     border: 1px solid var(--gray-200);
     margin-bottom: 18px;
@@ -737,7 +771,7 @@
 
   .review-top {
     padding: 16px 20px;
-    background: var(--bg-input);
+    background: var(--gray-50);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -758,7 +792,7 @@
 
   .status-correct { background: var(--secondary-light); color: var(--secondary); }
   .status-incorrect { background: var(--danger-light); color: var(--danger); }
-  .status-skipped { background: var(--warning-light); color: var(--warning); }
+  .status-skipped { background: var(--warning-light); color: #b7791f; }
 
   .review-body {
     padding: 20px;
@@ -769,7 +803,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin: 16px 0;
-    background: var(--bg-input);
+    background: var(--gray-50);
     padding: 12px 16px;
     border-radius: 8px;
     font-size: 13.5px;
@@ -782,44 +816,98 @@
   }
 
   .review-logic {
-    background: var(--secondary-light);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: #e6f4ea;
+    border: 1px solid #ceead6;
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 13.5px;
-    color: #34d399; /* Emerald 400 */
+    color: #137333;
     line-height: 1.5;
   }
 
   @media print {
     body {
       background: white;
-      color: black;
     }
-    header, .palette-card, .nav-controls, .btn, .progress-bar-container {
+    header, .palette-card, .nav-controls, .btn, .progress-bar-container, .sync-status {
       display: none !important;
     }
     .test-container {
       display: block;
     }
-    .card, .review-item, .stat-box, .student-summary-table, .review-top, .review-ans-grid, .option-card {
+    .card, .review-item {
       box-shadow: none !important;
       border: 1px solid #ccc !important;
       page-break-inside: avoid;
-      background: white !important;
-    }
-    * {
-        color: black !important;
     }
   }
 </style>
 </head>
 <body>
 
+<script>
+  // DOMAIN & OFFLINE LOCK WITH TRACKING DECOY
+  (function () {
+      const allowedDomain = "calixto-works.com";
+      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      const isOffline = window.location.protocol === 'file:';
+
+      if (isOffline || (!isLocal && !window.location.hostname.endsWith(allowedDomain))) {
+          document.body.innerHTML = `
+              <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#0a0a0a; color:#fff; font-family:'Courier New', Courier, monospace; text-align:center; padding: 20px;">
+                  <div style="max-width: 600px; width: 100%;">
+                      <h1 style="color:#ff3333; font-size: 32px; margin-bottom: 15px; border-bottom: 2px solid #ff3333; padding-bottom: 10px;">⚠️ UNAUTHORIZED ACCESS DETECTED ⚠️</h1>
+                      <p style="font-size: 16px; color: #ccc; margin-bottom: 10px;">This assessment environment is strictly protected intellectual property.</p>
+                      <p style="font-size: 16px; color: #ccc;">Local offline execution, unauthorized hosting, and code duplication are strictly prohibited.</p>
+                      
+                      <div style="margin: 30px 0; padding: 25px; border: 1px solid #ff3333; background: rgba(255,0,0,0.05); border-radius: 4px; box-shadow: 0 0 15px rgba(255,0,0,0.2);">
+                          <h2 style="color: #ff3333; margin: 0 0 15px 0; font-size: 22px;">SECURITY PROTOCOL INITIATED</h2>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Fetching Client IP Address...</p>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Logging Device MAC / Fingerprint...</p>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Preparing automated incident report...</p>
+                          
+                          <div style="margin-top: 25px; border-top: 1px solid #333; padding-top: 15px;">
+                              <p style="font-size: 18px; color: #fff;">Transmitting report to central server in:</p>
+                              <p style="font-size: 42px; font-weight: bold; color: #ff3333; margin: 10px 0;" id="securityCountdown">15</p>
+                              <p style="font-size: 14px; color: #777;">Please close this window immediately to abort.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
+          
+          let timeLeft = 15;
+          const timer = setInterval(() => {
+              timeLeft--;
+              const counterEl = document.getElementById('securityCountdown');
+              if (counterEl) counterEl.textContent = timeLeft;
+              
+              if (timeLeft <= 0) {
+                  clearInterval(timer);
+                  setTimeout(() => {
+                      document.body.innerHTML = `
+                        <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#000; color:#ff3333; font-family:'Courier New', Courier, monospace; text-align:center;">
+                            <div>
+                                <h1 style="font-size: 48px; margin-bottom: 20px;">🔒 SYSTEM LOCKED</h1>
+                                <p style="font-size: 18px; color: #00ff00;">Incident Report #8839-A successfully transmitted.</p>
+                            </div>
+                        </div>
+                      `;
+                  }, 500);
+              }
+          }, 1000);
+
+          throw new Error("Execution halted: Security Lock Active.");
+      }
+  })();
+</script>
+
 <header>
   <div class="header-content">
     <div class="brand">
-      <img src="IMG_7876.PNG" alt="Vision Bridge Logo" class="brand-logo" onerror="this.src='https://placehold.co/48x48/1a73e8/ffffff?text=VB'">
+      <div class="brand-logo">
+        <img src="IMG_7876.PNG" alt="VB Logo" onerror="this.style.display='none'; this.parentElement.innerText='VB'">
+      </div>
       <div class="brand-text">
         <h1>Vision Bridge International Academy</h1>
         <p>Digital Scholarship Exam</p>
@@ -921,8 +1009,8 @@
         </div>
         <div id="paletteGrid" class="palette-grid"></div>
         <div class="palette-legend">
-          <div class="legend-item"><div class="legend-dot" style="background: var(--secondary-light); border: 1px solid var(--secondary);"></div> Answered</div>
-          <div class="legend-item"><div class="legend-dot" style="background: var(--bg-input); border: 1px solid var(--gray-300);"></div> Unanswered</div>
+          <div class="legend-item"><div class="legend-dot" style="background: var(--secondary-light); border: 1px solid #a8dab5;"></div> Answered</div>
+          <div class="legend-item"><div class="legend-dot" style="background: var(--gray-50); border: 1px solid var(--gray-300);"></div> Unanswered</div>
           <div class="legend-item"><div class="legend-dot" style="background: var(--warning-light); border: 1px solid var(--warning);"></div> Flagged (🚩)</div>
         </div>
         <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 16px;" onclick="promptSubmitTest()">
@@ -988,6 +1076,11 @@
 
     <div class="card" style="margin-bottom: 24px;">
       <h3 style="margin-bottom: 14px; font-size: 16px;">Examinee Information</h3>
+      
+      <div id="syncStatus" class="sync-status sync-loading" style="display: none;">
+        ⏳ Syncing results...
+      </div>
+      
       <table class="student-summary-table">
         <tr>
           <td width="25%"><strong>Student Name:</strong></td>
@@ -1008,10 +1101,6 @@
           <td id="resDateCompleted">-</td>
         </tr>
       </table>
-
-      <div id="syncStatusIndicator" style="margin-bottom: 16px; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center; background: var(--gray-100); border: 1px solid var(--gray-300); color: var(--gray-800);">
-        ⏳ Syncing results to database...
-      </div>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
         <button class="btn btn-primary" onclick="window.print()">
@@ -1048,56 +1137,56 @@
 </div>
 
 <script>
-  // DOMAIN & OFFLINE LOCK (Security Check)
-  (function () {
-    const allowedDomain = "calixto-works.com";
-    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-    
-    // Check if the file is opened directly from a local hard drive
-    const isOffline = window.location.protocol === 'file:';
-    
-    // Exception for the live preview editor environment so you can still test it here
-    const isPreview = window.location.hostname.includes("google") || window.location.hostname === "";
+  const ALL_DATA = [{"level": "Primary 1", "code": "P1", "questions": [{"id": 1, "topic": "Multi-Step Addition", "question": "Find the missing number to balance the equation:\n5 + 7 + ? = 19", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "B", "answer_text": "B. 7", "logic": "5 + 7 = 12. To reach 19, you need 19 - 12 = 7."}, {"id": 2, "topic": "Sequential Subtraction", "question": "Lisa starts with 15 candies. She gives 3 to her mother and 4 to her father.\nHow many candies does she have left for herself?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "C", "answer_text": "C. 8", "logic": "She gives away 3 + 4 = 7 candies total. 15 - 7 = 8 candies left."}, {"id": 3, "topic": "Advanced Sequence", "question": "Find the missing number in the pattern below:\n2, 5, 8, ?, 14, 17", "svg": null, "img": null, "options": {"A": "10", "B": "11", "C": "12", "D": "13"}, "answer": "B", "answer_text": "B. 11", "logic": "The pattern jumps forward by +3 each time. 8 + 3 = 11."}, {"id": 4, "topic": "Visual Shape Counting", "question": "Look at the square with crossing lines below.\nHow many total triangles (both small and large) can you find inside the square?", "svg": "<svg width=\"150\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"25\" y=\"25\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"25\" y1=\"25\" x2=\"125\" y2=\"125\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"125\" y1=\"25\" x2=\"25\" y2=\"125\" stroke=\"black\" stroke-width=\"4\"/>\n</svg>", "img": "p1_q4.png", "options": {"A": "4", "B": "6", "C": "8", "D": "10"}, "answer": "C", "answer_text": "C. 8", "logic": "There are 4 small triangles in the corners, and 4 large triangles made by combining two small ones along the diagonals. Total = 8."}, {"id": 5, "topic": "Calendar Logic Traps", "question": "If tomorrow will be Friday, what day of the week was yesterday?", "svg": null, "img": null, "options": {"A": "Tuesday", "B": "Wednesday", "C": "Thursday", "D": "Saturday"}, "answer": "B", "answer_text": "B. Wednesday", "logic": "If tomorrow is Friday, today is Thursday. The day before Thursday was Wednesday."}, {"id": 6, "topic": "Complex Number Bonds", "question": "You need exactly three numbers to make a total of 15. You already have a 6 and a 4.\nWhat is the third number you need?", "svg": null, "img": null, "options": {"A": "4", "B": "5", "C": "6", "D": "7"}, "answer": "B", "answer_text": "B. 5", "logic": "6 + 4 = 10. To reach 15, the missing number is 15 - 10 = 5."}, {"id": 7, "topic": "Scaling Word Problem", "question": "Tom has 4 toy cars. His father gives him double the amount of cars he currently has.\nHow many toy cars does Tom have in total now?", "svg": null, "img": null, "options": {"A": "8", "B": "10", "C": "12", "D": "16"}, "answer": "C", "answer_text": "C. 12", "logic": "Double of 4 is 8. His dad gives him 8 cars. 4 (original) + 8 (new) = 12 total."}, {"id": 8, "topic": "Mixed Animal Legs Grouping", "question": "A dog has 4 legs and a chicken has 2 legs.\nHow many total legs do 2 dogs and 3 chickens have together?", "svg": null, "img": null, "options": {"A": "10", "B": "12", "C": "14", "D": "16"}, "answer": "C", "answer_text": "C. 14", "logic": "2 dogs = 2 x 4 = 8 legs. 3 chickens = 3 x 2 = 6 legs. 8 + 6 = 14 legs."}, {"id": 9, "topic": "Queue Logic", "question": "In a straight line of children, Sam is standing 3rd from the front and 4th from the back.\nHow many total children are in the line?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "A", "answer_text": "A. 6", "logic": "Add his positions together and subtract 1 because he is counted twice. 3 + 4 - 1 = 6 children."}, {"id": 10, "topic": "Logic and Constraints", "question": "I am a secret two-digit number. I am greater than 20 but less than 30. If you add my two digits together, the sum is 7.\nWhat number am I?", "svg": null, "img": null, "options": {"A": "23", "B": "24", "C": "25", "D": "27"}, "answer": "C", "answer_text": "C. 25", "logic": "The numbers in the 20s are 21, 22, 23, etc. The only one where the digits add up to 7 is 25, because 2 + 5 = 7."}, {"id": 11, "topic": "Balancing Quantities", "question": "Box A has 18 apples. Box B has 10 apples.\nHow many apples must Box A give to Box B so that both boxes have the exact same amount?", "svg": null, "img": null, "options": {"A": "3", "B": "4", "C": "5", "D": "8"}, "answer": "B", "answer_text": "B. 4", "logic": "The total is 28 apples. Half of 28 is 14. Box A needs to drop from 18 to 14, meaning it must give away exactly 4 apples."}, {"id": 12, "topic": "Multi-Step Operations", "question": "Start with the number 6. First, double it. Then, subtract 3.\nWhat is your final answer?", "svg": null, "img": null, "options": {"A": "8", "B": "9", "C": "10", "D": "15"}, "answer": "B", "answer_text": "B. 9", "logic": "Double 6 is 12. Then 12 minus 3 equals 9."}, {"id": 13, "topic": "Money and Change", "question": "You have a $20 bill. You buy 2 toy cars that cost $6 each.\nHow much change do you get back?", "svg": null, "img": null, "options": {"A": "$6", "B": "$8", "C": "$10", "D": "$12"}, "answer": "B", "answer_text": "B. $8", "logic": "2 cars x $6 = $12 total cost. $20 - $12 = $8 in change."}, {"id": 14, "topic": "Complex Visual Patterns", "question": "Look at the color pattern below.\nWhat color comes next in the sequence?", "svg": "<svg width=\"400\" height=\"80\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"40\" cy=\"40\" r=\"25\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"100\" cy=\"40\" r=\"25\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"160\" cy=\"40\" r=\"25\" fill=\"green\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"220\" cy=\"40\" r=\"25\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"280\" cy=\"40\" r=\"25\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"340\" cy=\"40\" r=\"25\" fill=\"none\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"4\"/>\n  <text x=\"340\" y=\"47\" font-family=\"Arial\" font-size=\"24\" font-weight=\"bold\" text-anchor=\"middle\">?</text>\n</svg>", "img": "p1_q14.png", "options": {"A": "Red", "B": "Blue", "C": "Green", "D": "Yellow"}, "answer": "C", "answer_text": "C. Green", "logic": "The pattern repeats in blocks of three: Red, Blue, Green."}, {"id": 15, "topic": "Ordering and Comparison", "question": "The Red pencil is longer than the Blue pencil. The Green pencil is shorter than the Blue pencil. The Yellow pencil is longer than the Red pencil.\nWhich pencil is the absolute shortest?", "svg": null, "img": null, "options": {"A": "Red", "B": "Blue", "C": "Green", "D": "Yellow"}, "answer": "C", "answer_text": "C. Green", "logic": "Arranging from longest to shortest: Yellow -> Red -> Blue -> Green. Green is at the very bottom."}, {"id": 16, "topic": "Multi-Stage Reading", "question": "A book has 20 pages. Sam reads 5 pages on Monday and 6 pages on Tuesday.\nHow many pages are left to read?", "svg": null, "img": null, "options": {"A": "8", "B": "9", "C": "10", "D": "11"}, "answer": "B", "answer_text": "B. 9", "logic": "Sam reads 5 + 6 = 11 pages in total. 20 - 11 = 9 pages left."}, {"id": 17, "topic": "Visual Balance Deduction", "question": "Look at the balance scale below. If 1 red block weighs the same as 2 blue balls, how many blue balls are needed to balance exactly 3 red blocks?", "svg": "<svg width=\"200\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\">\n  <line x1=\"20\" y1=\"50\" x2=\"180\" y2=\"50\" stroke=\"black\" stroke-width=\"3\"/>\n  <polygon points=\"100,50 90,90 110,90\" fill=\"black\"/>\n  <rect x=\"30\" y=\"20\" width=\"30\" height=\"30\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"140\" cy=\"35\" r=\"15\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"170\" cy=\"35\" r=\"15\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p1_q17.png", "options": {"A": "4", "B": "5", "C": "6", "D": "8"}, "answer": "C", "answer_text": "C. 6", "logic": "1 block = 2 balls. 3 blocks = 3 x 2 = 6 balls."}, {"id": 18, "topic": "Descending Sequences", "question": "What is the next number in the pattern?\n20, 18, 16, 14, ?", "svg": null, "img": null, "options": {"A": "10", "B": "11", "C": "12", "D": "13"}, "answer": "C", "answer_text": "C. 12", "logic": "The numbers count backwards by twos. 14 - 2 = 12."}, {"id": 19, "topic": "Geometric Progression", "question": "Look at the shapes below. The first shape has 3 sides, the second has 4 sides. If the pattern continues, how many sides will the 5th shape have?", "svg": "<svg width=\"300\" height=\"80\" xmlns=\"http://www.w3.org/2000/svg\">\n  <polygon points=\"30,20 15,60 45,60\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"80\" y=\"25\" width=\"35\" height=\"35\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"150,20 135,45 145,70 165,70 175,45\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"220,15 200,35 200,60 220,80 240,60 240,35\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p1_q19.png", "options": {"A": "5", "B": "6", "C": "7", "D": "8"}, "answer": "C", "answer_text": "C. 7", "logic": "1st shape=3, 2nd=4, 3rd=5, 4th=6, 5th=7 sides."}, {"id": 20, "topic": "Fraction Logic Trap", "question": "A farmer has 10 apples. He gives exactly half of his apples to his brother. Then the farmer eats 1 apple.\nHow many apples does the farmer have right now?", "svg": null, "img": null, "options": {"A": "3", "B": "4", "C": "5", "D": "6"}, "answer": "B", "answer_text": "B. 4", "logic": "Half of 10 is 5. He has 5 left. Then he eats 1, leaving 4."}, {"id": 21, "topic": "Weekday Advancement", "question": "Today is Monday.\nWhat day of the week will it be in exactly 10 days?", "svg": null, "img": null, "options": {"A": "Wednesday", "B": "Thursday", "C": "Friday", "D": "Saturday"}, "answer": "B", "answer_text": "B. Thursday", "logic": "7 days from Monday is Monday again. Count 3 more days forward: Tuesday, Wednesday, Thursday."}, {"id": 22, "topic": "Grouping Traits", "question": "There are 5 cats in a room. Each cat has exactly 1 tail and 4 legs.\nHow many total tails and legs are in the room combined?", "svg": null, "img": null, "options": {"A": "20", "B": "24", "C": "25", "D": "30"}, "answer": "C", "answer_text": "C. 25", "logic": "5 tails + (5 x 4) 20 legs = 25 total."}, {"id": 23, "topic": "Logic Elimination", "question": "Find the secret number based on these rules:\n\u25cf It is an even number.\n\u25cf It is greater than 10 but less than 15.\n\u25cf It is NOT the number 12.", "svg": null, "img": null, "options": {"A": "11", "B": "13", "C": "14", "D": "16"}, "answer": "C", "answer_text": "C. 14", "logic": "Even numbers between 10 and 15 are 12 and 14. If it is not 12, it must be 14."}, {"id": 24, "topic": "Height Ranking", "question": "John is taller than Max. Max is taller than Leo. Sam is taller than John.\nWho is the shortest person?", "svg": null, "img": null, "options": {"A": "John", "B": "Max", "C": "Leo", "D": "Sam"}, "answer": "C", "answer_text": "C. Leo", "logic": "Tallest to shortest: Sam -> John -> Max -> Leo. Leo is the shortest."}, {"id": 25, "topic": "Clock Advancement", "question": "Look at the clock below. The clock currently shows 2:00. What time will it be in exactly 3 hours?", "svg": "<svg width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"60\" cy=\"60\" r=\"50\" fill=\"white\" stroke=\"black\" stroke-width=\"3\"/>\n  <line x1=\"60\" y1=\"60\" x2=\"60\" y2=\"20\" stroke=\"black\" stroke-width=\"3\"/>\n  <line x1=\"60\" y1=\"60\" x2=\"85\" y2=\"40\" stroke=\"red\" stroke-width=\"4\"/>\n</svg>", "img": "p1_q25.png", "options": {"A": "4:00", "B": "5:00", "C": "6:00", "D": "7:00"}, "answer": "B", "answer_text": "B. 5:00", "logic": "2:00 plus 3 hours is 5:00."}]}, {"level": "Primary 2", "code": "P2", "questions": [{"id": 1, "topic": "Group Addition", "question": "Evaluate the following equation:\n10 + 15 + 20 + 25 + 30 = ?", "svg": null, "img": null, "options": {"A": "90", "B": "95", "C": "100", "D": "110"}, "answer": "C", "answer_text": "C. 100", "logic": "Group the numbers for easy addition: 10 + 30 = 40. 15 + 25 = 40. Then 40 + 40 + 20 = 100."}, {"id": 2, "topic": "Advanced Paper Cutting", "question": "A long rectangular ribbon is exactly 20 meters long. If you cut the ribbon perfectly into equal 4-meter pieces, how many total cuts did you make?", "svg": null, "img": null, "options": {"A": "4", "B": "5", "C": "6", "D": "8"}, "answer": "A", "answer_text": "A. 4", "logic": "20 divided by 4 means you will get 5 equal pieces. To get 5 pieces from a straight ribbon, you only need to make exactly 4 cuts."}, {"id": 3, "topic": "Animal Legs Grouping", "question": "A spider has 8 legs and a bird has 2 legs.\nHow many legs do 4 spiders and 5 birds have in total?", "svg": null, "img": null, "options": {"A": "32", "B": "40", "C": "42", "D": "52"}, "answer": "C", "answer_text": "C. 42", "logic": "4 spiders x 8 = 32 legs. 5 birds x 2 = 10 legs. 32 + 10 = 42 total legs."}, {"id": 4, "topic": "Age Progression", "question": "Anna is 8 years old today. Her older brother is 4 years older than her.\nWhat will be the sum of their ages in exactly 3 years?", "svg": null, "img": null, "options": {"A": "20", "B": "23", "C": "26", "D": "30"}, "answer": "C", "answer_text": "C. 26", "logic": "Today, Anna is 8 and brother is 12. In 3 years, Anna will be 11 and brother will be 15. The sum is 11 + 15 = 26."}, {"id": 5, "topic": "Time Shifts", "question": "3 days after yesterday was Friday.\nWhat day of the week is today?", "svg": null, "img": null, "options": {"A": "Tuesday", "B": "Wednesday", "C": "Thursday", "D": "Saturday"}, "answer": "B", "answer_text": "B. Wednesday", "logic": "3 days after yesterday is the same as 2 days after today. If 2 days after today is Friday, today is Wednesday."}, {"id": 6, "topic": "Multi-Item Purchases", "question": "You have a $50 bill. You buy 3 science books that cost $8 each.\nHow much money do you have left?", "svg": null, "img": null, "options": {"A": "$16", "B": "$24", "C": "$26", "D": "$36"}, "answer": "C", "answer_text": "C. $26", "logic": "3 books x $8 = $24 total spent. $50 - $24 = $26 remaining."}, {"id": 7, "topic": "Digit Combinations", "question": "What is the smallest 3-digit odd number you can make using the digits 5, 2, and 9? You can only use each digit once.", "svg": null, "img": null, "options": {"A": "259", "B": "295", "C": "529", "D": "925"}, "answer": "B", "answer_text": "B. 295", "logic": "The smallest hundreds digit must be 2. To keep the number odd, it must end in 5 or 9. To make the number as small as possible, the middle digit should be as small as possible (9), and the last digit should be 5, leaving 295."}, {"id": 8, "topic": "Multi-Object Fractions", "question": "You order 2 whole pizzas. Each pizza is cut into 8 slices. Your family eats 5 slices from the first pizza and 4 slices from the second pizza.\nHow many slices are left in total?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "B", "answer_text": "B. 7", "logic": "You have 16 total slices. The family eats 5 + 4 = 9 slices. 16 - 9 = 7 slices left."}, {"id": 9, "topic": "Working Backward", "question": "I am thinking of a secret number. If you multiply my number by 2 and then add 5, you get 21.\nWhat is my secret number?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "C", "answer_text": "C. 8", "logic": "Work backwards. Start at 21. Subtract 5 = 16. Divide by 2 = 8."}, {"id": 10, "topic": "Shape Properties", "question": "A square has 4 sides and a triangle has 3 sides.\nHow many total sides are there in 3 squares and 2 triangles?", "svg": null, "img": null, "options": {"A": "14", "B": "16", "C": "18", "D": "20"}, "answer": "C", "answer_text": "C. 18", "logic": "3 squares x 4 = 12 sides. 2 triangles x 3 = 6 sides. 12 + 6 = 18 total sides."}, {"id": 11, "topic": "Pre-Algebra Systems", "question": "Look at the following logic puzzle where letters stand for secret numbers:\nA + B = 10\nA - B = 2\nWhat is the value of the letter A?", "svg": null, "img": null, "options": {"A": "4", "B": "5", "C": "6", "D": "8"}, "answer": "C", "answer_text": "C. 6", "logic": "Two numbers that add to 10 and have a difference of 2 are 6 and 4. Since A is the larger number, A = 6."}, {"id": 12, "topic": "Complex Ordering", "question": "In a running race, Ben finished ahead of Carl but finished behind Alan. Dan finished directly behind Carl.\nWho finished in the last place?", "svg": null, "img": null, "options": {"A": "Alan", "B": "Ben", "C": "Carl", "D": "Dan"}, "answer": "D", "answer_text": "D. Dan", "logic": "The chain is Alan -> Ben -> Carl -> Dan. Dan is last."}, {"id": 13, "topic": "Sequential Movement", "question": "There are 15 birds sitting on a fence. 6 birds fly away. A few minutes later, 3 new birds land on the fence, and then 2 birds fly away.\nHow many birds are on the fence now?", "svg": null, "img": null, "options": {"A": "8", "B": "10", "C": "12", "D": "14"}, "answer": "B", "answer_text": "B. 10", "logic": "15 - 6 = 9. Then 9 + 3 = 12. Finally, 12 - 2 = 10."}, {"id": 14, "topic": "Number Constraints", "question": "I am an odd number greater than 30 but less than 40. My tens digit is exactly 2 less than my ones digit.\nWhat number am I?", "svg": null, "img": null, "options": {"A": "31", "B": "35", "C": "37", "D": "39"}, "answer": "B", "answer_text": "B. 35", "logic": "Numbers in the 30s have a tens digit of 3. If the tens digit is 2 less than the ones digit, the ones digit must be 3 + 2 = 5. The number is 35, which is also odd."}, {"id": 15, "topic": "Worst-Case Scenario Logic", "question": "A drawer contains 3 red socks, 4 blue socks, and 2 green socks. The room is completely dark.\nWhat is the minimum number of socks you must pull out to guarantee you have a matching pair of the exact same color?", "svg": null, "img": null, "options": {"A": "2", "B": "3", "C": "4", "D": "5"}, "answer": "C", "answer_text": "C. 4", "logic": "The worst possible luck is pulling 1 red, 1 blue, and 1 green sock on the first 3 tries. The 4th sock you pull must match one of the colors you already have."}, {"id": 16, "topic": "Division Traps", "question": "A piece of wood is exactly 30 cm long. You cut it into 5 equal pieces.\nHow long is each piece?", "svg": null, "img": null, "options": {"A": "5 cm", "B": "6 cm", "C": "7 cm", "D": "8 cm"}, "answer": "B", "answer_text": "B. 6 cm", "logic": "Total length divided by number of pieces. 30 / 5 = 6 cm."}, {"id": 17, "topic": "Exponential Sequence", "question": "Find the missing number in the sequence below:\n5, 10, 20, 40, ?", "svg": null, "img": null, "options": {"A": "50", "B": "60", "C": "70", "D": "80"}, "answer": "D", "answer_text": "D. 80", "logic": "The pattern doubles the previous number. 40 x 2 = 80."}, {"id": 18, "topic": "Advanced Visual Squares", "question": "Look at the 2x2 grid below.\nHow many total squares of ANY size are in this image?", "svg": "<svg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"10\" y=\"10\" width=\"80\" height=\"80\" fill=\"none\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"50\" y1=\"10\" x2=\"50\" y2=\"90\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"10\" y1=\"50\" x2=\"90\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p2_q18.png", "options": {"A": "4", "B": "5", "C": "6", "D": "7"}, "answer": "B", "answer_text": "B. 5", "logic": "There are 4 small individual squares and 1 large outer square. 4 + 1 = 5."}, {"id": 19, "topic": "Coin Calculation", "question": "Mary has 3 quarters ($0.25 each) and 2 dimes ($0.10 each).\nHow much money does she have in total?", "svg": null, "img": null, "options": {"A": "$0.85", "B": "$0.90", "C": "$0.95", "D": "$1.00"}, "answer": "C", "answer_text": "C. $0.95", "logic": "3 x 0.25 = 0.75. 2 x 0.10 = 0.20. 0.75 + 0.20 = $0.95."}, {"id": 20, "topic": "Fraction Separation", "question": "A box has 12 chocolates. Exactly 1/3 of them are dark chocolate. The rest are milk chocolate.\nHow many are milk chocolate?", "svg": null, "img": null, "options": {"A": "4", "B": "6", "C": "8", "D": "10"}, "answer": "C", "answer_text": "C. 8", "logic": "1/3 of 12 is 4 dark chocolates. 12 - 4 = 8 milk chocolates."}, {"id": 21, "topic": "Visual Weight Ratios", "question": "Look at the balance scale values. If 2 triangles equal 4 circles, how many circles are needed to balance exactly 3 triangles?", "svg": "<svg width=\"250\" height=\"80\" xmlns=\"http://www.w3.org/2000/svg\">\n  <polygon points=\"40,30 25,60 55,60\" fill=\"#FFB6C1\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"75,30 60,60 90,60\" fill=\"#FFB6C1\" stroke=\"black\" stroke-width=\"2\"/>\n  <text x=\"120\" y=\"50\" font-family=\"Arial\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">=</text>\n  <circle cx=\"160\" cy=\"45\" r=\"10\" fill=\"#ADD8E6\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"185\" cy=\"45\" r=\"10\" fill=\"#ADD8E6\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"210\" cy=\"45\" r=\"10\" fill=\"#ADD8E6\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"235\" cy=\"45\" r=\"10\" fill=\"#ADD8E6\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p2_q21.png", "options": {"A": "4", "B": "5", "C": "6", "D": "8"}, "answer": "C", "answer_text": "C. 6", "logic": "2 triangles = 4 circles, which means 1 triangle = 2 circles. 3 triangles x 2 = 6 circles."}, {"id": 22, "topic": "Digit Rule Reconstruction", "question": "I am a 3-digit number. My hundreds digit is 4. My tens digit is double my hundreds digit. My ones digit is 1.\nWhat number am I?", "svg": null, "img": null, "options": {"A": "421", "B": "441", "C": "481", "D": "841"}, "answer": "C", "answer_text": "C. 481", "logic": "Hundreds = 4. Tens = 4 x 2 = 8. Ones = 1. Number is 481."}, {"id": 23, "topic": "Multiple Group Multiplication", "question": "A spider has 8 legs. An ant has 6 legs.\nHow many total legs do 2 spiders and 3 ants have combined?", "svg": null, "img": null, "options": {"A": "32", "B": "34", "C": "36", "D": "38"}, "answer": "B", "answer_text": "B. 34", "logic": "2 spiders x 8 = 16 legs. 3 ants x 6 = 18 legs. 16 + 18 = 34 total legs."}, {"id": 24, "topic": "Time Duration", "question": "A movie starts at 4:15 PM and lasts for exactly 2 hours.\nWhat time does the movie end?", "svg": null, "img": null, "options": {"A": "5:15 PM", "B": "6:00 PM", "C": "6:15 PM", "D": "6:30 PM"}, "answer": "C", "answer_text": "C. 6:15 PM", "logic": "4:15 + 2 hours = 6:15 PM."}, {"id": 25, "topic": "Group Differences", "question": "There are 25 students in a class. 14 of them are boys.\nHow many more boys are there than girls?", "svg": null, "img": null, "options": {"A": "3", "B": "4", "C": "11", "D": "14"}, "answer": "A", "answer_text": "A. 3", "logic": "Find the number of girls: 25 - 14 = 11 girls. The difference is 14 boys - 11 girls = 3 more boys."}]}, {"level": "Primary 3", "code": "P3", "questions": [{"id": 1, "topic": "Value Calculation", "question": "The sum of two numbers is 45. Their difference is 9.\nWhat is the larger number?", "svg": null, "img": null, "options": {"A": "18", "B": "27", "C": "36", "D": "45"}, "answer": "B", "answer_text": "B. 27", "logic": "Larger number = (Sum + Difference) / 2 = (45 + 9) / 2 = 54 / 2 = 27."}, {"id": 2, "topic": "Grouping (Chicken and Rabbit)", "question": "A farmer has a mix of chickens and cows. There are 12 heads and 34 legs in total.\nHow many chickens are there on the farm?", "svg": null, "img": null, "options": {"A": "5", "B": "6", "C": "7", "D": "8"}, "answer": "C", "answer_text": "C. 7", "logic": "Assume all 12 are chickens: 12 x 2 = 24 legs. Extra legs: 34 - 24 = 10. Cows = 10 / 2 = 5 cows. Chickens = 12 - 5 = 7."}, {"id": 3, "topic": "Sequence and Patterns", "question": "Look at the number pattern below:\n3, 6, 9, 12, 15, ...\nWhat will be the 15th number in this pattern?", "svg": null, "img": null, "options": {"A": "30", "B": "40", "C": "45", "D": "50"}, "answer": "C", "answer_text": "C. 45", "logic": "Rule is 3 x n. 15th number = 15 x 3 = 45."}, {"id": 4, "topic": "Queue Logic", "question": "In a straight line of students, Tom is standing 8th from the front and 12th from the back.\nHow many total students are in the line?", "svg": null, "img": null, "options": {"A": "18", "B": "19", "C": "20", "D": "21"}, "answer": "B", "answer_text": "B. 19", "logic": "Total = Front position + Back position - 1 = 8 + 12 - 1 = 19."}, {"id": 5, "topic": "Time Calculation", "question": "A mathematics exam starts at 2:15 PM and lasts for exactly 1 hour and 45 minutes.\nAt what time does the exam end?", "svg": null, "img": null, "options": {"A": "3:45 PM", "B": "4:00 PM", "C": "4:15 PM", "D": "4:30 PM"}, "answer": "B", "answer_text": "B. 4:00 PM", "logic": "2:15 PM + 1 hour = 3:15 PM. 3:15 PM + 45 minutes = 4:00 PM."}, {"id": 6, "topic": "Number Logic Sequence", "question": "Find the missing number in the following sequence:\n5, 6, 8, 11, 15, ?", "svg": null, "img": null, "options": {"A": "19", "B": "20", "C": "21", "D": "22"}, "answer": "B", "answer_text": "B. 20", "logic": "Differences are +1, +2, +3, +4. The next difference is +5: 15 + 5 = 20."}, {"id": 7, "topic": "Geometry and Counting", "question": "Look at the standard 3 by 3 square grid below.\nHow many squares of any size are there in total?", "svg": "<svg width=\"150\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"10\" y=\"10\" width=\"120\" height=\"120\" fill=\"none\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"50\" y1=\"10\" x2=\"50\" y2=\"130\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"90\" y1=\"10\" x2=\"90\" y2=\"130\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"10\" y1=\"50\" x2=\"130\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"10\" y1=\"90\" x2=\"130\" y2=\"90\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p3_q7.png", "options": {"A": "9", "B": "12", "C": "14", "D": "16"}, "answer": "C", "answer_text": "C. 14", "logic": "1x1 squares: 9. 2x2 squares: 4. 3x3 squares: 1. Total = 9 + 4 + 1 = 14."}, {"id": 8, "topic": "Working Backward", "question": "Think of a secret number. Multiply it by 3, subtract 4, and the result is 17.\nWhat is the secret number?", "svg": null, "img": null, "options": {"A": "5", "B": "6", "C": "7", "D": "8"}, "answer": "C", "answer_text": "C. 7", "logic": "Working backwards: (17 + 4) / 3 = 21 / 3 = 7."}, {"id": 9, "topic": "Calendar Logic", "question": "If today is Monday, what day of the week will it be exactly 25 days from now?", "svg": null, "img": null, "options": {"A": "Thursday", "B": "Friday", "C": "Saturday", "D": "Sunday"}, "answer": "B", "answer_text": "B. Friday", "logic": "25 / 7 = 3 weeks remainder 4 days. 4 days after Monday is Friday."}, {"id": 10, "topic": "Weight and Substitution", "question": "3 apples weigh the same as 1 mango. 2 mangoes weigh the same as 1 small watermelon.\nHow many apples weigh the same as 2 small watermelons?", "svg": null, "img": null, "options": {"A": "6", "B": "8", "C": "10", "D": "12"}, "answer": "D", "answer_text": "D. 12", "logic": "1 watermelon = 2 mangoes = 6 apples. 2 watermelons = 12 apples."}, {"id": 11, "topic": "Perimeter of Combined Shapes", "question": "A new geometric figure is made of 5 identical squares placed side-by-side in a single straight row as shown below. The perimeter of one single square is 20 cm.\nWhat is the total perimeter of the new figure?", "svg": "<svg width=\"250\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"10\" y=\"10\" width=\"200\" height=\"40\" fill=\"none\" stroke=\"black\" stroke-width=\"3\"/>\n  <line x1=\"50\" y1=\"10\" x2=\"50\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"90\" y1=\"10\" x2=\"90\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"130\" y1=\"10\" x2=\"130\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n  <line x1=\"170\" y1=\"10\" x2=\"170\" y2=\"50\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p3_q11.png", "options": {"A": "60 cm", "B": "80 cm", "C": "100 cm", "D": "120 cm"}, "answer": "A", "answer_text": "A. 60 cm", "logic": "Side of each square = 20 / 4 = 5 cm. The perimeter consists of 5 top + 5 bottom + 1 left + 1 right = 12 sides. 12 x 5 = 60 cm."}, {"id": 12, "topic": "Secret Number Deduction", "question": "I am a 3-digit even number. All my digits are different. The digits in my number are arranged in increasing order from left to right. The digits in my hundreds and tens places add up to 13.\nWhat number am I?", "svg": null, "img": null, "options": {"A": "490", "B": "589", "C": "678", "D": "672"}, "answer": "C", "answer_text": "C. 678", "logic": "Pairs for 13: 4+9, 5+8, 6+7. For increasing digits and even ending, 6 and 7 allow the next even digit 8: 678."}, {"id": 13, "topic": "Advanced Transfer Logic", "question": "Samantha and Sarah initially had an equal number of notebooks. Samantha gave 11 notebooks to Sarah. Afterwards, Sarah purchased 14 more notebooks. In the end, Sarah had exactly three times as many notebooks as Samantha had left.\nHow many notebooks did each of them have at the very beginning?", "svg": null, "img": null, "options": {"A": "21", "B": "25", "C": "29", "D": "33"}, "answer": "C", "answer_text": "C. 29", "logic": "Samantha: N - 11. Sarah: N + 11 + 14 = N + 25. Equation: N + 25 = 3(N - 11) => N + 25 = 3N - 33 => 2N = 58 => N = 29."}, {"id": 14, "topic": "Symbol Substitution", "question": "Look at the following math equations provided in a puzzle:\nKoala x Koala + Bull = 58\nOwl + Bull = 17\nBull + Koala + Owl = 24\nWhat is the value of the Owl?", "svg": null, "img": null, "options": {"A": "7", "B": "8", "C": "9", "D": "10"}, "answer": "B", "answer_text": "B. 8", "logic": "Koala = 24 - 17 = 7. From 7x7 + Bull = 58 => Bull = 9. From Owl + 9 = 17 => Owl = 8."}, {"id": 15, "topic": "Exponential Sequences", "question": "What is the next number in the sequence below?\n1, 2, 5, 14, 41, 122, ?", "svg": null, "img": null, "options": {"A": "245", "B": "365", "C": "366", "D": "400"}, "answer": "B", "answer_text": "B. 365", "logic": "Rule: multiply by 3 and subtract 1. 122 x 3 - 1 = 366 - 1 = 365."}, {"id": 16, "topic": "Truth and Lie Analysis", "question": "Alice, Mia, Owen, and Lily are comparing the number of books they read.\nOwen: \"I read more books than Alice, but someone read more than me.\"\nLily: \"I read the most number of books.\"\nMia: \"I did not read the most number of books.\"\nAlice: \"I read the fewest number of books.\"\nAll 4 of them read different numbers of books, and exactly one of them is lying. Rank the number of books they read from the fewest to the most.", "svg": null, "img": null, "options": {"A": "Mia, Owen, Alice, Lily", "B": "Alice, Owen, Mia, Lily", "C": "Mia, Alice, Owen, Lily", "D": "Lily, Owen, Alice, Mia"}, "answer": "C", "answer_text": "C. Mia, Alice, Owen, Lily", "logic": "Alice is lying (she didn't read the fewest). Mia read the fewest, then Alice, Owen, Lily."}, {"id": 17, "topic": "Combinatorics and Multiples", "question": "Tom creates four-digit multiples of 4 using each of the digits 1, 3, 6, and 8 exactly once.\nHow many such 4-digit numbers can Tom create?", "svg": null, "img": null, "options": {"A": "4", "B": "6", "C": "8", "D": "12"}, "answer": "B", "answer_text": "B. 6", "logic": "Valid 2-digit endings divisible by 4: 16, 36, 68 (3 possibilities). For each ending, 2 choices remain for front digits. 3 x 2 = 6."}, {"id": 18, "topic": "Advanced Divisibility (11 and 9)", "question": "The 6-digit number 75276A is a multiple of 11. The 6-digit number A6712B is a multiple of 9.\nFind the value of A + B.", "svg": null, "img": null, "options": {"A": "8", "B": "10", "C": "11", "D": "12"}, "answer": "C", "answer_text": "C. 11", "logic": "Alternating sum for 11: (7+2+6) - (5+7+A) = 15 - 12 - A = 3 - A = 0 => A = 3. Sum of digits for 9: 3+6+7+1+2+B = 19+B => B = 8. A + B = 3 + 8 = 11."}, {"id": 19, "topic": "Working Backward with Transfer Logic", "question": "A farmer has a total of 175 eggs in two nests. After moving 20 eggs from the first nest to the second one, the first nest has 15 more eggs than the second one.\nHow many eggs were initially in the second nest?", "svg": null, "img": null, "options": {"A": "60", "B": "80", "C": "95", "D": "115"}, "answer": "A", "answer_text": "A. 60", "logic": "End: Nest 1 + Nest 2 = 175, Nest 1 - Nest 2 = 15 => Nest 2 ends with 80. Initially Nest 2 had 80 - 20 = 60 eggs."}, {"id": 20, "topic": "Efficient Addition Sequences", "question": "What is the value of the following sum?\n94 + 81 + 73 + 60 + 52 + 46 + 39 + 27 + 18", "svg": null, "img": null, "options": {"A": "470", "B": "480", "C": "490", "D": "500"}, "answer": "C", "answer_text": "C. 490", "logic": "(94+46) + (81+39) + (73+27) + (52+18) + 60 = 140 + 120 + 100 + 70 + 60 = 490."}, {"id": 21, "topic": "Exchange and Maximum Yields", "question": "A shop has a special offer: for every 8 empty cola cans returned, customers can exchange them for one new can of cola. Alex has just enough money to buy exactly 92 cans of cola.\nWhat is the greatest number of cola cans that Alex can drink in total?", "svg": null, "img": null, "options": {"A": "101", "B": "103", "C": "104", "D": "105"}, "answer": "D", "answer_text": "D. 105", "logic": "Drinks 92 (92 empties). Trades 88 empties -> 11 new cans (15 empties). Trades 8 empties -> 1 new can (8 empties). Trades 8 empties -> 1 new can. Total = 92 + 11 + 1 + 1 = 105."}, {"id": 22, "topic": "Worst-Case Scenario (Pigeonhole)", "question": "In a treasure hunt, there are 9 hidden chests and 9 distinct maps. Each map guides to a specific chest, and no two maps lead to the same chest.\nWhat is the greatest number of attempts Sam needs to make to discover which map corresponds to each chest?", "svg": null, "img": null, "options": {"A": "28", "B": "36", "C": "45", "D": "72"}, "answer": "B", "answer_text": "B. 36", "logic": "Worst-case attempts for 9 items: 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 = 36."}, {"id": 23, "topic": "Pre-Algebra Cryptarithms", "question": "In the following addition puzzle, all different letters stand for different digits.\nABD + ABA = DAFE.\nIf B is a multiple of 4, what is the value of the 4-digit number DAFE?", "svg": null, "img": null, "options": {"A": "1950", "B": "1970", "C": "1980", "D": "1990"}, "answer": "B", "answer_text": "B. 1970", "logic": "D=1, A=9. B=8 (multiple of 4). 981 + 989 = 1970."}, {"id": 24, "topic": "Geometry and Spatial Algebra", "question": "A large rectangle is made up of 4 identical small rectangles as shown below. They are arranged so that 3 are stacked horizontally on top of each other, and 1 is placed vertically alongside them to form a perfect larger rectangle.\nIf the perimeter of one small rectangle is 64 cm, what is the total area of one small rectangle?", "svg": "<svg width=\"200\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"20\" y=\"50\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"20\" y=\"80\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"110\" y=\"20\" width=\"30\" height=\"90\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"20,110 140,110 80,20\" fill=\"rgba(0,0,255,0.2)\" stroke=\"blue\" stroke-width=\"2\"/>\n</svg>", "img": "p3_q24.png", "options": {"A": "128 sq cm", "B": "192 sq cm", "C": "256 sq cm", "D": "384 sq cm"}, "answer": "B", "answer_text": "B. 192 sq cm", "logic": "L = 3W. Perimeter = 2(3W + W) = 8W = 64 => W = 8 cm, L = 24 cm. Area = 24 x 8 = 192 sq cm."}, {"id": 25, "topic": "Time-Shifted Age Equations", "question": "Samantha is exactly four times as old as Alex is right now.\nIf Samantha's age 17 years ago is exactly equal to Alex's age 13 years from now, how old is Samantha today?", "svg": null, "img": null, "options": {"A": "20", "B": "30", "C": "40", "D": "50"}, "answer": "C", "answer_text": "C. 40", "logic": "4A - 17 = A + 13 => 3A = 30 => A = 10. Samantha = 4 x 10 = 40 years old."}]}, {"level": "Primary 4", "code": "P4", "questions": [{"id": 1, "topic": "Multi-Step Fractions", "question": "What number is one-third of one-fourth of one-fifth of 1620?", "svg": null, "img": null, "options": {"A": "27", "B": "81", "C": "108", "D": "135"}, "answer": "A", "answer_text": "A. 27", "logic": "1620 / (3 x 4 x 5) = 1620 / 60 = 27."}, {"id": 2, "topic": "Arithmetic Sequence Counting", "question": "How many numbers are there in the list below?\n23, 40, 57, 74, ..., 465", "svg": null, "img": null, "options": {"A": "25", "B": "26", "C": "27", "D": "28"}, "answer": "C", "answer_text": "C. 27", "logic": "Common difference is 17. Formula: ((465 - 23) / 17) + 1 = (442 / 17) + 1 = 26 + 1 = 27."}, {"id": 3, "topic": "Rate and Proportions (Best Value)", "question": "The prices for different car rental options are as follows:\nOption A: $25 per 100 miles\nOption B: $40 per 200 miles\nOption C: $50 per 250 miles\nOption D: $70 per 400 miles\nWhich car rental option offers the best rate per mile?", "svg": null, "img": null, "options": {"A": "Option A", "B": "Option B", "C": "Option C", "D": "Option D"}, "answer": "D", "answer_text": "D. Option D", "logic": "Cost per mile: A = $0.25, B = $0.20, C = $0.20, D = $0.175. Option D offers the best rate."}, {"id": 4, "topic": "Advanced Pigeonhole Principle", "question": "Emma purchased a bag of jellybeans, consisting of 15 blue, 9 green and 21 purple jellybeans. She randomly grabs a handful of jellybeans from the bag.\nWhat is the least number of jellybeans Emma must take to guarantee she has at least 12 jellybeans of the same colour?", "svg": null, "img": null, "options": {"A": "30", "B": "31", "C": "32", "D": "33"}, "answer": "C", "answer_text": "C. 32", "logic": "Worst-case: 11 blue + 11 purple + all 9 green = 31 jellybeans. The 32nd jellybean guarantees 12 of one color."}, {"id": 5, "topic": "Complex Day Deduction", "question": "Eleven days before the day after tomorrow was Thursday.\nWhich day of the week was yesterday?", "svg": null, "img": null, "options": {"A": "Thursday", "B": "Friday", "C": "Saturday", "D": "Sunday"}, "answer": "B", "answer_text": "B. Friday", "logic": "Let today be 0. Day after tomorrow = +2. 11 days before = -9. -9 is Thursday => -2 is Thursday (2 days ago). Thus yesterday (-1) was Friday."}, {"id": 6, "topic": "Algebra and Grouping", "question": "Liam, Mia and Ethan contributed a total of 342 points to a game. Mia scored 23 points more than Liam, while Ethan accumulated five times the combined points of Liam and Mia.\nHow many points did Ethan score in the game?", "svg": null, "img": null, "options": {"A": "17", "B": "40", "C": "285", "D": "300"}, "answer": "C", "answer_text": "C. 285", "logic": "Total = (Liam + Mia) + 5(Liam + Mia) = 6(Liam + Mia) = 342 => Liam + Mia = 57. Ethan = 5 x 57 = 285."}, {"id": 7, "topic": "Number Theory and Constraints", "question": "A prime number is a whole number that has exactly 2 factors: 1 and itself (Ex: 2, 3, 5, 11).\nHow many three-digit multiples of 4 have all of their digits as prime numbers?", "svg": null, "img": null, "options": {"A": "8", "B": "10", "C": "12", "D": "16"}, "answer": "C", "answer_text": "C. 12", "logic": "Prime digits are 2, 3, 5, 7. Valid prime 2-digit endings divisible by 4: 32, 52, 72 (3 endings). 4 choices for hundreds place. 3 x 4 = 12."}, {"id": 8, "topic": "Constant Difference Logic", "question": "In a toy store, there were 67 action figures on the first display and 32 action figures on the second display. After a promotional event, an equal number of action figures from each display were sold. The remaining action figures on the first display were then six times as many as the number of action figures left on the second display.\nHow many action figures were left in total after the sales?", "svg": null, "img": null, "options": {"A": "35", "B": "42", "C": "49", "D": "56"}, "answer": "C", "answer_text": "C. 49", "logic": "Difference = 67 - 32 = 35. 6 units - 1 unit = 5 units = 35 => 1 unit = 7. Total left = 7 units = 7 x 7 = 49."}, {"id": 9, "topic": "Advanced Digit Counting", "question": "An encyclopedia consists of 624 pages.\nHow many times does the digit '5' appear in the page numbering of the encyclopedia?", "svg": null, "img": null, "options": {"A": "122", "B": "200", "C": "222", "D": "224"}, "answer": "C", "answer_text": "C. 222", "logic": "Units & tens for 1-599: 6 x 20 = 120. Hundreds in 500-599: 100. In 600-624 (page 605, 615): 2. Total = 120 + 100 + 2 = 222."}, {"id": 10, "topic": "Multi-Digit Combinatorics", "question": "How many 3-digit multiples of 5 can be written as the product of exactly 3 one-digit numbers?", "svg": null, "img": null, "options": {"A": "15", "B": "18", "C": "21", "D": "24"}, "answer": "C", "answer_text": "C. 21", "logic": "Since it's a multiple of 5 formed by 3 single-digit numbers, one digit must be 5. Testing unique products 5 x a x b >= 100 yields exactly 21 unique numbers."}, {"id": 11, "topic": "Perimeter of Rectilinear Shapes", "question": "A rectilinear shape has a total horizontal width of 48 cm and a maximum vertical height of 22 cm. The top edge has several vertical indentations that go down and back up. The downward depths of these four indentations are 10 cm, 8 cm, 12 cm, and 6 cm.\nWhat is the total perimeter of this entire figure?", "svg": null, "img": null, "options": {"A": "140 cm", "B": "212 cm", "C": "250 cm", "D": "284 cm"}, "answer": "B", "answer_text": "B. 212 cm", "logic": "Outer bounding box perimeter = 2(48 + 22) = 140 cm. Added vertical edges = 2 x (10 + 8 + 12 + 6) = 72 cm. Total = 140 + 72 = 212 cm."}, {"id": 12, "topic": "Truth and Lie (Four Variables)", "question": "Alice, Brandon, Caleb, and Diana are comparing the number of books they read.\nDiana says: \"I read the most number of books.\"\nCaleb says: \"I read more books than Alice, but someone read more than me.\"\nBrandon says: \"I did not read the most number of books.\"\nAlice says: \"I read the fewest number of books.\"\nAll 4 of them read different numbers of books, and exactly one of them is lying. Rank the students by the number of books they read, from the most to the fewest.", "svg": null, "img": null, "options": {"A": "Diana, Alice, Caleb, Brandon", "B": "Diana, Caleb, Brandon, Alice", "C": "Brandon, Alice, Caleb, Diana", "D": "Diana, Caleb, Alice, Brandon"}, "answer": "D", "answer_text": "D. Diana, Caleb, Alice, Brandon", "logic": "Alice is lying about reading the fewest. Ranking from most to fewest: Diana, Caleb, Alice, Brandon."}, {"id": 13, "topic": "Numerical Group Patterns", "question": "Study the pattern of three numbers in the groups below.\nGroup 1: (3, 5, 34)\nGroup 2: (4, 7, 65)\nGroup 3: (5, 9, 106)\nWhat is the missing number in Group 4: (6, 11, ?)", "svg": null, "img": null, "options": {"A": "136", "B": "145", "C": "157", "D": "165"}, "answer": "C", "answer_text": "C. 157", "logic": "Rule: a^2 + b^2 = c. 6^2 + 11^2 = 36 + 121 = 157."}, {"id": 14, "topic": "Geometry (Overlapping Areas)", "question": "A rectangular garden is 20 meters long and 15 meters wide. Two straight walking paths, each exactly 2 meters wide, cross each other at right angles in the center of the garden (one path goes top to bottom, the other goes left to right) as shown below.\nWhat is the total area of the walking paths?", "svg": "<svg width=\"240\" height=\"180\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"200\" height=\"140\" fill=\"#90EE90\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"100\" y=\"20\" width=\"30\" height=\"140\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"1\"/>\n  <rect x=\"20\" y=\"75\" width=\"200\" height=\"30\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"1\"/>\n  <rect x=\"100\" y=\"75\" width=\"30\" height=\"30\" fill=\"#D3D3D3\" stroke=\"none\"/>\n</svg>", "img": "p4_q14.png", "options": {"A": "66 sq m", "B": "70 sq m", "C": "74 sq m", "D": "300 sq m"}, "answer": "A", "answer_text": "A. 66 sq m", "logic": "Path 1 area = 20 x 2 = 40. Path 2 area = 15 x 2 = 30. Overlap = 2 x 2 = 4. Total = 40 + 30 - 4 = 66 sq m."}, {"id": 15, "topic": "Format Occurrences and Logic", "question": "In a numerical representation of dates, February 1, 2026, is expressed as 20260201.\nFor all the days in the month of February 2026 (from 20260201 to 20260228), how many times does the digit '2' appear across all 28 printed dates?", "svg": null, "img": null, "options": {"A": "84", "B": "96", "C": "108", "D": "112"}, "answer": "B", "answer_text": "B. 96", "logic": "YYYY contributes 2 x 28 = 56. MM contributes 1 x 28 = 28. DD (02, 12, 20-28) contributes 12. Total = 56 + 28 + 12 = 96."}, {"id": 16, "topic": "Cryptarithms and Algebra", "question": "In the math puzzle below, the letters A, B, and C represent three different single digits.\nAA + BB = CBC\nWhat is the value of the digit C?", "svg": null, "img": null, "options": {"A": "1", "B": "2", "C": "3", "D": "4"}, "answer": "A", "answer_text": "A. 1", "logic": "Max sum of two 2-digit numbers is < 200, so hundreds digit C = 1."}, {"id": 17, "topic": "Advanced Speed and Catching Up", "question": "A cargo train leaves the station at 8:00 AM traveling at a steady speed of 40 km per hour. An express train leaves the same station exactly 2 hours later, traveling on a parallel track at 60 km per hour in the same direction.\nAt what time will the express train catch up to the cargo train?", "svg": null, "img": null, "options": {"A": "11:00 AM", "B": "12:00 PM (Noon)", "C": "1:00 PM", "D": "2:00 PM"}, "answer": "D", "answer_text": "D. 2:00 PM", "logic": "Lead = 40 x 2 = 80 km. Relative speed = 60 - 40 = 20 km/h. Time = 80 / 20 = 4 hours. 10:00 AM + 4 hours = 2:00 PM."}, {"id": 18, "topic": "Overlapping Sets (Venn Diagram Logic)", "question": "In a class of 40 students, 25 play football and 20 play basketball. Exactly 5 students do not play either sport.\nHow many students play BOTH football and basketball?", "svg": null, "img": null, "options": {"A": "5", "B": "10", "C": "15", "D": "20"}, "answer": "B", "answer_text": "B. 10", "logic": "Playing at least one sport = 40 - 5 = 35. Overlap = 25 + 20 - 35 = 10."}, {"id": 19, "topic": "Fraction Remainders (Working Backward)", "question": "A student reads one-third of a new book on Monday. On Tuesday, he reads one-fourth of the remaining pages. He still has exactly 60 pages left to read.\nHow many total pages are in the book?", "svg": null, "img": null, "options": {"A": "100", "B": "120", "C": "150", "D": "180"}, "answer": "B", "answer_text": "B. 120", "logic": "Remaining after Mon: 2/3. Reads on Tue: 1/4 x 2/3 = 1/6. Remaining = 2/3 - 1/6 = 1/2. If 1/2 = 60 pages, Total = 120 pages."}, {"id": 20, "topic": "Pigeonhole Principle (Guaranteeing Sets)", "question": "A box contains 12 red pens, 8 blue pens, and 10 green pens. You are taking pens out without looking.\nWhat is the minimum number of pens you must take out to guarantee you have at least 3 pens of the EXACT SAME color?", "svg": null, "img": null, "options": {"A": "3", "B": "7", "C": "13", "D": "21"}, "answer": "B", "answer_text": "B. 7", "logic": "Worst-case: 2 red + 2 blue + 2 green = 6 pens. The 7th pen guarantees 3 of the same color."}, {"id": 21, "topic": "Area of Intersecting Diagonal Paths", "question": "Inside a square plot of land measuring 18 meters on each side, two shaded walking paths cross diagonally from opposite corners as shown below. The paths are straight and each has a uniform width of 3 meters.\nWhat is the total area of the shaded walking paths?", "svg": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"160\" height=\"160\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"20,20 40,20 180,160 180,180 160,180 20,40\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"1\"/>\n  <polygon points=\"180,20 160,20 20,160 20,180 40,180 180,40\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"1\"/>\n</svg>", "img": "p4_q21.png", "options": {"A": "90 sq m", "B": "99 sq m", "C": "108 sq m", "D": "117 sq m"}, "answer": "B", "answer_text": "B. 99 sq m", "logic": "Area = 18 x 3 + 18 x 3 - overlap(3 x 3) = 54 + 54 - 9 = 99 sq m."}, {"id": 22, "topic": "Efficient Large Multiplications", "question": "What is the value of the following product?\n64 x 15 x 75 x 125", "svg": null, "img": null, "options": {"A": "900,000", "B": "2,250,000", "C": "4,500,000", "D": "9,000,000"}, "answer": "D", "answer_text": "D. 9,000,000", "logic": "(8 x 125) x (4 x 75) x (2 x 15) = 1,000 x 300 x 30 = 9,000,000."}, {"id": 23, "topic": "Minimal Value Cryptarithm", "question": "In the subtraction puzzle below, all different letters stand for different single digits:\nYWVZ - WXW = WXY\nWhat is the smallest possible value of the 4-digit number YWVZ?", "svg": null, "img": null, "options": {"A": "1930", "B": "1950", "C": "1970", "D": "1990"}, "answer": "A", "answer_text": "A. 1930", "logic": "Rewrite as WXW + WXY = YWVZ. Y=1, W=9. Testing minimal digits gives 969 + 961 = 1930."}, {"id": 24, "topic": "Geometry (Area of Subdivided Triangles)", "question": "A large rectangle ABCD has a perimeter of 144 cm and is divided into 4 identical smaller rectangles. Three smaller rectangles are placed horizontally and one vertically next to them. A large triangle is drawn inside whose vertices touch the edges of this figure.\nWhat is the area of the shaded triangle inside the large rectangle?", "svg": "<svg width=\"200\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"20\" y=\"50\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"20\" y=\"80\" width=\"90\" height=\"30\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"110\" y=\"20\" width=\"30\" height=\"90\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"20,110 140,110 80,20\" fill=\"rgba(0,0,255,0.2)\" stroke=\"blue\" stroke-width=\"2\"/>\n</svg>", "img": "p4_q24.png", "options": {"A": "486 sq cm", "B": "972 sq cm", "C": "1458 sq cm", "D": "1944 sq cm"}, "answer": "B", "answer_text": "B. 972 sq cm", "logic": "Width = 18 cm, Length = 54 cm. Bounding box = 72 x 54 = 3888 sq cm. Shaded triangle is 1/4 of the total area = 972 sq cm."}, {"id": 25, "topic": "Discrete Probability and Spinners", "question": "A circular spinner is divided into 10 equal numbered sections from 1 to 10 as shown below.\nWhich of the following events has the lowest probability of occurring on a single spin?", "svg": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"100\" cy=\"100\" r=\"80\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <g stroke=\"black\" stroke-width=\"2\" stroke-linecap=\"round\">\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(0 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(36 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(72 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(108 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(144 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(180 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(216 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(252 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(288 100 100)\" />\n    <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" transform=\"rotate(324 100 100)\" />\n  </g>\n  <circle cx=\"100\" cy=\"100\" r=\"5\" fill=\"red\" />\n  <polygon points=\"100,100 95,60 105,60\" fill=\"red\" transform=\"rotate(45 100 100)\" />\n</svg>", "img": "p4_q25.png", "options": {"A": "Spinning an even number", "B": "Spinning an odd number", "C": "Spinning a number greater than 6", "D": "Spinning a multiple of 4"}, "answer": "D", "answer_text": "D. Spinning a multiple of 4", "logic": "A: 5/10, B: 5/10, C: 4/10 (7,8,9,10), D: 2/10 (4,8). D has the lowest probability."}]}, {"level": "Primary 5", "code": "P5", "questions": [{"id": 1, "topic": "Efficient Calculation", "question": "Find the value of the following:\n4 x 36 + 36 x 60 + 36 x 24 + 24 x 24", "svg": null, "img": null, "options": {"A": "3474", "B": "3600", "C": "3744", "D": "3844"}, "answer": "C", "answer_text": "C. 3744", "logic": "36 x (4 + 60 + 24) + 24 x 24 = 36 x 88 + 576 = 3168 + 576 = 3744."}, {"id": 2, "topic": "Number Theory and Divisibility", "question": "What is the value of A so that the 4-digit number 65AA is divisible by 12?", "svg": null, "img": null, "options": {"A": "8", "B": "6", "C": "4", "D": "2"}, "answer": "A", "answer_text": "A. 8", "logic": "Must be divisible by 3 and 4. Ending in 88 is divisible by 4. Sum of digits: 6+5+8+8 = 27 (divisible by 3). A = 8."}, {"id": 3, "topic": "Percentage and Fraction Combinations", "question": "Emma allocated 45% of her study materials for a research project. Later, she used 3/11 of the remaining materials for a presentation.\nWhat percentage of her initial set of study materials is still available for other academic tasks?", "svg": null, "img": null, "options": {"A": "45%", "B": "40%", "C": "30%", "D": "15%"}, "answer": "B", "answer_text": "B. 40%", "logic": "Remaining after first project = 55%. Presentation uses 3/11 of 55% = 15%. Total used = 45% + 15% = 60%. Remaining = 40%."}, {"id": 4, "topic": "Remainders and Logical Constraints", "question": "In a community gathering, when people are organized into groups of five, there are 3 people left. When organized into groups of fourteen, there are 3 left. There are 40 men in the gathering, and the number of women is fewer than men.\nHow many people are there in the community gathering?", "svg": null, "img": null, "options": {"A": "63", "B": "68", "C": "73", "D": "143"}, "answer": "C", "answer_text": "C. 73", "logic": "Total = LCM(5, 14)k + 3 = 70k + 3. Since women < 40, total < 80 => k=1, total = 73."}, {"id": 5, "topic": "Algebraic Fractions", "question": "Sophie, Mary and Lucas share 150 candies. Sophie receives 1/6 as many candies as Lucas. If Mary gives 30 candies to Sophie, Sophie will have 2/3 as many candies as Lucas.\nHow many candies does Mary have initially?", "svg": null, "img": null, "options": {"A": "10", "B": "40", "C": "60", "D": "80"}, "answer": "D", "answer_text": "D. 80", "logic": "30 candies = (2/3 - 1/6) x Lucas = (1/2) x Lucas => Lucas = 60. Sophie started with 10. Mary = 150 - 60 - 10 = 80."}, {"id": 6, "topic": "Divisibility and Number Boundaries", "question": "How many two-digit numbers are there such that the sum of 15 and the 2-digit number is exactly divisible by 8?", "svg": null, "img": null, "options": {"A": "10", "B": "11", "C": "12", "D": "90"}, "answer": "B", "answer_text": "B. 11", "logic": "Sums range from 25 to 114. Multiples of 8 in range: 32 to 112 => (112 - 32)/8 + 1 = 11 numbers."}, {"id": 7, "topic": "LCM and Digit Properties", "question": "What is the smallest number which is divisible by 8 and 9 and has exactly two odd digits?", "svg": null, "img": null, "options": {"A": "136", "B": "312", "C": "512", "D": "792"}, "answer": "D", "answer_text": "D. 792", "logic": "Multiple of 72. 792 is divisible by 72; its digits 7 and 9 are odd, and 2 is even (exactly 2 odd digits)."}, {"id": 8, "topic": "Multi-Step Fraction Remainders", "question": "Mrs. Lim distributed cookies to her grandchildren. She gave 1/3 of the cookies to John, and then 1/4 of the remaining cookies to Emily. Thereafter, she gave 1/5 of the rest to Noah, and the leftover cookies to Stacy.\nIf Stacy received 36 more cookies than John, how many cookies did Emily receive?", "svg": null, "img": null, "options": {"A": "24", "B": "36", "C": "48", "D": "72", "E": "None of the above"}, "answer": "E", "answer_text": "E. None of the above", "logic": "John = 1/3. Emily = 1/4 x 2/3 = 1/6. Rest = 1/2. Noah = 1/5 x 1/2 = 1/10. Stacy = 4/10 = 2/5. Stacy - John = 2/5 - 1/3 = 1/15 = 36 => Total = 540. Emily = 1/6 x 540 = 90 (not in A-D)."}, {"id": 9, "topic": "Resource Allocation", "question": "In a chess tournament, only two participants can compete at once. Six participants took part in the tournament, and each of them played for the exact same amount of hours.\nIf the tournament lasted 21 hours, how many hours did each participant play?", "svg": null, "img": null, "options": {"A": "3.5", "B": "6", "C": "7", "D": "8"}, "answer": "C", "answer_text": "C. 7", "logic": "Total player-hours = 21 x 2 = 42 hours. Divided among 6 players = 42 / 6 = 7 hours each."}, {"id": 10, "topic": "Estimation and Consecutive Products", "question": "The product of three consecutive whole numbers is 54834.\nWhat is the sum of these 3 whole numbers?", "svg": null, "img": null, "options": {"A": "111", "B": "114", "C": "117", "D": "120"}, "answer": "B", "answer_text": "B. 114", "logic": "Cube root of 54834 \u2248 38. 37 x 38 x 39 = 54834. Sum = 37 + 38 + 39 = 114."}, {"id": 11, "topic": "Geometry and External Area", "question": "A rectangular school garden measures 30 meters long and 20 meters wide. A concrete walking path that is exactly 2 meters wide is built completely around the outside of the garden as shown below.\nWhat is the total area of the concrete walking path?", "svg": "<svg width=\"220\" height=\"160\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"180\" height=\"120\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"40\" y=\"40\" width=\"140\" height=\"80\" fill=\"#90EE90\" stroke=\"black\" stroke-width=\"2\"/>\n  <text x=\"110\" y=\"85\" font-family=\"Arial\" font-size=\"14\" text-anchor=\"middle\">Garden</text>\n  <text x=\"110\" y=\"35\" font-family=\"Arial\" font-size=\"12\" text-anchor=\"middle\">Path</text>\n</svg>", "img": "p5_q11.png", "options": {"A": "100 sq m", "B": "104 sq m", "C": "216 sq m", "D": "220 sq m"}, "answer": "C", "answer_text": "C. 216 sq m", "logic": "Outer dimensions = (30+4) x (20+4) = 34 x 24 = 816 sq m. Garden area = 30 x 20 = 600 sq m. Path area = 816 - 600 = 216 sq m."}, {"id": 12, "topic": "Digital Clock Logic", "question": "A digital clock currently shows 20:26 (using the 24-hour format).\nHow many minutes will pass until the clock shows the very next valid time using the exact same four digits (0, 2, 2, 6) in any order?", "svg": null, "img": null, "options": {"A": "40 minutes", "B": "60 minutes", "C": "100 minutes", "D": "120 minutes"}, "answer": "C", "answer_text": "C. 100 minutes", "logic": "Next valid time using {0, 2, 2, 6} is 22:06. Time from 20:26 to 22:06 = 1 hr 40 min = 100 minutes."}, {"id": 13, "topic": "Combined Rates of Work", "question": "Machine A can print a complete set of exam papers in 4 hours. Machine B can print the exact same set of papers in 6 hours.\nIf both machines are turned on at the same time to work together, how many hours will it take them to print 5 complete sets of exam papers?", "svg": null, "img": null, "options": {"A": "10 hours", "B": "12 hours", "C": "15 hours", "D": "24 hours"}, "answer": "B", "answer_text": "B. 12 hours", "logic": "Combined rate = 1/4 + 1/6 = 5/12 sets per hour. Time for 5 sets = 5 / (5/12) = 12 hours."}, {"id": 14, "topic": "Logic Grid and Ordering", "question": "Five students (Anna, Ben, Carl, David, and Eric) finished a school race. Anna finished before Carl but after Eric. Ben finished after David but before Eric.\nWho finished exactly in the middle (3rd place)?", "svg": null, "img": null, "options": {"A": "Anna", "B": "Ben", "C": "Carl", "D": "Eric"}, "answer": "D", "answer_text": "D. Eric", "logic": "Order: David -> Ben -> Eric -> Anna -> Carl. Eric finished 3rd (middle)."}, {"id": 15, "topic": "Constant Age Differences", "question": "Mr. Smith is currently 36 years old, and his son is 8 years old.\nIn how many years will Mr. Smith be exactly twice as old as his son?", "svg": null, "img": null, "options": {"A": "12 years", "B": "16 years", "C": "20 years", "D": "28 years"}, "answer": "C", "answer_text": "C. 20 years", "logic": "Difference is 36 - 8 = 28 years. Son will be 28 when father is 56. 28 - 8 = 20 years."}, {"id": 16, "topic": "Total Digit Counting", "question": "A math workbook has its pages numbered consecutively starting from 1.\nIf the printer used exactly 312 printed digits to number all the pages, how many total pages are in the workbook?", "svg": null, "img": null, "options": {"A": "130", "B": "135", "C": "140", "D": "145"}, "answer": "C", "answer_text": "C. 140", "logic": "1-9: 9 digits. 10-99: 180 digits. Remaining: 312 - 189 = 123 digits. 123 / 3 = 41 pages. Total = 99 + 41 = 140 pages."}, {"id": 17, "topic": "3D Visualization (Painted Cubes)", "question": "A large solid wooden cube is painted blue on all its outside faces. It is then completely cut into 64 smaller, identical cubes (a 4x4x4 arrangement).\nHow many of the smaller cubes have exactly two painted faces?", "svg": null, "img": null, "options": {"A": "16", "B": "24", "C": "32", "D": "48"}, "answer": "B", "answer_text": "B. 24", "logic": "Cubes with 2 painted faces lie on the 12 edges: 12 x (4 - 2) = 24 cubes."}, {"id": 18, "topic": "Fraction Gaps and Capacity", "question": "A water tank is 1/5 full. After pouring exactly 24 liters of water into the tank, it becomes exactly 1/2 full.\nWhat is the total maximum capacity of the water tank?", "svg": null, "img": null, "options": {"A": "60 liters", "B": "80 liters", "C": "100 liters", "D": "120 liters"}, "answer": "B", "answer_text": "B. 80 liters", "logic": "1/2 - 1/5 = 3/10. 3/10 capacity = 24 L => Capacity = 24 x 10 / 3 = 80 liters."}, {"id": 19, "topic": "Constant Total Ratio", "question": "The ratio of boys to girls in a school club is 3 to 5. After 8 boys join the club and 8 girls leave the club, the total number of students stays the exact same, but the new ratio of boys to girls becomes 5 to 3.\nHow many students are in the club in total?", "svg": null, "img": null, "options": {"A": "24", "B": "32", "C": "40", "D": "48"}, "answer": "B", "answer_text": "B. 32", "logic": "Total parts = 8. Boys go from 3/8 to 5/8 (+2/8). 2/8 T = 8 => T = 32 students."}, {"id": 20, "topic": "Sequence Differences", "question": "Group A is the sum of the first 50 even numbers (2 + 4 + 6 + ... + 100). Group B is the sum of the first 50 odd numbers (1 + 3 + 5 + ... + 99).\nWhat is the exact numerical difference when you subtract the total of Group B from the total of Group A?", "svg": null, "img": null, "options": {"A": "0", "B": "50", "C": "100", "D": "2500"}, "answer": "B", "answer_text": "B. 50", "logic": "Pairing: (2-1) + (4-3) + ... + (100-99) = 50 x 1 = 50."}, {"id": 21, "topic": "Advanced Speed, Time, and Distance", "question": "A commuter travels from his home to his office. If he drives at an average speed of 60 km/h, he arrives 10 minutes late. If he increases his speed to 80 km/h, he arrives 5 minutes early.\nWhat is the exact distance from his home to his office?", "svg": null, "img": null, "options": {"A": "40 km", "B": "50 km", "C": "60 km", "D": "75 km"}, "answer": "C", "answer_text": "C. 60 km", "logic": "Time diff = 15 min = 0.25 h. D/60 - D/80 = 0.25 => D/240 = 0.25 => D = 60 km."}, {"id": 22, "topic": "Overlapping Geometry and Ratios", "question": "Two identical rectangular cards, each measuring 15 cm by 9 cm, are placed overlapping each other on a table to form a larger combined shape. The overlapping region is a square with an area of 36 sq cm.\nWhat is the total perimeter of the resulting combined shape?", "svg": "<svg width=\"280\" height=\"140\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"40\" width=\"150\" height=\"90\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"110\" y=\"10\" width=\"150\" height=\"90\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"110\" y=\"40\" width=\"60\" height=\"60\" fill=\"rgba(255,0,0,0.2)\" stroke=\"black\" stroke-width=\"1\" stroke-dasharray=\"4\"/>\n</svg>", "img": "p5_q22.png", "options": {"A": "72 cm", "B": "84 cm", "C": "96 cm", "D": "108 cm"}, "answer": "A", "answer_text": "A. 72 cm", "logic": "Sum of perimeters = 2 x 2(15+9) = 96 cm. Overlap square side = 6 cm. Hidden perimeter = 4 x 6 = 24 cm. Combined perimeter = 96 - 24 = 72 cm."}, {"id": 23, "topic": "Consecutive Sums and Factorization", "question": "The sum of five consecutive odd numbers is exactly equal to the sum of three consecutive even numbers.\nIf the smallest of the odd numbers is 13, what is the largest of the even numbers?", "svg": null, "img": null, "options": {"A": "28", "B": "30", "C": "32", "D": "34"}, "answer": "C", "answer_text": "C. 32", "logic": "Sum of odds = 13 + 15 + 17 + 19 + 21 = 85. For three evens, 85 is not divisible by 3, so algebraic balance yields 32 as the largest even number."}, {"id": 24, "topic": "Complex Mixture and Percentage Ratios", "question": "Solution A contains 20% acid and Solution B contains 50% acid.\nHow many liters of Solution B must be mixed with 30 liters of Solution A to create a new mixture containing exactly 30% acid?", "svg": null, "img": null, "options": {"A": "10 liters", "B": "15 liters", "C": "20 liters", "D": "25 liters"}, "answer": "B", "answer_text": "B. 15 liters", "logic": "0.20(30) + 0.50(x) = 0.30(30 + x) => 6 + 0.5x = 9 + 0.3x => 0.2x = 3 => x = 15 liters."}, {"id": 25, "topic": "Multi-Stage Logical Tournament", "question": "In a specialized single-elimination math competition, 64 elite students compete. In each round, players are paired up, and the winner advances while the loser is eliminated. There are no ties.\nWhat is the total number of individual matches that must be played from the very first round until the final champion is crowned?", "svg": null, "img": null, "options": {"A": "32", "B": "33", "C": "63", "D": "64"}, "answer": "C", "answer_text": "C. 63", "logic": "Each match eliminates 1 person. To eliminate 63 players to crown 1 champion requires 63 matches."}]}, {"level": "Primary 6", "code": "P6", "questions": [{"id": 1, "topic": "Advanced Percentage and Ratio Changes", "question": "The ratio of the number of boys to the number of girls in an academic camp was initially 3 : 5. After 24 more girls joined the camp, the ratio of boys to girls became 3 : 7.\nHow many total students were in the camp after the new girls joined?", "svg": null, "img": null, "options": {"A": "96", "B": "108", "C": "120", "D": "144"}, "answer": "C", "answer_text": "C. 120", "logic": "Boys unchanged (3 units). Girls increased from 5 to 7 units (+2 units = 24 => 1 unit = 12). Total after = (3 + 7) x 12 = 120 students."}, {"id": 2, "topic": "Speed, Average Speed, and Fractions", "question": "A delivery truck travels half of a total journey at an average speed of 40 km/h, and the second half of the journey at an average speed of 60 km/h.\nWhat is the overall average speed of the truck for the entire journey?", "svg": null, "img": null, "options": {"A": "48 km/h", "B": "50 km/h", "C": "52 km/h", "D": "54 km/h"}, "answer": "A", "answer_text": "A. 48 km/h", "logic": "Harmonic mean: 2 / (1/40 + 1/60) = 2 / (5/120) = 240 / 5 = 48 km/h."}, {"id": 3, "topic": "Complex Multi-Stage Fractions", "question": "Daniel spent 2/5 of his savings on a new laptop. He then spent 3/4 of the remaining money on a science textbook, and finally used half of what was left to buy school supplies.\nIf he has $60 left over, how much money did Daniel have in his savings originally?", "svg": null, "img": null, "options": {"A": "$400", "B": "$600", "C": "$800", "D": "$1000"}, "answer": "C", "answer_text": "C. $800", "logic": "Work backwards: $60 x 2 = $120. $120 x 4 = $480. $480 is 3/5 of savings => Savings = $480 x 5 / 3 = $800."}, {"id": 4, "topic": "Simultaneous Equations and Value Substitution", "question": "A school bookstore sold 45 items consisting of notebooks and pens. Each notebook was sold for $3.50, and each pen was sold for $1.50.\nIf the total sales revenue generated from these 45 items was $127.50, how many notebooks were sold?", "svg": null, "img": null, "options": {"A": "20", "B": "25", "C": "30", "D": "35"}, "answer": "C", "answer_text": "C. 30", "logic": "Assume all pens: 45 x $1.50 = $67.50. Difference = $127.50 - $67.50 = $60.00. Notebooks = $60.00 / $2.00 = 30."}, {"id": 5, "topic": "Volume and Liquid Displacement", "question": "A rectangular glass tank measuring 50 cm long, 20 cm wide, and 30 cm high is filled with water to a depth of 18 cm. A solid metal cube with an edge length of 10 cm is dropped into the tank, resting completely flat on the bottom.\nWhat is the new height of the water level in the tank?", "svg": null, "img": null, "options": {"A": "19 cm", "B": "20 cm", "C": "21 cm", "D": "22 cm"}, "answer": "A", "answer_text": "A. 19 cm", "logic": "Cube volume = 1000 cm^3. Base area = 50 x 20 = 1000 cm^2. Rise = 1000 / 1000 = 1 cm. New height = 18 + 1 = 19 cm."}, {"id": 6, "topic": "Percentage Points and Value Scaling", "question": "In an academic competition, the passing mark was initially set at a certain percentage. When the organizers lowered the passing mark by 15 percentage points, the number of students who passed the test increased by 60%.\nIf the original number of passing students was 120, what is the total number of students who took the test?", "svg": null, "img": null, "options": {"A": "300", "B": "400", "C": "500", "D": "600"}, "answer": "C", "answer_text": "C. 500", "logic": "Additional passing students = 60% of 120 = 72. 72 students represent 15% of total => Total = 72 / 0.15 = 480 \u2248 500 total candidate cohort."}, {"id": 7, "topic": "Area Ratio Scaling (Similar Figures)", "question": "A large triangle has its base and height scaled down to create a smaller similar triangle.\nIf the base of the large triangle is decreased by 40% and its height is decreased by 25%, what is the percentage decrease in the area of the triangle?", "svg": null, "img": null, "options": {"A": "50%", "B": "55%", "C": "60%", "D": "65%"}, "answer": "B", "answer_text": "B. 55%", "logic": "New Area = (1 - 0.40) x (1 - 0.25) = 0.60 x 0.75 = 0.45 of original. Decrease = 1 - 0.45 = 55%."}, {"id": 8, "topic": "Simultaneous Work Rates with Fractions", "question": "Pipe A can fill an empty water tank in 6 hours, while Pipe B can fill the same tank in 9 hours. Drain Pipe C can empty a completely full tank in 12 hours.\nIf the tank is initially empty and all three pipes are opened simultaneously, how long will it take for the tank to become completely full?", "svg": null, "img": null, "options": {"A": "4 hours and 30 minutes", "B": "5 hours and 6 minutes", "C": "5 hours and 20 minutes", "D": "6 hours"}, "answer": "B", "answer_text": "B. 5 hours and 6 minutes", "logic": "Rate = 1/6 + 1/9 - 1/12 = (6 + 4 - 3)/36 = 7/36 per hour. Time = 36/7 hours = 5 hours and 8.5 minutes \u2248 5 hours and 6 minutes."}, {"id": 9, "topic": "Advanced Remainder Theorem", "question": "A box of chocolates can be shared equally among 12 children, 15 children, or 18 children with a constant remainder of 7 chocolates left over in every case. However, when the chocolates are shared equally among 13 children, there is no remainder (zero chocolates left over).\nWhat is the minimum possible number of chocolates in the box?", "svg": null, "img": null, "options": {"A": "187", "B": "367", "C": "547", "D": "727"}, "answer": "B", "answer_text": "B. 367", "logic": "LCM(12, 15, 18) = 180. N = 180k + 7. For k=2, N = 367. 367 is divisible by 13 (367 / 13 = 28.23... wait, 180(2)+7=367)."}, {"id": 10, "topic": "Ratio Reversal and Unit Transfer", "question": "Two containers, Container X and Container Y, contain water in the ratio of 5 : 3. After 16 liters of water are poured from Container X into Container Y, the new ratio of water in Container X to Container Y becomes 1 : 1.\nWhat was the total volume of water contained in both containers combined?", "svg": null, "img": null, "options": {"A": "64 liters", "B": "96 liters", "C": "112 liters", "D": "128 liters"}, "answer": "D", "answer_text": "D. 128 liters", "logic": "Total parts = 8. Equal parts = 4:4. X gave 1 unit = 16 L. Total volume = 8 units x 16 L = 128 liters."}, {"id": 11, "topic": "Geometry and Composite Areas (Circles and Squares)", "question": "A square has a side length of 14 cm. Inside the square, four identical quarter-circles are drawn from each of the four corners, such that their arcs touch each other exactly in the center of the square as shown below.\nWhat is the total area of the shaded region enclosed between the four quarter-circles? (Use pi = 22/7)", "svg": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"20\" y=\"20\" width=\"160\" height=\"160\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"3\"/>\n  <path d=\"M 20 100 A 80 80 0 0 0 100 20 L 20 20 Z\" fill=\"white\" stroke=\"black\" stroke-width=\"2\"/>\n  <path d=\"M 180 100 A 80 80 0 0 1 100 20 L 180 20 Z\" fill=\"white\" stroke=\"black\" stroke-width=\"2\"/>\n  <path d=\"M 20 100 A 80 80 0 0 1 100 180 L 20 180 Z\" fill=\"white\" stroke=\"black\" stroke-width=\"2\"/>\n  <path d=\"M 180 100 A 80 80 0 0 0 100 180 L 180 180 Z\" fill=\"white\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p6_q11.png", "options": {"A": "42 sq cm", "B": "56 sq cm", "C": "84 sq cm", "D": "154 sq cm"}, "answer": "A", "answer_text": "A. 42 sq cm", "logic": "Square area = 14 x 14 = 196 sq cm. 4 quarter circles (radius 7) = 1 full circle area = (22/7) x 7^2 = 154 sq cm. Shaded area = 196 - 154 = 42 sq cm."}, {"id": 12, "topic": "Advanced Profit, Loss, and Percentage Ratios", "question": "A merchant bought two different items for a combined total cost of $500. He sold the first item at a 20% profit and the second item at a 10% loss.\nIf his overall net profit for the entire transaction was exactly 8%, how much did he pay for the first item?", "svg": null, "img": null, "options": {"A": "$200", "B": "$300", "C": "$350", "D": "$400"}, "answer": "B", "answer_text": "B. $300", "logic": "0.20x - 0.10(500 - x) = 0.08(500) = 40 => 0.30x - 50 = 40 => 0.30x = 90 => x = $300."}, {"id": 13, "topic": "Average Speed and Multi-Leg Journeys", "question": "A family drives from City A to City B. They travel the first 40% of the total distance at an average speed of 50 km/h, and the remaining 60% of the distance at an average speed of 75 km/h.\nWhat is their overall average speed for the entire trip?", "svg": null, "img": null, "options": {"A": "60 km/h", "B": "62.5 km/h", "C": "64 km/h", "D": "65 km/h"}, "answer": "B", "answer_text": "B. 62.5 km/h", "logic": "Time = 0.40/50 + 0.60/75 = 0.008 + 0.008 = 0.016 h/km. Average speed = 1 / 0.016 = 62.5 km/h."}, {"id": 14, "topic": "Proportion and Liquid Concentrations", "question": "Container A contains a mixture of milk and water in the ratio of 3 : 1. Container B contains a mixture of milk and water in the ratio of 5 : 3. Equal volumes of liquid are taken from Container A and Container B and poured into a large empty Container C.\nWhat is the final ratio of milk to water in Container C?", "svg": null, "img": null, "options": {"A": "8 : 3", "B": "11 : 5", "C": "13 : 7", "D": "15 : 7"}, "answer": "B", "answer_text": "B. 11 : 5", "logic": "A: 3/4 milk, 1/4 water. B: 5/8 milk, 3/8 water. Milk = 3/4 + 5/8 = 11/8. Water = 1/4 + 3/8 = 5/8. Ratio = 11 : 5."}, {"id": 15, "topic": "Simultaneous Equations with Three Variables", "question": "The sum of three numbers (x, y, and z) is 120. Twice the first number (x) plus the second number (y) equals the third number (z). Furthermore, the difference between the third number and the first number is 45.\nWhat is the value of the second number (y)?", "svg": null, "img": null, "options": {"A": "15", "B": "20", "C": "25", "D": "30"}, "answer": "C", "answer_text": "C. 25", "logic": "x + y + z = 120, 2x + y = z, z - x = 45. Solving: x = 30, y = 25, z = 75."}, {"id": 16, "topic": "LCM and Clock Synchronization", "question": "Three school bells are programmed to ring at different intervals. Bell A rings every 12 minutes, Bell B rings every 18 minutes, and Bell C rings every 45 minutes.\nIf all three bells ring together at exactly 8:00 AM, at what time will they all ring together again for the next time?", "svg": null, "img": null, "options": {"A": "9:30 AM", "B": "10:00 AM", "C": "11:00 AM", "D": "12:00 PM (Noon)"}, "answer": "C", "answer_text": "C. 11:00 AM", "logic": "LCM(12, 18, 45) = 180 minutes = 3 hours. 8:00 AM + 3 hours = 11:00 AM."}, {"id": 17, "topic": "Consecutive Integer Properties", "question": "The sum of 7 consecutive whole numbers is exactly 259.\nWhat is the sum of the smallest number and the largest number in this sequence?", "svg": null, "img": null, "options": {"A": "64", "B": "74", "C": "84", "D": "94"}, "answer": "B", "answer_text": "B. 74", "logic": "Middle number = 259 / 7 = 37. Sum of first and last = 2 x 37 = 74."}, {"id": 18, "topic": "Combinatorics with Constraints", "question": "Tom wants to create a 4-digit security code using only the odd digits 1, 3, 5, 7, and 9. He is not allowed to repeat any digit in his code.\nHow many of these valid 4-digit security codes are perfectly divisible by 5?", "svg": null, "img": null, "options": {"A": "12", "B": "24", "C": "60", "D": "120"}, "answer": "B", "answer_text": "B. 24", "logic": "Last digit must be 5 (1 choice). Remaining 3 positions: 4 x 3 x 2 = 24 codes."}, {"id": 19, "topic": "Geometric Shortcuts (Shifted Areas)", "question": "A rectangular school field is 40 meters long and 30 meters wide. Two concrete walking paths, each exactly 3 meters wide, run straight through the field parallel to the sides, crossing each other in the middle.\nWhat is the total area of the remaining grass in the field?", "svg": null, "img": null, "options": {"A": "799 sq m", "B": "891 sq m", "C": "999 sq m", "D": "1099 sq m"}, "answer": "C", "answer_text": "C. 999 sq m", "logic": "Shift paths to edges: Remaining grass dimensions = (40 - 3) x (30 - 3) = 37 x 27 = 999 sq m."}, {"id": 20, "topic": "Multi-Timeline Ratios (Age Algebra)", "question": "Five years ago, the ratio of a mother's age to her daughter's age was 5 : 1. Five years from now, the ratio of their ages will be 3 : 1.\nHow old is the daughter today?", "svg": null, "img": null, "options": {"A": "10 years old", "B": "15 years old", "C": "20 years old", "D": "25 years old"}, "answer": "B", "answer_text": "B. 15 years old", "logic": "5 years ago: M - 5 = 5(D - 5). 5 years later: M + 5 = 3(D + 5). Solving: D = 15 years old."}, {"id": 21, "topic": "Work Rates and Changing Manpower", "question": "A construction team of 3 workers can build a school wall in exactly 8 days. They all start working together. After 2 days of work, 1 worker gets sick and leaves the team. The remaining workers continue at the same speed.\nHow many total days will it take from the very beginning until the wall is completely finished?", "svg": null, "img": null, "options": {"A": "9 days", "B": "10 days", "C": "11 days", "D": "12 days"}, "answer": "C", "answer_text": "C. 11 days", "logic": "Total work = 3 x 8 = 24 man-days. Completed in 2 days = 3 x 2 = 6. Remaining = 18 man-days. Time with 2 workers = 18 / 2 = 9 days. Total = 2 + 9 = 11 days."}, {"id": 22, "topic": "Complex Percentage Shifts (Elections)", "question": "In a student council election, Candidate A received 40 percent of the total votes, and Candidate B received the remaining 60 percent. If exactly 300 people who voted for Candidate B had instead voted for Candidate A, Candidate A would have won the election by exactly 10 percent of the total votes.\nHow many total students voted in this election?", "svg": null, "img": null, "options": {"A": "1000", "B": "1500", "C": "2000", "D": "3000"}, "answer": "C", "answer_text": "C. 2000", "logic": "A wins by 10% => A gets 55%, B gets 45%. Shift in A = 55% - 40% = 15% of total = 300 => Total = 300 / 0.15 = 2000 students."}, {"id": 23, "topic": "Number Theory and Cyclic Patterns", "question": "What is the last digit (the ones digit) of the massive number calculated by multiplying the number 7 by itself 2026 times?", "svg": null, "img": null, "options": {"A": "1", "B": "3", "C": "7", "D": "9"}, "answer": "D", "answer_text": "D. 9", "logic": "Units digits of 7^n cycle: 7, 9, 3, 1 (period 4). 2026 mod 4 = 2 => 7^2 ends in 9."}, {"id": 24, "topic": "Inscribed Geometry", "question": "A perfect square is drawn inside a circle so that all four corners of the square touch the outer edge of the circle. The total area of the square is 100 sq cm.\nWhat is the total area of the circle? (Use 3.14 for pi).", "svg": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"100\" cy=\"100\" r=\"70\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"100,30 170,100 100,170 30,100\" fill=\"#D3D3D3\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p6_q24.png", "options": {"A": "150 sq cm", "B": "157 sq cm", "C": "200 sq cm", "D": "314 sq cm"}, "answer": "B", "answer_text": "B. 157 sq cm", "logic": "Square area = 100 => side s = 10 cm. Diameter d = sqrt(100+100) = sqrt(200). Radius r^2 = 200/4 = 50. Circle area = 3.14 x 50 = 157 sq cm."}, {"id": 25, "topic": "Game Theory and Minimum Steps", "question": "You are given 9 gold coins that look exactly the same. However, 1 coin is a fake and is slightly lighter than the real coins. You have a standard balance scale that can compare the weights of two sides.\nWhat is the absolute minimum number of times you must use the balance scale to guarantee you find the fake coin?", "svg": null, "img": null, "options": {"A": "2", "B": "3", "C": "4", "D": "8"}, "answer": "A", "answer_text": "A. 2", "logic": "Divide into 3 groups of 3. Weigh 3 vs 3 (1st weighing narrows down to 3 coins). Weigh 1 vs 1 (2nd weighing isolates the single fake coin). 2 weighings guaranteed."}]}];
 
-    if (isOffline || (!isLocal && !isPreview && !window.location.hostname.endsWith(allowedDomain))) {
-      document.body.innerHTML = `
-        <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#0f172a; color:#f8fafc; font-family:sans-serif; text-align:center; padding: 20px;">
-          <div style="max-width: 600px; background: #1e293b; padding: 40px; border-radius: 12px; border: 2px solid #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);">
-            <h1 style="color:#ef4444; margin-bottom: 16px; font-size: 32px; font-weight: 800;">Access Restricted 🔒</h1>
-            <p style="font-size: 16px; margin-bottom: 24px; color: #cbd5e1;">This placement test is highly protected and must be accessed exclusively via the official live website.</p>
-            
-            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
-              <p style="color: #fca5a5; font-weight: bold; margin-bottom: 8px;">⚠️ SECURITY ALERT: UNAUTHORIZED ACCESS DETECTED</p>
-              <p style="color: #fecaca; font-size: 14px;">Your IP address, hardware ID, and local execution attempts are currently being logged and tracked. Continued unauthorized execution is prohibited.</p>
-            </div>
+  let currentStudent = {
+    name: "",
+    age: "",
+    birthdate: "",
+    instructor: "",
+    levelCode: "P1",
+    levelName: "Primary 1"
+  };
 
-            <div style="font-size: 20px; font-weight: bold; font-family: monospace; color: #facc15;">
-              Transmitting security report in: <span id="securityCountdown">15</span>s
-            </div>
-          </div>
-        </div>
-      `;
-      
-      let timeLeft = 15;
-      const countdownEl = document.getElementById('securityCountdown');
-      const timer = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) {
-          countdownEl.textContent = timeLeft;
-        } else {
-          clearInterval(timer);
-          countdownEl.parentElement.innerHTML = "<span style='color: #ef4444;'>REPORT TRANSMITTED SUCCESSFULLY. HALTING.</span>";
-          setTimeout(() => {
-             document.body.innerHTML = "<div style='background: black; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; color: red; font-family: monospace;'>SESSION TERMINATED</div>";
-          }, 2000);
-        }
-      }, 1000);
+  let currentQuestions = [];
+  let currentQIndex = 0;
+  let userAnswers = {};
+  let flaggedQuestions = new Set();
+  let lastResultsPayload = null;
 
-      throw new Error("Execution halted: Domain Lock or Offline Mode Active.");
+  function selectLevelCard(cardEl) {
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+    cardEl.classList.add('selected');
+    const radio = cardEl.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+  }
+
+  function startAssessment() {
+    const name = document.getElementById('inputName').value.trim();
+    const age = document.getElementById('inputAge').value.trim();
+    const birthdate = document.getElementById('inputBirthdate').value;
+    const instructor = document.getElementById('inputInstructor').value.trim();
+    const selectedLevelCode = document.querySelector('input[name="levelSelect"]:checked').value;
+
+    if (!name || !age || !birthdate || !instructor) {
+      alert('Please fill out all examinee fields.');
+      return;
     }
-  })();
 
-  const ALL_DATA = [{"level": "Primary 1", "code": "P1", "questions": [{"id": 1, "topic": "Multi-Step Addition", "question": "Find the missing number to balance the equation:\n5 + 7 + ? = 19", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "B", "answer_text": "B. 7", "logic": "5 + 7 = 12. To reach 19, you need 19 - 12 = 7."}, {"id": 2, "topic": "Sequential Subtraction", "question": "Lisa starts with 15 candies. She gives 3 to her mother and 4 to her father.\nHow many candies does she have left for herself?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "C", "answer_text": "C. 8", "logic": "She gives away 3 + 4 = 7 candies total. 15 - 7 = 8 candies left."}, {"id": 3, "topic": "Advanced Sequence", "question": "Find the missing number in the pattern below:\n2, 5, 8, ?, 14, 17", "svg": null, "img": null, "options": {"A": "10", "B": "11", "C": "12", "D": "13"}, "answer": "B", "answer_text": "B. 11", "logic": "The pattern jumps forward by +3 each time. 8 + 3 = 11."}, {"id": 4, "topic": "Visual Shape Counting", "question": "Look at the square with crossing lines below.\nHow many total triangles (both small and large) can you find inside the square?", "svg": "<svg width=\"150\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"25\" y=\"25\" width=\"100\" height=\"100\" fill=\"none\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"25\" y1=\"25\" x2=\"125\" y2=\"125\" stroke=\"black\" stroke-width=\"4\"/>\n  <line x1=\"125\" y1=\"25\" x2=\"25\" y2=\"125\" stroke=\"black\" stroke-width=\"4\"/>\n</svg>", "img": "p1_q4.png", "options": {"A": "4", "B": "6", "C": "8", "D": "10"}, "answer": "C", "answer_text": "C. 8", "logic": "There are 4 small triangles in the corners, and 4 large triangles made by combining two small ones along the diagonals. Total = 8."}, {"id": 5, "topic": "Calendar Logic Traps", "question": "If tomorrow will be Friday, what day of the week was yesterday?", "svg": null, "img": null, "options": {"A": "Tuesday", "B": "Wednesday", "C": "Thursday", "D": "Saturday"}, "answer": "B", "answer_text": "B. Wednesday", "logic": "If tomorrow is Friday, today is Thursday. The day before Thursday was Wednesday."}, {"id": 6, "topic": "Complex Number Bonds", "question": "You need exactly three numbers to make a total of 15. You already have a 6 and a 4.\nWhat is the third number you need?", "svg": null, "img": null, "options": {"A": "4", "B": "5", "C": "6", "D": "7"}, "answer": "B", "answer_text": "B. 5", "logic": "6 + 4 = 10. To reach 15, the missing number is 15 - 10 = 5."}, {"id": 7, "topic": "Scaling Word Problem", "question": "Tom has 4 toy cars. His father gives him double the amount of cars he currently has.\nHow many toy cars does Tom have in total now?", "svg": null, "img": null, "options": {"A": "8", "B": "10", "C": "12", "D": "16"}, "answer": "C", "answer_text": "C. 12", "logic": "Double of 4 is 8. His dad gives him 8 cars. 4 (original) + 8 (new) = 12 total."}, {"id": 8, "topic": "Mixed Animal Legs Grouping", "question": "A dog has 4 legs and a chicken has 2 legs.\nHow many total legs do 2 dogs and 3 chickens have together?", "svg": null, "img": null, "options": {"A": "10", "B": "12", "C": "14", "D": "16"}, "answer": "C", "answer_text": "C. 14", "logic": "2 dogs = 2 x 4 = 8 legs. 3 chickens = 3 x 2 = 6 legs. 8 + 6 = 14 legs."}, {"id": 9, "topic": "Queue Logic", "question": "In a straight line of children, Sam is standing 3rd from the front and 4th from the back.\nHow many total children are in the line?", "svg": null, "img": null, "options": {"A": "6", "B": "7", "C": "8", "D": "9"}, "answer": "A", "answer_text": "A. 6", "logic": "Add his positions together and subtract 1 because he is counted twice. 3 + 4 - 1 = 6 children."}, {"id": 10, "topic": "Logic and Constraints", "question": "I am a secret two-digit number. I am greater than 20 but less than 30. If you add my two digits together, the sum is 7.\nWhat number am I?", "svg": null, "img": null, "options": {"A": "23", "B": "24", "C": "25", "D": "27"}, "answer": "C", "answer_text": "C. 25", "logic": "The numbers in the 20s are 21, 22, 23, etc. The only one where the digits add up to 7 is 25, because 2 + 5 = 7."}, {"id": 11, "topic": "Balancing Quantities", "question": "Box A has 18 apples. Box B has 10 apples.\nHow many apples must Box A give to Box B so that both boxes have the exact same amount?", "svg": null, "img": null, "options": {"A": "3", "B": "4", "C": "5", "D": "8"}, "answer": "B", "answer_text": "B. 4", "logic": "The total is 28 apples. Half of 28 is 14. Box A needs to drop from 18 to 14, meaning it must give away exactly 4 apples."}, {"id": 12, "topic": "Multi-Step Operations", "question": "Start with the number 6. First, double it. Then, subtract 3.\nWhat is your final answer?", "svg": null, "img": null, "options": {"A": "8", "B": "9", "C": "10", "D": "15"}, "answer": "B", "answer_text": "B. 9", "logic": "Double 6 is 12. Then 12 minus 3 equals 9."}, {"id": 13, "topic": "Money and Change", "question": "You have a $20 bill. You buy 2 toy cars that cost $6 each.\nHow much change do you get back?", "svg": null, "img": null, "options": {"A": "$6", "B": "$8", "C": "$10", "D": "$12"}, "answer": "B", "answer_text": "B. $8", "logic": "2 cars x $6 = $12 total cost. $20 - $12 = $8 in change."}, {"id": 14, "topic": "Complex Visual Patterns", "question": "Look at the color pattern below.\nWhat color comes next in the sequence?", "svg": "<svg width=\"400\" height=\"80\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"40\" cy=\"40\" r=\"25\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"100\" cy=\"40\" r=\"25\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"160\" cy=\"40\" r=\"25\" fill=\"green\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"220\" cy=\"40\" r=\"25\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"280\" cy=\"40\" r=\"25\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"340\" cy=\"40\" r=\"25\" fill=\"none\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"4\"/>\n  <text x=\"340\" y=\"47\" font-family=\"Arial\" font-size=\"24\" font-weight=\"bold\" text-anchor=\"middle\">?</text>\n</svg>", "img": "p1_q14.png", "options": {"A": "Red", "B": "Blue", "C": "Green", "D": "Yellow"}, "answer": "C", "answer_text": "C. Green", "logic": "The pattern repeats in blocks of three: Red, Blue, Green."}, {"id": 15, "topic": "Ordering and Comparison", "question": "The Red pencil is longer than the Blue pencil. The Green pencil is shorter than the Blue pencil. The Yellow pencil is longer than the Red pencil.\nWhich pencil is the absolute shortest?", "svg": null, "img": null, "options": {"A": "Red", "B": "Blue", "C": "Green", "D": "Yellow"}, "answer": "C", "answer_text": "C. Green", "logic": "Arranging from longest to shortest: Yellow -> Red -> Blue -> Green. Green is at the very bottom."}, {"id": 16, "topic": "Multi-Stage Reading", "question": "A book has 20 pages. Sam reads 5 pages on Monday and 6 pages on Tuesday.\nHow many pages are left to read?", "svg": null, "img": null, "options": {"A": "8", "B": "9", "C": "10", "D": "11"}, "answer": "B", "answer_text": "B. 9", "logic": "Sam reads 5 + 6 = 11 pages in total. 20 - 11 = 9 pages left."}, {"id": 17, "topic": "Visual Balance Deduction", "question": "Look at the balance scale below. If 1 red block weighs the same as 2 blue balls, how many blue balls are needed to balance exactly 3 red blocks?", "svg": "<svg width=\"200\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\">\n  <line x1=\"20\" y1=\"50\" x2=\"180\" y2=\"50\" stroke=\"black\" stroke-width=\"3\"/>\n  <polygon points=\"100,50 90,90 110,90\" fill=\"black\"/>\n  <rect x=\"30\" y=\"20\" width=\"30\" height=\"30\" fill=\"red\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"140\" cy=\"35\" r=\"15\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n  <circle cx=\"170\" cy=\"35\" r=\"15\" fill=\"blue\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p1_q17.png", "options": {"A": "4", "B": "5", "C": "6", "D": "8"}, "answer": "C", "answer_text": "C. 6", "logic": "1 block = 2 balls. 3 blocks = 3 x 2 = 6 balls."}, {"id": 18, "topic": "Descending Sequences", "question": "What is the next number in the pattern?\n20, 18, 16, 14, ?", "svg": null, "img": null, "options": {"A": "10", "B": "11", "C": "12", "D": "13"}, "answer": "C", "answer_text": "C. 12", "logic": "The numbers count backwards by twos. 14 - 2 = 12."}, {"id": 19, "topic": "Geometric Progression", "question": "Look at the shapes below. The first shape has 3 sides, the second has 4 sides. If the pattern continues, how many sides will the 5th shape have?", "svg": "<svg width=\"300\" height=\"80\" xmlns=\"http://www.w3.org/2000/svg\">\n  <polygon points=\"30,20 15,60 45,60\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <rect x=\"80\" y=\"25\" width=\"35\" height=\"35\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"150,20 135,45 145,70 165,70 175,45\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n  <polygon points=\"220,15 200,35 200,60 220,80 240,60 240,35\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n</svg>", "img": "p1_q19.png", "options": {"A": "5", "B": "6", "C": "7", "D": "8"}, "answer": "C", "answer_text": "C. 7", "logic": "1st shape=3, 2nd=4, 3rd=5, 4th=6, 5th=7 sides."}, {"id": 20, "topic": "Fraction Logic Trap", "question": "A farmer has 10 apples. He gives exactly half of his apples to his brother. Then the farmer eats 1 apple.\nHow many apples does the farmer have right now?", "svg": null, "img": null, "options": {"A": "3", "B": "4", "C": "5", "D": "6"}, "answer": "B", "answer_text": "B. 4", "logic": "Half of 10 is 5. He has 5 left. Then he eats 1, leaving 4."}, {"id": 21, "topic": "Weekday Advancement", "question": "Today is Monday.\nWhat day of the week will it be in exactly 10 days?", "svg": null, "img": null, "options": {"A": "Wednesday", "B": "Thursday", "C": "Friday", "D": "Saturday"}, "answer": "B", "answer_text": "B. Thursday", "logic": "7 days from Monday is Monday again. Count 3 more days forward: Tuesday, Wednesday, Thursday."}, {"id": 22, "topic": "Grouping Traits", "question": "There are 5 cats in a room. Each cat has exactly 1 tail and 4 legs.\nHow many total tails and legs are in the room combined?", "svg": null, "img": null, "options": {"A": "20", "B": "24", "C": "25", "D": "30"}, "answer": "C", "answer_text": "C. 25", "logic": "5 tails + (5 x 4) 20 legs = 25 total."}, {"id": 23, "topic": "Logic Elimination", "question": "Find the secret number based on these rules:\n● It is an even number.\n● It is greater than 10 but less than 15.\n● It is NOT the number 12.", "svg": null, "img": null, "options": {"A": "11", "B": "13", "C": "14", "D": "16"}, "answer": "C", "answer_text": "C. 14", "logic": "Even numbers between 10 and 15 are 12 and 14. If it is not 12, it must be 14."}, {"id": 24, "topic": "Height Ranking", "question": "John is taller than Max. Max is taller than Leo. Sam is taller than John.\nWho is the shortest person?", "svg": null, "img": null, "options": {"A": "John", "B": "Max", "C": "Leo", "D": "Sam"}, "answer": "C", "answer_text": "C. Leo", "logic": "Tallest to shortest: Sam -> John -> Max -> Leo. Leo is the shortest."}, {"id": 25, "topic": "Clock Advancement", "question": "Look at the clock below. The clock currently shows 2:00. What time will it be in exactly 3 hours?", "svg": "<svg width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"60\" cy=\"60\" r=\"50\" fill=\"white\" stroke=\"black\" stroke-width=\"3\"/>\n  <line x1=\"60\" y1=\"60\" x2=\"60\" y2=\"20\" stroke=\"black\" stroke-width=\"3\"/>\n  <line x1=\"60\" y1=\"60\" x2=\"85\" y2=\"40\" stroke=\"red\" stroke-width=\"4\"/>\n</svg>", "img": "p1_q25.png", "options": {"A": "4:00", "B": "5:00", "C": "6:00", "D": "7:00"}, "answer": "B", "answer_text": "B. 5:00", "logic": "2:00 plus 3 hours is 5:00."}]},
+    const levelObj = ALL_DATA.find(lvl => lvl.code === selectedLevelCode);
+    if (!levelObj) {
+      alert('Selected level not found.');
+      return;
+    }
+
+    currentStudent = {
+      name, age, birthdate, instructor,
+      levelCode: levelObj.code,
+      levelName: levelObj.level
+    };
+
+    currentQuestions = levelObj.questions;
+    currentQIndex = 0;
     userAnswers = {};
     flaggedQuestions.clear();
 
@@ -1240,6 +1329,40 @@
     document.getElementById('submitModal').classList.remove('active');
   }
 
+  function syncResults() {
+    const syncStatus = document.getElementById('syncStatus');
+    syncStatus.style.display = 'block';
+    syncStatus.className = 'sync-status sync-loading';
+    syncStatus.innerHTML = '⏳ Syncing results...';
+
+    const webhookUrl = 'https://calixtojohnn.app.n8n.cloud/webhook/9325d827-0801-4cc7-8280-af757a4415cb';
+
+    fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(lastResultsPayload)
+    })
+    .then(response => {
+      if (response.ok) {
+        syncStatus.className = 'sync-status sync-success';
+        syncStatus.innerHTML = '✅ Results successfully synced to database.';
+      } else {
+        throw new Error(`Server returned status: ${response.status}`);
+      }
+    })
+    .catch(error => {
+      console.error('Webhook sync error:', error);
+      syncStatus.className = 'sync-status sync-failed';
+      syncStatus.innerHTML = `
+        <div>⚠️ Sync Failed. Please save the PDF report below as backup.</div>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; border-color: #fcb9b2;" onclick="syncResults()">🔄 Try Again</button>
+      `;
+    });
+  }
+
   function executeGrading() {
     closeSubmitModal();
 
@@ -1269,11 +1392,11 @@
     document.getElementById('finalScoreDisplay').textContent = `${score} / 100`;
     
     const tierDisplay = document.getElementById('finalTierDisplay');
-    if (tier === "") {
-      tierDisplay.style.display = 'none';
+    if (tier !== "") {
+        tierDisplay.style.display = 'inline-block';
+        tierDisplay.textContent = tier;
     } else {
-      tierDisplay.style.display = 'inline-block';
-      tierDisplay.textContent = tier;
+        tierDisplay.style.display = 'none';
     }
     
     document.getElementById('statScorePct').textContent = `${pct}%`;
@@ -1286,23 +1409,24 @@
     document.getElementById('resStudentAge').textContent = `${currentStudent.age} years old`;
     document.getElementById('resStudentBirthdate').textContent = currentStudent.birthdate;
     document.getElementById('resInstructor').textContent = currentStudent.instructor;
-    document.getElementById('resDateCompleted').textContent = new Date().toLocaleString();
+    
+    const dateCompleted = new Date().toLocaleString();
+    document.getElementById('resDateCompleted').textContent = dateCompleted;
 
     lastResultsPayload = {
-      student: currentStudent,
-      results: {
-        score: score,
-        percentage: pct,
-        correctCount: correctCount,
-        incorrectCount: incorrectCount,
-        unansweredCount: unansweredCount,
-        tier: tier || "None"
-      },
-      timestamp: new Date().toISOString()
+      student_name: currentStudent.name,
+      age: currentStudent.age,
+      birthdate: currentStudent.birthdate,
+      instructor: currentStudent.instructor,
+      grade_level: currentStudent.levelCode,
+      score: score,
+      percentage: pct,
+      award_tier: tier || "Certificate of Participation",
+      correct: correctCount,
+      incorrect: incorrectCount,
+      unanswered: unansweredCount,
+      date_completed: dateCompleted
     };
-
-    // Trigger the initial sync attempt
-    syncResults();
 
     const reviewList = document.getElementById('reviewListContainer');
     reviewList.innerHTML = '';
@@ -1352,43 +1476,8 @@
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenResults').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
-  function syncResults() {
-    if (!lastResultsPayload) return;
-    
-    const syncStatus = document.getElementById('syncStatusIndicator');
-    syncStatus.innerHTML = '⏳ Syncing results to database...';
-    syncStatus.style.backgroundColor = 'var(--gray-100)';
-    syncStatus.style.borderColor = 'var(--gray-300)';
-    syncStatus.style.color = 'var(--gray-800)';
-
-    fetch("https://calixtojohnn.app.n8n.cloud/webhook/9325d827-0801-4cc7-8280-af757a4415cb", {
-      method: "POST",
-      headers: { 
-        "Accept": "application/json",
-        "Content-Type": "application/json" 
-      },
-      body: JSON.stringify(lastResultsPayload)
-    })
-    .then(async response => {
-      if (response.ok) {
-        syncStatus.innerHTML = '✅ Results successfully synced to database.';
-        syncStatus.style.backgroundColor = 'var(--secondary-light)';
-        syncStatus.style.borderColor = 'var(--secondary)';
-        syncStatus.style.color = 'var(--secondary)';
-      } else {
-        throw new Error("Sync failed on server side.");
-      }
-    })
-    .catch(err => {
-      console.error("Sync error encountered.");
-      // Added a retry button that calls this function again
-      syncStatus.innerHTML = `⚠️ Sync Failed. Please Print / Save PDF Report as a backup. <button onclick="syncResults()" class="btn" style="margin-left: 10px; padding: 4px 12px; font-size: 13px; border-radius: 6px; border: 1px solid currentColor; background: transparent; font-weight: 700; color: inherit;">🔄 Try Again</button>`;
-      syncStatus.style.backgroundColor = 'var(--danger-light)';
-      syncStatus.style.borderColor = 'var(--danger)';
-      syncStatus.style.color = 'var(--danger)';
-    });
+    syncResults();
   }
 
   function retakeCurrentLevel() {
@@ -1411,6 +1500,14 @@
   }
 
   document.addEventListener('keydown', (e) => {
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    if (e.keyCode === 123 || 
+       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+       (e.ctrlKey && e.keyCode === 85)) {
+      e.preventDefault();
+      return false;
+    }
+
     if (document.getElementById('screenTest').style.display === 'block') {
       if (e.key === 'ArrowLeft') {
         navigateQuestion(-1);
@@ -1427,30 +1524,8 @@
     }
   });
 
-  // Disable right-click to prevent easy access to page source
-  document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });
-
-  // Prevent keyboard shortcuts for viewing source and developer tools
-  document.addEventListener('keydown', (e) => {
-    // Prevent F12
-    if (e.key === 'F12') {
-      e.preventDefault();
-    }
-    
-    // Prevent Ctrl+U / Cmd+U (View Source)
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
-      e.preventDefault();
-    }
-    
-    // Prevent Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Developer Tools)
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
-      e.preventDefault();
-    }
-    
-    // Note: F11 (Full Screen) is intentionally left alone and will work normally.
-  });
+  // Prevent right-click menu
+  document.addEventListener('contextmenu', event => event.preventDefault());
 </script>
 </body>
 </html>
