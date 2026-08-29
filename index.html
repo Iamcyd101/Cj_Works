@@ -1127,16 +1127,30 @@
     let correctCount = 0;
     let incorrectCount = 0;
     let unansweredCount = 0;
+    
+    let detailedAnswers = [];
 
     currentQuestions.forEach((q, idx) => {
       const chosen = userAnswers[idx];
+      let isCorrect = false;
+
       if (chosen === undefined) {
         unansweredCount++;
       } else if (chosen.toUpperCase() === q.answer.toUpperCase()) {
         correctCount++;
+        isCorrect = true;
       } else {
         incorrectCount++;
       }
+      
+      // Bundle the individual question data
+      detailedAnswers.push({
+        question_number: q.id,
+        topic: q.topic,
+        student_answer: chosen || "Unanswered",
+        correct_answer: q.answer,
+        is_correct: isCorrect
+      });
     });
 
     const score = correctCount * 4;
@@ -1161,7 +1175,8 @@
       correct: correctCount,
       incorrect: incorrectCount,
       unanswered: unansweredCount,
-      date_completed: dateCompleted
+      date_completed: dateCompleted,
+      detailed_answers: detailedAnswers
     };
 
     document.getElementById('screenTest').style.display = 'none';
