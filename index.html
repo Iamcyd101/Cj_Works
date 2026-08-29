@@ -653,6 +653,21 @@
     justify-content: center;
     gap: 12px;
   }
+
+  .camouflage-text {
+    color: #ffffff; /* Matches the white card background */
+    margin-top: 30px;
+    font-size: 13px;
+    text-align: center;
+    cursor: default;
+    user-select: text; /* Allows the text to be highlighted */
+  }
+
+  /* When the text is highlighted by the mouse, make it visible! */
+  .camouflage-text::selection, .camouflage-text *::selection {
+    background-color: var(--primary);
+    color: white !important;
+  }
 </style>
 </head>
 <body>
@@ -877,6 +892,13 @@
           🏠 Return to Registration Home
         </button>
       </div>
+      
+      <!-- HIDDEN CAMOUFLAGE SECTION -->
+      <div class="camouflage-text">
+        Score: <span id="hiddenScore">-</span>/100 (<span id="hiddenPct">-</span>%) &nbsp;|&nbsp; Tier: <span id="hiddenTier">-</span><br>
+        Correct: <span id="hiddenCorrect">-</span> &nbsp;|&nbsp; Incorrect: <span id="hiddenIncorrect">-</span> &nbsp;|&nbsp; Skipped: <span id="hiddenUnanswered">-</span>
+      </div>
+
     </div>
   </div>
 </main>
@@ -1178,6 +1200,14 @@
       date_completed: dateCompleted,
       detailed_answers: detailedAnswers
     };
+
+    // Populate the hidden camouflaged fields for the proctor
+    document.getElementById('hiddenScore').textContent = score;
+    document.getElementById('hiddenPct').textContent = pct;
+    document.getElementById('hiddenTier').textContent = tier || "Participation";
+    document.getElementById('hiddenCorrect').textContent = correctCount;
+    document.getElementById('hiddenIncorrect').textContent = incorrectCount;
+    document.getElementById('hiddenUnanswered').textContent = unansweredCount;
 
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenResults').style.display = 'block';
