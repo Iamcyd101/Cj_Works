@@ -622,14 +622,98 @@
     justify-content: flex-end;
     gap: 10px;
   }
+
+  .score-banner {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border-radius: var(--radius);
+    padding: 36px 24px;
+    text-align: center;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .score-points {
+    font-size: 48px;
+    font-weight: 800;
+    margin: 8px 0;
+    letter-spacing: -1px;
+  }
+
+  .score-tier {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+    margin-top: 4px;
+  }
+
+  .stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stat-box {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .stat-num {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  .stat-num.correct { color: var(--secondary); }
+  .stat-num.incorrect { color: var(--danger); }
+  .stat-num.skipped { color: var(--warning); }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-top: 2px;
+  }
+
+  .student-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 28px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+  }
+
+  .student-summary-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 13.5px;
+  }
+
+  .student-summary-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .student-summary-table td strong {
+    color: var(--gray-800);
+  }
   
   .sync-status {
-    padding: 16px 20px;
+    padding: 12px 16px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .sync-loading {
@@ -654,19 +738,91 @@
     gap: 12px;
   }
 
-  .camouflage-text {
-    color: #ffffff; /* Matches the white card background */
-    margin-top: 30px;
-    font-size: 13px;
-    text-align: center;
-    cursor: default;
-    user-select: text; /* Allows the text to be highlighted */
+  .review-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 28px 0 16px 0;
+    color: var(--gray-800);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  /* When the text is highlighted by the mouse, make it visible! */
-  .camouflage-text::selection, .camouflage-text *::selection {
-    background-color: var(--primary);
-    color: white !important;
+  .review-item {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .review-item.is-correct {
+    border-left: 5px solid var(--secondary);
+  }
+
+  .review-item.is-incorrect {
+    border-left: 5px solid var(--danger);
+  }
+
+  .review-item.is-skipped {
+    border-left: 5px solid var(--warning);
+  }
+
+  .review-top {
+    padding: 16px 20px;
+    background: var(--gray-50);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .review-q-title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .review-status {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .status-correct { background: var(--secondary-light); color: var(--secondary); }
+  .status-incorrect { background: var(--danger-light); color: var(--danger); }
+  .status-skipped { background: var(--warning-light); color: #b7791f; }
+
+  .review-body {
+    padding: 20px;
+  }
+
+  .review-ans-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+    background: var(--gray-50);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+  }
+
+  @media (max-width: 600px) {
+    .review-ans-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .review-logic {
+    background: #e6f4ea;
+    border: 1px solid #ceead6;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: #137333;
+    line-height: 1.5;
   }
 
   @media print {
@@ -679,7 +835,7 @@
     .test-container {
       display: block;
     }
-    .card {
+    .card, .review-item {
       box-shadow: none !important;
       border: 1px solid #ccc !important;
       page-break-inside: avoid;
@@ -891,34 +1047,79 @@
     </div>
   </div>
 
-  <!-- SCREEN 3: THANK YOU & SYNC STATUS -->
-  <div id="screenResults" style="display: none; padding: 40px 16px;">
-    <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
-      <h2 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 28px;">Assessment Submitted!</h2>
-      <p style="font-size: 16px; color: var(--gray-600); margin-bottom: 32px; line-height: 1.6;">
-        Thank you for choosing <strong>Vision Bridge International Academy</strong>.<br>
-        Your answers have been securely recorded and submitted to the administration. Good luck with your results!
-      </p>
+  <!-- SCREEN 3: RESULTS AND PERFORMANCE REPORT -->
+  <div id="screenResults" style="display: none;">
+    <div class="score-banner">
+      <h2>Assessment Complete!</h2>
+      <div id="finalScoreDisplay" class="score-points">100 / 100</div>
+      <div id="finalTierDisplay" class="score-tier">Gold Honor / High Distinction</div>
+    </div>
+
+    <div class="stats-summary">
+      <div class="stat-box">
+        <div id="statScorePct" class="stat-num" style="color: var(--primary);">100%</div>
+        <div class="stat-label">Score Percentage</div>
+      </div>
+      <div class="stat-box">
+        <div id="statCorrect" class="stat-num correct">25</div>
+        <div class="stat-label">Correct (x4 pts)</div>
+      </div>
+      <div class="stat-box">
+        <div id="statIncorrect" class="stat-num incorrect">0</div>
+        <div class="stat-label">Incorrect</div>
+      </div>
+      <div class="stat-box">
+        <div id="statUnanswered" class="stat-num skipped">0</div>
+        <div class="stat-label">Unanswered</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="margin-bottom: 14px; font-size: 16px;">Examinee Information</h3>
       
       <div id="syncStatus" class="sync-status sync-loading" style="display: none;">
-        ⏳ Syncing results to the secure server...
-      </div>
-
-      <div style="margin-top: 32px;">
-        <button class="btn btn-outline" onclick="resetToRegistration()">
-          🏠 Return to Registration Home
-        </button>
+        ⏳ Syncing results...
       </div>
       
-      <!-- HIDDEN CAMOUFLAGE SECTION -->
-      <div class="camouflage-text">
-        Student: <span id="hiddenStudent">-</span> &nbsp;|&nbsp; Age: <span id="hiddenAge">-</span> &nbsp;|&nbsp; Level: <span id="hiddenLevel">-</span><br>
-        Instructor: <span id="hiddenInstructor">-</span> &nbsp;|&nbsp; Date/Time: <span id="hiddenDate">-</span><br>
-        Score: <span id="hiddenScore">-</span>/100 (<span id="hiddenPct">-</span>%) &nbsp;|&nbsp; Tier: <span id="hiddenTier">-</span><br>
-        Correct: <span id="hiddenCorrect">-</span> &nbsp;|&nbsp; Incorrect: <span id="hiddenIncorrect">-</span> &nbsp;|&nbsp; Skipped: <span id="hiddenUnanswered">-</span>
-      </div>
+      <table class="student-summary-table">
+        <tr>
+          <td width="25%"><strong>Student Name:</strong></td>
+          <td width="25%" id="resStudentName">-</td>
+          <td width="25%"><strong>Grade Level:</strong></td>
+          <td width="25%" id="resGradeLevel">-</td>
+        </tr>
+        <tr>
+          <td><strong>Age:</strong></td>
+          <td id="resStudentAge">-</td>
+          <td><strong>Birthdate:</strong></td>
+          <td id="resStudentBirthdate">-</td>
+        </tr>
+        <tr>
+          <td><strong>Instructor / Proctor:</strong></td>
+          <td id="resInstructor">-</td>
+          <td><strong>Date Completed:</strong></td>
+          <td id="resDateCompleted">-</td>
+        </tr>
+      </table>
 
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="window.print()">
+          🖨️ Print / Save PDF Report
+        </button>
+        <button class="btn btn-secondary" onclick="retakeCurrentLevel()">
+          🔄 Retake Level
+        </button>
+        <button class="btn btn-outline" onclick="resetToRegistration()">
+          🏠 Switch Level / New Student
+        </button>
+      </div>
     </div>
+
+    <div class="review-header">
+      <span>Detailed Solution & Logic Review (25 Questions)</span>
+    </div>
+
+    <div id="reviewListContainer"></div>
   </div>
 </main>
 
@@ -930,7 +1131,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeSubmitModal()">Review Questions</button>
-      <button class="btn btn-success" onclick="executeGrading()">Submit Test</button>
+      <button class="btn btn-success" onclick="executeGrading()">Submit & View Score</button>
     </div>
   </div>
 </div>
@@ -1132,9 +1333,9 @@
     const syncStatus = document.getElementById('syncStatus');
     syncStatus.style.display = 'block';
     syncStatus.className = 'sync-status sync-loading';
-    syncStatus.innerHTML = '⏳ Syncing results to the secure server...';
+    syncStatus.innerHTML = '⏳ Syncing results...';
 
-    const webhookUrl = 'https://calixtojohnn.app.n8n.cloud/webhook-test/9325d827-0801-4cc7-8280-af757a4415cb';
+    const webhookUrl = 'https://calixtojohnn.app.n8n.cloud/webhook/9325d827-0801-4cc7-8280-af757a4415cb';
 
     fetch(webhookUrl, {
       method: 'POST',
@@ -1156,7 +1357,7 @@
       console.error('Webhook sync error:', error);
       syncStatus.className = 'sync-status sync-failed';
       syncStatus.innerHTML = `
-        <div>⚠️ Sync Failed. Please try again.</div>
+        <div>⚠️ Sync Failed. Please save the PDF report below as backup.</div>
         <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; border-color: #fcb9b2;" onclick="syncResults()">🔄 Try Again</button>
       `;
     });
@@ -1168,30 +1369,16 @@
     let correctCount = 0;
     let incorrectCount = 0;
     let unansweredCount = 0;
-    
-    let detailedAnswers = [];
 
     currentQuestions.forEach((q, idx) => {
       const chosen = userAnswers[idx];
-      let isCorrect = false;
-
       if (chosen === undefined) {
         unansweredCount++;
       } else if (chosen.toUpperCase() === q.answer.toUpperCase()) {
         correctCount++;
-        isCorrect = true;
       } else {
         incorrectCount++;
       }
-      
-      // Bundle the individual question data
-      detailedAnswers.push({
-        question_number: q.id,
-        topic: q.topic,
-        student_answer: chosen || "Unanswered",
-        correct_answer: q.answer,
-        is_correct: isCorrect
-      });
     });
 
     const score = correctCount * 4;
@@ -1202,7 +1389,29 @@
     else if (score >= 80) tier = "🥈 Silver Award";
     else if (score >= 70) tier = "🥉 Bronze Award";
 
+    document.getElementById('finalScoreDisplay').textContent = `${score} / 100`;
+    
+    const tierDisplay = document.getElementById('finalTierDisplay');
+    if (tier !== "") {
+        tierDisplay.style.display = 'inline-block';
+        tierDisplay.textContent = tier;
+    } else {
+        tierDisplay.style.display = 'none';
+    }
+    
+    document.getElementById('statScorePct').textContent = `${pct}%`;
+    document.getElementById('statCorrect').textContent = `${correctCount} / 25`;
+    document.getElementById('statIncorrect').textContent = incorrectCount;
+    document.getElementById('statUnanswered').textContent = unansweredCount;
+
+    document.getElementById('resStudentName').textContent = currentStudent.name;
+    document.getElementById('resGradeLevel').textContent = `${currentStudent.levelName} (${currentStudent.levelCode})`;
+    document.getElementById('resStudentAge').textContent = `${currentStudent.age} years old`;
+    document.getElementById('resStudentBirthdate').textContent = currentStudent.birthdate;
+    document.getElementById('resInstructor').textContent = currentStudent.instructor;
+    
     const dateCompleted = new Date().toLocaleString();
+    document.getElementById('resDateCompleted').textContent = dateCompleted;
 
     lastResultsPayload = {
       student_name: currentStudent.name,
@@ -1216,22 +1425,53 @@
       correct: correctCount,
       incorrect: incorrectCount,
       unanswered: unansweredCount,
-      date_completed: dateCompleted,
-      detailed_answers: detailedAnswers
+      date_completed: dateCompleted
     };
 
-    // Populate the hidden camouflaged fields for the proctor
-    document.getElementById('hiddenStudent').textContent = currentStudent.name;
-    document.getElementById('hiddenAge').textContent = currentStudent.age;
-    document.getElementById('hiddenLevel').textContent = `${currentStudent.levelName} (${currentStudent.levelCode})`;
-    document.getElementById('hiddenInstructor').textContent = currentStudent.instructor;
-    document.getElementById('hiddenDate').textContent = dateCompleted;
-    document.getElementById('hiddenScore').textContent = score;
-    document.getElementById('hiddenPct').textContent = pct;
-    document.getElementById('hiddenTier').textContent = tier || "Participation";
-    document.getElementById('hiddenCorrect').textContent = correctCount;
-    document.getElementById('hiddenIncorrect').textContent = incorrectCount;
-    document.getElementById('hiddenUnanswered').textContent = unansweredCount;
+    const reviewList = document.getElementById('reviewListContainer');
+    reviewList.innerHTML = '';
+
+    currentQuestions.forEach((q, idx) => {
+      const chosen = userAnswers[idx];
+      const isCorrect = (chosen !== undefined && chosen.toUpperCase() === q.answer.toUpperCase());
+      const isSkipped = (chosen === undefined);
+
+      const reviewCard = document.createElement('div');
+      reviewCard.className = `review-item ${isCorrect ? 'is-correct' : (isSkipped ? 'is-skipped' : 'is-incorrect')}`;
+
+      let statusBadge = '';
+      if (isCorrect) statusBadge = '<span class="review-status status-correct">✓ Correct (+4 pts)</span>';
+      else if (isSkipped) statusBadge = '<span class="review-status status-skipped">○ Unanswered (0 pts)</span>';
+      else statusBadge = '<span class="review-status status-incorrect">✗ Incorrect (0 pts)</span>';
+
+      const chosenText = chosen ? `${chosen}. ${q.options[chosen] || ''}` : '<em>None selected</em>';
+      const correctText = `${q.answer}. ${q.options[q.answer] || ''}`;
+
+      let svgHtml = '';
+      if (q.svg) {
+        svgHtml = `<div class="q-svg-wrap" style="margin: 12px 0;">${q.svg}</div>`;
+      }
+
+      reviewCard.innerHTML = `
+        <div class="review-top">
+          <span class="review-q-title">Question ${q.id}: ${q.topic}</span>
+          ${statusBadge}
+        </div>
+        <div class="review-body">
+          <div class="q-prompt" style="font-size: 14.5px;">${q.question}</div>
+          ${svgHtml}
+          <div class="review-ans-grid">
+            <div><strong>Your Answer:</strong> ${chosenText}</div>
+            <div><strong>Correct Answer:</strong> <span style="color: var(--secondary); font-weight: bold;">${correctText}</span></div>
+          </div>
+          <div class="review-logic">
+            <strong>💡 Step-by-Step Mathematical Logic:</strong><br>
+            ${q.logic}
+          </div>
+        </div>
+      `;
+      reviewList.appendChild(reviewCard);
+    });
 
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenResults').style.display = 'block';
@@ -1256,12 +1496,6 @@
     document.getElementById('screenResults').style.display = 'none';
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenRegistration').style.display = 'block';
-    
-    // Clear registration fields
-    document.getElementById('inputName').value = '';
-    document.getElementById('inputAge').value = '';
-    document.getElementById('inputBirthdate').value = '';
-    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
