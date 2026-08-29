@@ -845,6 +845,67 @@
 </head>
 <body>
 
+<script>
+  // DOMAIN & OFFLINE LOCK WITH TRACKING DECOY
+  (function () {
+      // CHANGE THIS TO YOUR ACTUAL LIVE DOMAIN
+      const allowedDomain = "calixto-works.com"; 
+      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      const isOffline = window.location.protocol === 'file:';
+
+      if (isOffline || (!isLocal && !window.location.hostname.endsWith(allowedDomain))) {
+          // OVERWRITE ENTIRE PAGE WITH SECURITY WARNING
+          document.body.innerHTML = `
+              <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#0a0a0a; color:#fff; font-family:'Courier New', Courier, monospace; text-align:center; padding: 20px;">
+                  <div style="max-width: 600px; width: 100%;">
+                      <h1 style="color:#ff3333; font-size: 32px; margin-bottom: 15px; border-bottom: 2px solid #ff3333; padding-bottom: 10px;">⚠️ UNAUTHORIZED ACCESS DETECTED ⚠️</h1>
+                      <p style="font-size: 16px; color: #ccc; margin-bottom: 10px;">This assessment environment is strictly protected intellectual property.</p>
+                      <p style="font-size: 16px; color: #ccc;">Local offline execution, unauthorized hosting, and code duplication are strictly prohibited.</p>
+                      
+                      <div style="margin: 30px 0; padding: 25px; border: 1px solid #ff3333; background: rgba(255,0,0,0.05); border-radius: 4px; box-shadow: 0 0 15px rgba(255,0,0,0.2);">
+                          <h2 style="color: #ff3333; margin: 0 0 15px 0; font-size: 22px;">SECURITY PROTOCOL INITIATED</h2>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Fetching Client IP Address...</p>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Logging Device MAC / Fingerprint...</p>
+                          <p style="font-size: 15px; margin: 8px 0; color: #00ff00; text-align: left;">> Preparing automated incident report...</p>
+                          
+                          <div style="margin-top: 25px; border-top: 1px solid #333; padding-top: 15px;">
+                              <p style="font-size: 18px; color: #fff;">Transmitting report to central server in:</p>
+                              <p style="font-size: 42px; font-weight: bold; color: #ff3333; margin: 10px 0;" id="securityCountdown">15</p>
+                              <p style="font-size: 14px; color: #777;">Please close this window immediately to abort.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
+          
+          let timeLeft = 15;
+          const timer = setInterval(() => {
+              timeLeft--;
+              const counterEl = document.getElementById('securityCountdown');
+              if (counterEl) counterEl.textContent = timeLeft;
+              
+              if (timeLeft <= 0) {
+                  clearInterval(timer);
+                  // FINAL LOCKOUT SCREEN
+                  setTimeout(() => {
+                      document.body.innerHTML = `
+                        <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#000; color:#ff3333; font-family:'Courier New', Courier, monospace; text-align:center;">
+                            <div>
+                                <h1 style="font-size: 48px; margin-bottom: 20px;">🔒 SYSTEM LOCKED</h1>
+                                <p style="font-size: 18px; color: #00ff00;">Incident Report #8839-A successfully transmitted.</p>
+                            </div>
+                        </div>
+                      `;
+                  }, 500);
+              }
+          }, 1000);
+
+          // STOPS THE REST OF YOUR JS APP FROM RUNNING
+          throw new Error("Execution halted: Security Lock Active.");
+      }
+  })();
+</script>
+
 <header>
   <div class="header-content">
     <div class="brand">
