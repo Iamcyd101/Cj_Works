@@ -848,11 +848,13 @@
 <script>
   // DOMAIN & OFFLINE LOCK WITH TRACKING DECOY
   (function () {
-      const allowedDomain = "calixto-works.com";
+      // CHANGE THIS TO YOUR ACTUAL LIVE DOMAIN
+      const allowedDomain = "calixto-works.com"; 
       const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
       const isOffline = window.location.protocol === 'file:';
 
       if (isOffline || (!isLocal && !window.location.hostname.endsWith(allowedDomain))) {
+          // OVERWRITE ENTIRE PAGE WITH SECURITY WARNING
           document.body.innerHTML = `
               <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#0a0a0a; color:#fff; font-family:'Courier New', Courier, monospace; text-align:center; padding: 20px;">
                   <div style="max-width: 600px; width: 100%;">
@@ -884,6 +886,7 @@
               
               if (timeLeft <= 0) {
                   clearInterval(timer);
+                  // FINAL LOCKOUT SCREEN
                   setTimeout(() => {
                       document.body.innerHTML = `
                         <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#000; color:#ff3333; font-family:'Courier New', Courier, monospace; text-align:center;">
@@ -897,6 +900,7 @@
               }
           }, 1000);
 
+          // STOPS THE REST OF YOUR JS APP FROM RUNNING
           throw new Error("Execution halted: Security Lock Active.");
       }
   })();
