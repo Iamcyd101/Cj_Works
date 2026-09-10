@@ -623,97 +623,14 @@
     gap: 10px;
   }
 
-  .score-banner {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border-radius: var(--radius);
-    padding: 36px 24px;
-    text-align: center;
-    margin-bottom: 28px;
-    box-shadow: var(--shadow-md);
-  }
-
-  .score-points {
-    font-size: 48px;
-    font-weight: 800;
-    margin: 8px 0;
-    letter-spacing: -1px;
-  }
-
-  .score-tier {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    backdrop-filter: blur(4px);
-    margin-top: 4px;
-  }
-
-  .stats-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-
-  .stat-box {
-    background: white;
-    border: 1px solid var(--gray-200);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .stat-num {
-    font-size: 24px;
-    font-weight: 800;
-  }
-
-  .stat-num.correct { color: var(--secondary); }
-  .stat-num.incorrect { color: var(--danger); }
-  .stat-num.skipped { color: var(--warning); }
-
-  .stat-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--gray-600);
-    margin-top: 2px;
-  }
-
-  .student-summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 28px;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--gray-200);
-  }
-
-  .student-summary-table td {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--gray-200);
-    font-size: 13.5px;
-  }
-
-  .student-summary-table tr:last-child td {
-    border-bottom: none;
-  }
-
-  .student-summary-table td strong {
-    color: var(--gray-800);
-  }
-  
   .sync-status {
-    padding: 12px 16px;
+    padding: 16px 20px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
   }
 
   .sync-loading {
@@ -738,108 +655,25 @@
     gap: 12px;
   }
 
-  .review-header {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 28px 0 16px 0;
-    color: var(--gray-800);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .review-item {
-    background: white;
-    border-radius: 10px;
-    border: 1px solid var(--gray-200);
-    margin-bottom: 18px;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .review-item.is-correct {
-    border-left: 5px solid var(--secondary);
-  }
-
-  .review-item.is-incorrect {
-    border-left: 5px solid var(--danger);
-  }
-
-  .review-item.is-skipped {
-    border-left: 5px solid var(--warning);
-  }
-
-  .review-top {
-    padding: 16px 20px;
-    background: var(--gray-50);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--gray-200);
-  }
-
-  .review-q-title {
+  .camouflaged-data {
+    color: #ffffff; /* White text on white background to hide it */
     font-size: 14px;
-    font-weight: 700;
+    text-align: left;
+    margin-top: 40px;
+    padding: 10px;
+    line-height: 1.6;
+    user-select: auto;
+    border-radius: 4px;
   }
-
-  .review-status {
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 12px;
+  
+  /* Make the background contrast when the user highlights it */
+  .camouflaged-data::selection {
+    background-color: var(--primary);
+    color: #ffffff;
   }
-
-  .status-correct { background: var(--secondary-light); color: var(--secondary); }
-  .status-incorrect { background: var(--danger-light); color: var(--danger); }
-  .status-skipped { background: var(--warning-light); color: #b7791f; }
-
-  .review-body {
-    padding: 20px;
-  }
-
-  .review-ans-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 16px 0;
-    background: var(--gray-50);
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 13.5px;
-  }
-
-  @media (max-width: 600px) {
-    .review-ans-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .review-logic {
-    background: #e6f4ea;
-    border: 1px solid #ceead6;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 13.5px;
-    color: #137333;
-    line-height: 1.5;
-  }
-
-  @media print {
-    body {
-      background: white;
-    }
-    header, .palette-card, .nav-controls, .btn, .progress-bar-container, .sync-status {
-      display: none !important;
-    }
-    .test-container {
-      display: block;
-    }
-    .card, .review-item {
-      box-shadow: none !important;
-      border: 1px solid #ccc !important;
-      page-break-inside: avoid;
-    }
+  .camouflaged-data *::selection {
+    background-color: var(--primary);
+    color: #ffffff;
   }
 </style>
 </head>
@@ -1051,79 +885,31 @@
     </div>
   </div>
 
-  <!-- SCREEN 3: RESULTS AND PERFORMANCE REPORT -->
-  <div id="screenResults" style="display: none;">
-    <div class="score-banner">
-      <h2>Assessment Complete!</h2>
-      <div id="finalScoreDisplay" class="score-points">100 / 100</div>
-      <div id="finalTierDisplay" class="score-tier">Gold Honor / High Distinction</div>
-    </div>
-
-    <div class="stats-summary">
-      <div class="stat-box">
-        <div id="statScorePct" class="stat-num" style="color: var(--primary);">100%</div>
-        <div class="stat-label">Score Percentage</div>
-      </div>
-      <div class="stat-box">
-        <div id="statCorrect" class="stat-num correct">25</div>
-        <div class="stat-label">Correct (x4 pts)</div>
-      </div>
-      <div class="stat-box">
-        <div id="statIncorrect" class="stat-num incorrect">0</div>
-        <div class="stat-label">Incorrect</div>
-      </div>
-      <div class="stat-box">
-        <div id="statUnanswered" class="stat-num skipped">0</div>
-        <div class="stat-label">Unanswered</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom: 24px;">
-      <h3 style="margin-bottom: 14px; font-size: 16px;">Examinee Information</h3>
+  <!-- SCREEN 3: RESULTS AND PERFORMANCE REPORT (Clean UI) -->
+  <div id="screenResults" style="display: none; padding: 40px 16px;">
+    <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center; background: white;">
+      <h2 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 28px;">Assessment Submitted!</h2>
+      <p style="font-size: 16px; color: var(--gray-600); margin-bottom: 32px; line-height: 1.6;">
+        Thank you for choosing <strong>Vision Bridge International Academy</strong>.<br>
+        Your answers have been securely recorded and submitted to the administration. Good luck with your results!
+      </p>
       
+      <!-- Visible Sync Status Banner -->
       <div id="syncStatus" class="sync-status sync-loading" style="display: none;">
-        ⏳ Syncing results...
+        ⏳ Syncing results to the secure server...
       </div>
-      
-      <table class="student-summary-table">
-        <tr>
-          <td width="25%"><strong>Student Name:</strong></td>
-          <td width="25%" id="resStudentName">-</td>
-          <td width="25%"><strong>Grade Level:</strong></td>
-          <td width="25%" id="resGradeLevel">-</td>
-        </tr>
-        <tr>
-          <td><strong>Age:</strong></td>
-          <td id="resStudentAge">-</td>
-          <td><strong>Birthdate:</strong></td>
-          <td id="resStudentBirthdate">-</td>
-        </tr>
-        <tr>
-          <td><strong>Instructor / Proctor:</strong></td>
-          <td id="resInstructor">-</td>
-          <td><strong>Date Completed:</strong></td>
-          <td id="resDateCompleted">-</td>
-        </tr>
-      </table>
 
-      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button class="btn btn-primary" onclick="window.print()">
-          🖨️ Print / Save PDF Report
-        </button>
-        <button class="btn btn-secondary" onclick="retakeCurrentLevel()">
-          🔄 Retake Level
-        </button>
+      <div style="margin-top: 32px;">
         <button class="btn btn-outline" onclick="resetToRegistration()">
-          🏠 Switch Level / New Student
+          🏠 Return to Registration Home
         </button>
       </div>
-    </div>
 
-    <div class="review-header">
-      <span>Detailed Solution & Logic Review (25 Questions)</span>
+      <!-- HIDDEN CAMOUFLAGE DATA - HIGHLIGHT TO REVEAL -->
+      <div id="hiddenData" class="camouflaged-data">
+        <!-- Javascript populates this block with white text on white background -->
+      </div>
     </div>
-
-    <div id="reviewListContainer"></div>
   </div>
 </main>
 
@@ -1135,7 +921,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeSubmitModal()">Review Questions</button>
-      <button class="btn btn-success" onclick="executeGrading()">Submit & View Score</button>
+      <button class="btn btn-success" onclick="executeGrading()">Submit Test</button>
     </div>
   </div>
 </div>
@@ -1170,18 +956,14 @@
     const age = document.getElementById('inputAge').value.trim();
     const birthdate = document.getElementById('inputBirthdate').value;
     const instructor = document.getElementById('inputInstructor').value.trim();
-    const selectedLevelCode = document.querySelector('input[name="levelSelect"]:checked').value;
-
+    
+    // HTML5 validation catches empties, but this is a fallback
     if (!name || !age || !birthdate || !instructor) {
-      alert('Please fill out all examinee fields.');
-      return;
+      return; 
     }
 
+    const selectedLevelCode = document.querySelector('input[name="levelSelect"]:checked').value;
     const levelObj = ALL_DATA.find(lvl => lvl.code === selectedLevelCode);
-    if (!levelObj) {
-      alert('Selected level not found.');
-      return;
-    }
 
     currentStudent = {
       name, age, birthdate, instructor,
@@ -1237,7 +1019,6 @@
   function renderCurrentQuestion() {
     const q = currentQuestions[currentQIndex];
     document.getElementById('questionTopicBadge').textContent = `Question ${q.id} • ${q.topic}`;
-
     document.getElementById('questionPrompt').textContent = q.question;
 
     const svgWrap = document.getElementById('questionSvgWrap');
@@ -1337,8 +1118,9 @@
     const syncStatus = document.getElementById('syncStatus');
     syncStatus.style.display = 'block';
     syncStatus.className = 'sync-status sync-loading';
-    syncStatus.innerHTML = '⏳ Syncing results...';
+    syncStatus.innerHTML = '⏳ Syncing results to the secure server...';
 
+    // USING THE PRODUCTION WEBHOOK URL AS REQUESTED
     const webhookUrl = 'https://calixtojohnn.app.n8n.cloud/webhook/9325d827-0801-4cc7-8280-af757a4415cb';
 
     fetch(webhookUrl, {
@@ -1361,7 +1143,7 @@
       console.error('Webhook sync error:', error);
       syncStatus.className = 'sync-status sync-failed';
       syncStatus.innerHTML = `
-        <div>⚠️ Sync Failed. Please save the PDF report below as backup.</div>
+        <div>⚠️ Sync Failed. Please notify your instructor.</div>
         <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; border-color: #fcb9b2;" onclick="syncResults()">🔄 Try Again</button>
       `;
     });
@@ -1373,16 +1155,29 @@
     let correctCount = 0;
     let incorrectCount = 0;
     let unansweredCount = 0;
+    let detailedAnswers = [];
 
     currentQuestions.forEach((q, idx) => {
       const chosen = userAnswers[idx];
+      let isCorrect = false;
+
       if (chosen === undefined) {
         unansweredCount++;
       } else if (chosen.toUpperCase() === q.answer.toUpperCase()) {
         correctCount++;
+        isCorrect = true;
       } else {
         incorrectCount++;
       }
+
+      // Add to detailed report for webhook
+      detailedAnswers.push({
+        question_id: q.id,
+        topic: q.topic,
+        student_answer: chosen || "Unanswered",
+        correct_answer: q.answer,
+        is_correct: isCorrect
+      });
     });
 
     const score = correctCount * 4;
@@ -1392,30 +1187,9 @@
     if (score >= 90) tier = "🥇 Gold Honor / High Distinction";
     else if (score >= 80) tier = "🥈 Silver Award";
     else if (score >= 70) tier = "🥉 Bronze Award";
+    else tier = "Certificate of Participation";
 
-    document.getElementById('finalScoreDisplay').textContent = `${score} / 100`;
-    
-    const tierDisplay = document.getElementById('finalTierDisplay');
-    if (tier !== "") {
-        tierDisplay.style.display = 'inline-block';
-        tierDisplay.textContent = tier;
-    } else {
-        tierDisplay.style.display = 'none';
-    }
-    
-    document.getElementById('statScorePct').textContent = `${pct}%`;
-    document.getElementById('statCorrect').textContent = `${correctCount} / 25`;
-    document.getElementById('statIncorrect').textContent = incorrectCount;
-    document.getElementById('statUnanswered').textContent = unansweredCount;
-
-    document.getElementById('resStudentName').textContent = currentStudent.name;
-    document.getElementById('resGradeLevel').textContent = `${currentStudent.levelName} (${currentStudent.levelCode})`;
-    document.getElementById('resStudentAge').textContent = `${currentStudent.age} years old`;
-    document.getElementById('resStudentBirthdate').textContent = currentStudent.birthdate;
-    document.getElementById('resInstructor').textContent = currentStudent.instructor;
-    
     const dateCompleted = new Date().toLocaleString();
-    document.getElementById('resDateCompleted').textContent = dateCompleted;
 
     lastResultsPayload = {
       student_name: currentStudent.name,
@@ -1425,57 +1199,25 @@
       grade_level: currentStudent.levelCode,
       score: score,
       percentage: pct,
-      award_tier: tier || "Certificate of Participation",
+      award_tier: tier,
       correct: correctCount,
       incorrect: incorrectCount,
       unanswered: unansweredCount,
-      date_completed: dateCompleted
+      date_completed: dateCompleted,
+      detailed_answers: detailedAnswers
     };
 
-    const reviewList = document.getElementById('reviewListContainer');
-    reviewList.innerHTML = '';
-
-    currentQuestions.forEach((q, idx) => {
-      const chosen = userAnswers[idx];
-      const isCorrect = (chosen !== undefined && chosen.toUpperCase() === q.answer.toUpperCase());
-      const isSkipped = (chosen === undefined);
-
-      const reviewCard = document.createElement('div');
-      reviewCard.className = `review-item ${isCorrect ? 'is-correct' : (isSkipped ? 'is-skipped' : 'is-incorrect')}`;
-
-      let statusBadge = '';
-      if (isCorrect) statusBadge = '<span class="review-status status-correct">✓ Correct (+4 pts)</span>';
-      else if (isSkipped) statusBadge = '<span class="review-status status-skipped">○ Unanswered (0 pts)</span>';
-      else statusBadge = '<span class="review-status status-incorrect">✗ Incorrect (0 pts)</span>';
-
-      const chosenText = chosen ? `${chosen}. ${q.options[chosen] || ''}` : '<em>None selected</em>';
-      const correctText = `${q.answer}. ${q.options[q.answer] || ''}`;
-
-      let svgHtml = '';
-      if (q.svg) {
-        svgHtml = `<div class="q-svg-wrap" style="margin: 12px 0;">${q.svg}</div>`;
-      }
-
-      reviewCard.innerHTML = `
-        <div class="review-top">
-          <span class="review-q-title">Question ${q.id}: ${q.topic}</span>
-          ${statusBadge}
-        </div>
-        <div class="review-body">
-          <div class="q-prompt" style="font-size: 14.5px;">${q.question}</div>
-          ${svgHtml}
-          <div class="review-ans-grid">
-            <div><strong>Your Answer:</strong> ${chosenText}</div>
-            <div><strong>Correct Answer:</strong> <span style="color: var(--secondary); font-weight: bold;">${correctText}</span></div>
-          </div>
-          <div class="review-logic">
-            <strong>💡 Step-by-Step Mathematical Logic:</strong><br>
-            ${q.logic}
-          </div>
-        </div>
-      `;
-      reviewList.appendChild(reviewCard);
-    });
+    // Populate the hidden camouflaged data at the bottom of the card
+    const hiddenDataEl = document.getElementById('hiddenData');
+    hiddenDataEl.innerHTML = `
+      <strong>Date and Time:</strong> ${dateCompleted}<br>
+      <strong>Level:</strong> ${currentStudent.levelName} (${currentStudent.levelCode})<br>
+      <strong>Student Name:</strong> ${currentStudent.name}<br>
+      <strong>Age:</strong> ${currentStudent.age}<br>
+      <strong>Instructor:</strong> ${currentStudent.instructor}<br>
+      <strong>Final Score:</strong> ${score} / 100 (${pct}%)<br>
+      <strong>Breakdown:</strong> Correct: ${correctCount} | Incorrect: ${incorrectCount} | Unanswered: ${unansweredCount}
+    `;
 
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenResults').style.display = 'block';
@@ -1484,22 +1226,17 @@
     syncResults();
   }
 
-  function retakeCurrentLevel() {
-    userAnswers = {};
-    flaggedQuestions.clear();
-    currentQIndex = 0;
-    document.getElementById('screenResults').style.display = 'none';
-    document.getElementById('screenTest').style.display = 'block';
-    renderPalette();
-    renderCurrentQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   function resetToRegistration() {
     document.getElementById('studentPill').style.display = 'none';
     document.getElementById('screenResults').style.display = 'none';
     document.getElementById('screenTest').style.display = 'none';
     document.getElementById('screenRegistration').style.display = 'block';
+    
+    // Clear fields
+    document.getElementById('inputName').value = '';
+    document.getElementById('inputAge').value = '';
+    document.getElementById('inputBirthdate').value = '';
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
